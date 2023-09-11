@@ -6,13 +6,10 @@ package hotelbookingsystem.gui;
 
 /**
  *
- * @author jenni
+ * @author mgk3508
  */
 public class HotelBookingSystemGUI {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         // TODO code application logic here
     }
