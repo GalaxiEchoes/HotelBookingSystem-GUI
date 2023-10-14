@@ -17,14 +17,22 @@ public class DatabaseManager {
     private static final String PASSWORD = "pdc"; //your DB password
     private static final String URL = "jdbc:derby:HotelBookingSystemDB_Ebd; create=true";  //url of the DB host
     
-    Connection conn;
+    private Connection conn;
+    private static DatabaseManager dbmanager;
 
-    public DatabaseManager() {
+    private DatabaseManager() {
         establishConnection();
     }
     
+    public static synchronized DatabaseManager getDBInstance(){
+        if(dbmanager == null){
+           dbmanager = new DatabaseManager();
+       } 
+       return dbmanager;
+    }
+    
     public static void main(String[] args) {
-        DatabaseManager dbManager = new DatabaseManager();
+        DatabaseManager dbManager = getDBInstance();
         System.out.println(dbManager.getConnection());
     }
     
@@ -52,5 +60,10 @@ public class DatabaseManager {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
     }
 }
