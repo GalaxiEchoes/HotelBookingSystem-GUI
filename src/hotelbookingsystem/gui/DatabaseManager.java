@@ -10,12 +10,12 @@ import java.sql.SQLException;
 
 /**
  *
- * @author jenni
+ * @author mgk3508
  */
 public class DatabaseManager {
-    private static final String USER_NAME = "pdc"; //your DB username
-    private static final String PASSWORD = "pdc"; //your DB password
-    private static final String URL = "jdbc:derby:HotelBookingSystemDB_Ebd; create=true";  //url of the DB host
+    private static final String USER_NAME = "pdc"; 
+    private static final String PASSWORD = "pdc";
+    private static final String URL = "jdbc:derby:HotelBookingSystemDB_Ebd; create=true"; 
     
     private Connection conn;
     private static DatabaseManager dbmanager;
@@ -40,7 +40,6 @@ public class DatabaseManager {
         return this.conn;
     }
     
-        //Establish connection
     public void establishConnection() {
         if (this.conn == null) {
             try {

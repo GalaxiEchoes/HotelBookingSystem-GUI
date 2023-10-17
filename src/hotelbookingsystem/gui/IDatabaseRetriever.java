@@ -4,10 +4,16 @@
  */
 package hotelbookingsystem.gui;
 
+import java.util.HashSet;
+
 /**
  *
  * @author jenni
  */
 public interface IDatabaseRetriever {
-    
+    public HashSet<Room> getRooms();
+    public HashSet<Person> getAdmins();
+    public Person getExsistingCustomer(Booking booking);
+    public HashSet<Booking> getBookings();
+    public void closeConnection();
 }

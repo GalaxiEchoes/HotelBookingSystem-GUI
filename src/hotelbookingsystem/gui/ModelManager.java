@@ -9,5 +9,28 @@ package hotelbookingsystem.gui;
  * @author jenni
  */
 public class ModelManager {
+    private final IDatabaseRetriever dbRetriever;
+    private final IDatabaseUpdater dbUpdater;
     
+
+    
+    public ModelManager(){
+        
+    }
+    
+    public HashSet<Room> getAvailableRooms(Date startDate, Date endDate){
+        
+    }
+    
+    public HashSet<Booking> getBooking(String name, int roomID, ){
+        
+    }
+    
+    public HashSet<Person> getAdmin(String name){
+        
+    }
+    
+    public void updateBooking(){
+        
+    }
 }

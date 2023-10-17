@@ -9,5 +9,8 @@ package hotelbookingsystem.gui;
  * @author jenni
  */
 public interface IDatabaseUpdater {
-    
+    public void deleteBooking(Booking booking);
+    public void addBooking(Booking booking);
+    public void updateBooking(Booking oldBooking, Booking newBooking);
+    public void closeConnection();
 }
