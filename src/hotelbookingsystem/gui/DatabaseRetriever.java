@@ -4,6 +4,7 @@
  */
 package hotelbookingsystem.gui;
 
+import hibernateutils.HibernateUtils;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -13,8 +14,6 @@ import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-
 
 /**
  *
@@ -34,6 +33,7 @@ public class DatabaseRetriever implements IDatabaseRetriever{
             System.err.println("Failed to establish a connection to the database.");
             System.exit(1);
         }
+        this.sessionFactory = HibernateUtils.getSessionFactory();
     }
     
     public HashSet<Room> getRooms(){

@@ -6,7 +6,7 @@ package hotelbookingsystem.gui;
 
 /**
  *
- * @author jenni
+ * @author mgk3508
  */
 public interface IDatabaseUpdater {
     public void deleteBooking(Booking booking);

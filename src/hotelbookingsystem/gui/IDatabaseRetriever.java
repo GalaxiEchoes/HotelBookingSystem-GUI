@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 /**
  *
- * @author jenni
+ * @author mgk3508
  */
 public interface IDatabaseRetriever {
     public HashSet<Room> getRooms();

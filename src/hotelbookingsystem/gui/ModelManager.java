@@ -6,7 +6,7 @@ package hotelbookingsystem.gui;
 
 /**
  *
- * @author jenni
+ * @author mgk3508
  */
 public class ModelManager {
     private final IDatabaseRetriever dbRetriever;
