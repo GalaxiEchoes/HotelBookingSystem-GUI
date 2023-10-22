@@ -2,16 +2,28 @@ package hotelbookingsystem.gui;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.*;
 
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract public class Person implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "person_id")
+    protected int personId;
+    
+    @Column(name = "name")
     protected String name;
     
     public Person(String name) {
         this.name = name;
+    }
+    
+    public Person() {
     }
 
     /**
@@ -28,6 +40,20 @@ abstract public class Person implements Serializable {
     public void setName(String name)
     {
         this.name = name;
+    }
+    
+    /**
+     * @return personId  
+     */
+    public int getPersonId() {
+        return personId;
+    }
+
+    /**
+     * @param personId - int ID of person
+     */
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     /**

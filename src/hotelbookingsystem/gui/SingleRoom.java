@@ -1,45 +1,22 @@
 package hotelbookingsystem.gui;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
+@Entity
+@DiscriminatorValue("Single")
 public class SingleRoom extends Room{
 
     public SingleRoom(int roomID) {
         this.roomID = roomID;
-        this.size = "S";
+        this.roomSize = "Single";
         this.price = 75.60;
     }
 
-    /**
-     * @return roomID
-     */
-    @Override
-    public int getRoomID() {
-        return this.roomID;
-    }
-
-    /**
-     * @return size
-     */
-    @Override
-    public String getSize() {
-        return this.size;
-    }
-
-    /**
-     * @return price
-     */
-    @Override
-    public double getPrice() {
-        return this.price;
-    }
-
-    /**
-     * @param price - price of small room
-     */
-    public void setPrice(double price) {
-        this.price = price;
+    public SingleRoom() {
     }
 
     /**

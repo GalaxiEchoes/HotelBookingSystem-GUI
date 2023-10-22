@@ -14,47 +14,22 @@ public class Admin extends Person {
         super(name);
         this.password = password;
     }
-
-    /**
-     * This first validates the old password to login, then sets new password if successful
-     * 
-     * @param oldPassword - String password to log in
-     * @param newPassword - String new password to log in
-     * @return true if change successful, false otherwise
-     */
-    public boolean setPassword(String oldPassword, String newPassword) {
-        if(this.login(oldPassword)){
-            this.password = newPassword;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name - username of admin 
-     */
-    public void setName(String name) {
-        this.name = name;
+    
+    public Admin() {
     }
     
     /**
-     * Checks if user input matches password in file
-     * 
-     * @param password - String password used to login
-     * @return true if logged in, false if wrong password
+     * @return password
      */
-    public boolean login(String password) {
-        if(this.password.contentEquals(password)) {
-            return true;
-        }
-        return false;
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password - password of admin 
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

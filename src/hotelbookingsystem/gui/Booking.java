@@ -1,57 +1,52 @@
 package hotelbookingsystem.gui;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
+import javax.persistence.*;
 
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
  * 21151229)
  */
+@Entity
+@Table(name = "Bookings")
 public class Booking implements Serializable {
 
-    private String guestList;
-    private Person customer;
-    private Room room;
-    private Date startDate;
-    private Date endDate;
-    private float total;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "booking_id")
     private int bookingID;
+    
+    @Column(name = "guest_notes")
+    private String guestNotes;
+    
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Person customer;
+    
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "start_date")
+    private Date startDate;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "end_date")
+    private Date endDate;
+    
+    @Column(name = "total")
+    private float total;
 
-    public Booking(String guestList, Person customer, Room room, Date startDate, Date endDate, int bookingID) {
+    public Booking(String guestList, Person customer, Room room, Date startDate, Date endDate) {
         this.customer = customer;
         this.room = room;
-        this.guestList = guestList;
+        this.guestNotes = guestList;
         this.startDate = startDate;
         this.endDate = endDate;
         this.total = 0.0f;
-        this.bookingID = bookingID;
-
-    }
-
-    /**
-     * This adds a person to the Guest ArrayList
-     *
-     * @param e - Guest Person to be added
-     */
-    public void addGuest(Person e) {
-        guestList.add(e);
-    }
-
-    /**
-     * This removes a Guest from the Guest ArrayList
-     *
-     * @param guestName - String name of the Guest
-     * @return 0 if successful and 1 for if there is a error
-     */
-    public int removeGuest(String guestName) {
-        for (Person e : guestList) {
-            if (e.getName().toLowerCase().equals(guestName.toLowerCase())) {
-                guestList;
-                return 0;
-            }
-        }
-        return 1;
     }
 
     /**
@@ -60,6 +55,13 @@ public class Booking implements Serializable {
     public Room getRoom() {
         return this.room;
     }
+    
+    /**
+     * @param room - Room object for booking
+     */
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     /**
      * @return customer
@@ -67,9 +69,53 @@ public class Booking implements Serializable {
     public Person getCustomer() {
         return this.customer;
     }
+    
+    /**
+     * @param room - Person object for booking
+     */
+    public void getCustomer(Person customer) {
+        this.customer = customer;
+    }
 
+    public int getBookingID() {
+        return bookingID;
+    }
 
+    public void setBookingID(int bookingID) {
+        this.bookingID = bookingID;
+    }
 
+    public String getGuestNotes() {
+        return guestNotes;
+    }
+
+    public void setGuestNotes(String guestNotes) {
+        this.guestNotes = guestNotes;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
 
     /**
      * {@inheritDoc} Generates a hash code for the Booking

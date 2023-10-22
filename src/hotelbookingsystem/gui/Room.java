@@ -1,14 +1,25 @@
 package hotelbookingsystem.gui;
 
 import java.io.Serializable;
+import javax.persistence.*;
 
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
-abstract public class Room implements Serializable{
-
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "roomSize")
+@Table(name = "Rooms")
+abstract public class Room implements Serializable {
+    
+    @Id
+    @Column(name = "room_id")
     protected int roomID;
-    protected String size;
+    
+    @Column(name = "roomSize")
+    protected String roomSize;
+    
+    @Column(name = "price")
     protected double price;
 
     /**
@@ -22,7 +33,7 @@ abstract public class Room implements Serializable{
      * @return size
      */
     public String getSize() {
-        return this.size;
+        return this.roomSize;
     }
 
     /**
@@ -30,6 +41,18 @@ abstract public class Room implements Serializable{
      */
     public double getPrice() {
         return this.price;
+    }
+    
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
+
+    public void setRoomSize(String roomSize) {
+        this.roomSize = roomSize;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     /**

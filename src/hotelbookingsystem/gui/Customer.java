@@ -13,6 +13,9 @@ public class Customer extends Person{
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+    
+    public Customer() {
+    }
 
     /**
      * @return email
@@ -40,22 +43,6 @@ public class Customer extends Person{
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    /**
-     * @return name
-     */
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * @param name - String name of Customer
-     */
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**

@@ -37,7 +37,7 @@ public class DatabaseRetriever implements IDatabaseRetriever{
     }
     
     public HashSet<Room> getRooms(){
-        Set<Customer> roomSet = null;
+        HashSet<Room> roomSet = null;
         
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -45,10 +45,12 @@ public class DatabaseRetriever implements IDatabaseRetriever{
         List<Room> rooms = query.getResultList();
         roomSet = new HashSet<>(rooms);
         session.getTransaction().commit();
+        
+        return roomSet;
     }
     
     public HashSet<Person> getAdmins(){
-        Set<Person> adminSet = null;
+        HashSet<Person> adminSet = null;
         
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -56,6 +58,8 @@ public class DatabaseRetriever implements IDatabaseRetriever{
         List<Admin> admin = query.getResultList();
         adminSet = new HashSet<>(admin);
         session.getTransaction().commit();
+        
+        return  adminSet;
     }
     
     public Person getExsistingCustomer(Booking booking){
@@ -63,8 +67,8 @@ public class DatabaseRetriever implements IDatabaseRetriever{
    
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("FROM Person WHERE email = :email OR phone = :phone");
-        query.setParameter("email", booking.getCustomer().getEmail());
-        query.setParameter("phone", booking.getCustomer().getPhone());
+        query.setParameter("email", ((Customer) booking.getCustomer()).getEmail());
+        query.setParameter("phone", ((Customer) booking.getCustomer()).getPhoneNumber());
 
         List<Person> result = query.list();
 
@@ -78,7 +82,7 @@ public class DatabaseRetriever implements IDatabaseRetriever{
     }
     
     public HashSet<Booking> getBookings(){
-        Set<Booking> bookingSet = null;
+        HashSet<Booking> bookingSet = null;
         
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -86,6 +90,8 @@ public class DatabaseRetriever implements IDatabaseRetriever{
         List<Booking> booking = query.getResultList();
         bookingSet = new HashSet<>(booking);
         session.getTransaction().commit();
+        
+        return bookingSet;
     }
     
     public void closeConnection(){

@@ -87,13 +87,13 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     public void updateBooking(Booking oldBooking, Booking newBooking){
         try {
             PreparedStatement pstmt = conn.prepareStatement("UPDATE Booking SET roomID = ?, startDate = ?, endDate = ?, person = ?, guests = ? WHERE name = ? AND startDate = ? AND endDate = ?");
-            pstmt.setString(1, newBooking.getRoom().getRoomID());
+            pstmt.setString(1, Integer.toString(newBooking.getRoom().getRoomID()));
             pstmt.setDate(2, new Date(newBooking.getStartDate().getTime()));
             pstmt.setDate(3, new Date(newBooking.getEndDate().getTime()));
-            pstmt.setString(4, newBooking.getCustomer.getName());
-            pstmt.setString(5, newBooking.getGuests());
+            pstmt.setString(4, newBooking.getCustomer().getName());
+            pstmt.setString(5, newBooking.getGuestNotes());
             
-            pstmt.setString(6, oldBooking.getCustomer.getName());
+            pstmt.setString(6, oldBooking.getCustomer().getName());
             pstmt.setDate(7, new Date(oldBooking.getStartDate().getTime()));
             pstmt.setDate(8, new Date(oldBooking.getEndDate().getTime()));
             
@@ -101,12 +101,12 @@ public class DatabaseUpdater implements IDatabaseUpdater{
             
             pstmt = conn.prepareStatement("UPDATE Booking SET name = ?, email = ?, phone = ? WHERE name = ? AND email = ? AND phone = ?");
             pstmt.setString(1, newBooking.getCustomer().getName());
-            pstmt.setString(2, newBooking.getCustomer().getEmail());
-            pstmt.setString(3, newBooking.getCustomer().getPhone());
+            pstmt.setString(2, ((Customer) newBooking.getCustomer()).getEmail());
+            pstmt.setString(3, ((Customer)newBooking.getCustomer()).getPhoneNumber());
             
             pstmt.setString(4, oldBooking.getCustomer().getName());
-            pstmt.setString(5, oldBooking.getCustomer().getEmail());
-            pstmt.setString(6, oldBooking.getCustomer().getPhone());
+            pstmt.setString(5, ((Customer)oldBooking.getCustomer()).getEmail());
+            pstmt.setString(6, ((Customer)oldBooking.getCustomer()).getPhoneNumber());
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException ex) {
@@ -114,19 +114,37 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         }
     }
     
+    //double check that the names match???
     private void initializeDatabase(){
         try {
             if(this.tableExsists("BOOKING") == false){
-                statement.executeUpdate("CREATE TABLE BOOKING (ROOMID INT, STARTDATE DATE , ENDDATE DATE, PERSON VARCHAR(20), GUESTS VARCHAR(50) )");
+                statement.executeUpdate("CREATE TABLE BOOKINGS (ROOMID INT, STARTDATE DATE , ENDDATE DATE, PERSON VARCHAR(20), GUESTS VARCHAR(150) )");
             }
             if(this.tableExsists("ROOM") == false){
-                statement.executeUpdate("CREATE TABLE ROOM (ROOMID INT, SIZE VARCHAR(20), PRICE FLOAT)");
+                statement.executeUpdate("CREATE TABLE ROOMS (ROOMID INT, SIZE VARCHAR(20), PRICE FLOAT)");
+                
+                //Inserting rooms into database
+                statement.executeUpdate("INSERT INTO ROOMS VALUES (1, 'Single', 75.60),"
+                        + "(2, 'Single', 75.60),"
+                        + "(3, 'Single', 75.60),"
+                        + "(4, 'Single', 75.60),"
+                        + "(5, 'Single', 75.60),"
+                        + "(6, 'Double', 98.20),"
+                        + "(7, 'Double', 98.20),"
+                        + "(8, 'Double', 98.20),"
+                        + "(9, 'Double', 98.20),"
+                        + "(10, 'Double', 98.20),"
+                        + "(11, 'Suite', 129.00),"
+                        + "(12, 'Suite', 129.00),"
+                        + "(13, 'Suite', 129.00),"
+                        + "(14, 'Suite', 129.00),"
+                        + "(15, 'Suite', 129.00)");
             }
             if(this.tableExsists("PERSON") == false){
-                statement.executeUpdate("CREATE TABLE PERSON (NAME VARCHAR(20), EMAIL VARCHAR(20), PHONE VARCHAR(20))");
+                statement.executeUpdate("CREATE TABLE PERSONS (NAME VARCHAR(20), EMAIL VARCHAR(20), PHONE VARCHAR(20))");
             }
             if(this.tableExsists("ADMIN") == false){
-                statement.executeUpdate("CREATE TABLE ADMIN (USERNAME VARCHAR(20), PASSWORD VARCHAR(20))");
+                statement.executeUpdate("CREATE TABLE ADMINS (USERNAME VARCHAR(20), PASSWORD VARCHAR(20))");
             }
             
         } catch (SQLException ex) {
