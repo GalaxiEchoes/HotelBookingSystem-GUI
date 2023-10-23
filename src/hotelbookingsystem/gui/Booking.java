@@ -1,4 +1,4 @@
-package hotelbookingsystem.gui;
+    package hotelbookingsystem.gui;
 
 import java.io.Serializable;
 import java.util.Date;
