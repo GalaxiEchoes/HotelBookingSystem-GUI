@@ -16,11 +16,13 @@ abstract public class Room implements Serializable {
     @Column(name = "room_id")
     protected int roomID;
     
-    @Column(name = "roomSize")
-    protected String roomSize;
-    
     @Column(name = "price")
     protected double price;
+    
+    public Room(int roomID, double price){
+        this.roomID = roomID;
+        this.price = price;
+    }
 
     /**
      * @return roomID
@@ -32,9 +34,7 @@ abstract public class Room implements Serializable {
     /**
      * @return size
      */
-    public String getSize() {
-        return this.roomSize;
-    }
+    public abstract String getSize();
 
     /**
      * @return price
@@ -45,10 +45,6 @@ abstract public class Room implements Serializable {
     
     public void setRoomID(int roomID) {
         this.roomID = roomID;
-    }
-
-    public void setRoomSize(String roomSize) {
-        this.roomSize = roomSize;
     }
 
     public void setPrice(double price) {

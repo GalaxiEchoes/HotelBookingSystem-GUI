@@ -49,6 +49,9 @@ public class Booking implements Serializable {
         this.total = 0.0f;
     }
 
+    public Booking() {
+    }
+    
     /**
      * @return room
      */

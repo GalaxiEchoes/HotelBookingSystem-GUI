@@ -11,14 +11,11 @@ import javax.persistence.Entity;
 public class DoubleRoom extends Room {
 
     public DoubleRoom(int roomID) {
-        this.roomID = roomID;
-        this.roomSize = "Double";
-        this.price = 98.20;
+        super(roomID, 98.20);
     }
 
     public DoubleRoom() {
     }
-    
 
     /**
      * {@inheritDoc}
@@ -27,5 +24,10 @@ public class DoubleRoom extends Room {
     @Override
     public String toString() {
         return "Room ID: " + getRoomID() + " Size: " + getSize() + " Price: $" + getPrice();
+    }
+
+    @Override
+    public String getSize() {
+        return "Double";
     }
 }

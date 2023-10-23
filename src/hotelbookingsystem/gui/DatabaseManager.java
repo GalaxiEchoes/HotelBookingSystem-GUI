@@ -7,62 +7,31 @@ package hotelbookingsystem.gui;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import hibernateutils.HibernateUtils;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.SessionFactory;
 
 /**
  *
  * @author mgk3508
  */
 public class DatabaseManager {
-    private static final String USER_NAME = "pdc"; 
-    private static final String PASSWORD = "pdc";
-    private static final String URL = "jdbc:derby:HotelBookingSystemDB_Ebd; create=true"; 
+    private static final SessionFactory factory;
     
-    private Connection conn;
-    private static DatabaseManager dbmanager;
+    static {
+        Configuration cfg = new Configuration().configure();
+        cfg.addAnnotatedClass(Room.class);
+        cfg.addAnnotatedClass(SingleRoom.class);
+        cfg.addAnnotatedClass(DoubleRoom.class);
+        cfg.addAnnotatedClass(Suite.class);
+        cfg.addAnnotatedClass(Booking.class);
+        cfg.addAnnotatedClass(Person.class);
+        cfg.addAnnotatedClass(Customer.class);
+        cfg.addAnnotatedClass(Admin.class);
+        factory = cfg.buildSessionFactory();
+    }
 
-    private DatabaseManager() {
-        establishConnection();
-    }
-    
-    public static synchronized DatabaseManager getDBInstance(){
-        if(dbmanager == null){
-           dbmanager = new DatabaseManager();
-       } 
-       return dbmanager;
-    }
-    
-    public static void main(String[] args) {
-        DatabaseManager dbManager = getDBInstance();
-        System.out.println(dbManager.getConnection());
-    }
-    
-    public Connection getConnection() {
-        return this.conn;
-    }
-    
-    public void establishConnection() {
-        if (this.conn == null) {
-            try {
-                conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-                System.out.println(URL + " Get Connected Successfully ....");
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
-    
-    public void closeConnections() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
-    
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
+    public static synchronized SessionFactory getSessionFactory() {
+        return factory;
     }
 }

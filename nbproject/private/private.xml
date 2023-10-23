@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/berri/OneDrive%20-%20AUT%20University/Documents/GitHub/HotelBookingSystem-GUI/src/hotelbookingsystem/gui/HotelBookingSystemGUI.java</file>
+            <file>file:/C:/Users/jenni/Documents/NetBeansProjects/HotelBookingSystem-GUI/src/hotelbookingsystem/gui/DatabaseRetriever.java</file>
+            <file>file:/C:/Users/jenni/Documents/NetBeansProjects/HotelBookingSystem-GUI/src/hotelbookingsystem/gui/DatabaseManager.java</file>
+            <file>file:/C:/Users/jenni/Documents/NetBeansProjects/HotelBookingSystem-GUI/src/hotelbookingsystem/gui/DatabaseUpdater.java</file>
+            <file>file:/C:/Users/jenni/Documents/NetBeansProjects/HotelBookingSystem-GUI/src/hotelbookingsystem/gui/HotelBookingSystemGUI.java</file>
         </group>
     </open-files>
 </project-private>

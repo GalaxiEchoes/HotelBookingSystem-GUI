@@ -11,9 +11,7 @@ import javax.persistence.Entity;
 public class Suite extends Room {
 
     public Suite(int roomID) {
-        this.roomID = roomID;
-        this.roomSize = "Suite";
-        this.price = 129.00;
+        super(roomID, 129.00);
     }
 
     public Suite() {
@@ -28,5 +26,9 @@ public class Suite extends Room {
     public String toString() {
         return "Room ID: " + getRoomID() + " Size: " + getSize() + " Price: $" + getPrice();
     }
-
+    
+    @Override
+    public String getSize() {
+        return "Suite";
+    }
 }

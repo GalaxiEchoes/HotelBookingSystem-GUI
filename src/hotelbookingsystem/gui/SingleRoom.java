@@ -11,9 +11,7 @@ import javax.persistence.Entity;
 public class SingleRoom extends Room{
 
     public SingleRoom(int roomID) {
-        this.roomID = roomID;
-        this.roomSize = "Single";
-        this.price = 75.60;
+        super(roomID, 75.60);
     }
 
     public SingleRoom() {
@@ -26,5 +24,10 @@ public class SingleRoom extends Room{
     @Override
     public String toString() {
         return "Room ID: " + getRoomID() + " Size: " + getSize() + " Price: $" + getPrice();
+    }
+    
+    @Override
+    public String getSize() {
+        return "Single";
     }
 }

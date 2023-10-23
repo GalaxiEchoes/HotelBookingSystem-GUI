@@ -4,10 +4,18 @@
  */
 package hotelbookingsystem.gui;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
+@Entity
+@Table(name = "Admins")
 public class Admin extends Person {
+    
+    @Column(name = "password")
     private String password;
 
     public Admin(String password, String name) {
