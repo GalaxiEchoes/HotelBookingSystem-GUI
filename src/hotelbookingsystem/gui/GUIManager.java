@@ -31,18 +31,18 @@ public class GUIManager extends JFrame implements ActionListener {
         cardPanel = new JPanel(cardLayout);
         login = new LogInManager();
 
-        cardPanel.add(login(), "Login");
-        cardPanel.add(mainMenu(), "Main Menu");
-        cardPanel.add(adminMenu(), "Admin Menu");
-        cardPanel.add(makeBooking(), "Make Booking");
-        cardPanel.add(searchBooking(), "Search for Booking");
-        cardPanel.add(editBooking(new Booking()), "Edit Booking");
+        cardPanel.add(createLogin(), "Login");
+        cardPanel.add(createMainMenu(), "Main Menu");
+        cardPanel.add(createAdminMenu(), "Admin Menu");
+        cardPanel.add(createMakeBooking(), "Make Booking");
+        cardPanel.add(createSearchBooking(), "Search for Booking");
+        cardPanel.add(createEditBooking(new Booking()), "Edit Booking");
 
     }
 
-    public JPanel login() {
+    public JPanel createLogin() {
         JPanel loginPanel = new JPanel();
-        JButton submit = new JButton("Submit");
+        JButton loginButton = new JButton("Login");
         JTextField username = new JTextField();
         JLabel usernameLabel = new JLabel("Username: ");
         JLabel passwordLabel = new JLabel("Password: ");
@@ -53,7 +53,7 @@ public class GUIManager extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
         loginPanel.add(password);
 
-        submit.addActionListener(new ActionListener() {
+        loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (login.login(password.toString(), username.toString())) {
@@ -64,25 +64,25 @@ public class GUIManager extends JFrame implements ActionListener {
         return loginPanel;
     }
 
-    public JPanel mainMenu() {
+    public JPanel createMainMenu() {
         JPanel mainMenuPanel = new JPanel();
 
         return mainMenuPanel;
     }
 
-    public JPanel adminMenu() {
+    public JPanel createAdminMenu() {
         JPanel adminMenuPanel = new JPanel();
 
         return adminMenuPanel;
     }
 
-    public JPanel makeBooking() {
+    public JPanel createMakeBooking() {
         JPanel makeBookingPanel = new JPanel();
 
         return makeBookingPanel;
     }
 
-    public JPanel searchBooking() {
+    public JPanel createSearchBooking() {
         JPanel searchBookingPanel = new JPanel();
         JButton searchButton = new JButton("Search");
         JTextField search = new JTextField();
@@ -95,7 +95,7 @@ public class GUIManager extends JFrame implements ActionListener {
         return searchBookingPanel;
     }
 
-    public JPanel editBooking(Booking aBooking) {
+    public JPanel createEditBooking(Booking aBooking) {
         JPanel editBookingPanel = new JPanel();
         JLabel bookingDetials = new JLabel("Booking Details: ");
         JLabel nameLabel = new JLabel("Name: ");
