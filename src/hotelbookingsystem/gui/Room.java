@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "roomSize")
-@Table(name = "Rooms")
+@Table(name = "Room")
 abstract public class Room implements Serializable {
     
     @Id
@@ -22,6 +22,9 @@ abstract public class Room implements Serializable {
     public Room(int roomID, double price){
         this.roomID = roomID;
         this.price = price;
+    }
+
+    public Room() {
     }
 
     /**

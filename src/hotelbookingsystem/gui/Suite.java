@@ -16,7 +16,6 @@ public class Suite extends Room {
 
     public Suite() {
     }
-    
 
     /**
      * {@inheritDoc}

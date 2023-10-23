@@ -23,7 +23,7 @@ public class Booking implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Person customer;
+    private Customer customer;
     
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -40,7 +40,7 @@ public class Booking implements Serializable {
     @Column(name = "total")
     private float total;
 
-    public Booking(String guestList, Person customer, Room room, Date startDate, Date endDate) {
+    public Booking(String guestList, Customer customer, Room room, Date startDate, Date endDate) {
         this.customer = customer;
         this.room = room;
         this.guestNotes = guestList;
@@ -76,7 +76,7 @@ public class Booking implements Serializable {
     /**
      * @param room - Person object for booking
      */
-    public void getCustomer(Person customer) {
+    public void getCustomer(Customer customer) {
         this.customer = customer;
     }
 

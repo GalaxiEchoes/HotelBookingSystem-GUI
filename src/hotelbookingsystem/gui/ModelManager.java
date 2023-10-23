@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 
 /**
@@ -15,9 +11,11 @@ public class ModelManager {
 
     
     public ModelManager(){
-        
+        dbRetriever = new DatabaseRetriever();
+        dbUpdater = new DatabaseUpdater();
     }
     
+    /*
     public HashSet<Room> getAvailableRooms(Date startDate, Date endDate){
         
     }
@@ -33,4 +31,5 @@ public class ModelManager {
     public void updateBooking(){
         
     }
+    */
 }
