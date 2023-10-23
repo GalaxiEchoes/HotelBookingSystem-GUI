@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 
-import hibernateutils.HibernateUtils;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,81 +12,83 @@ import org.hibernate.Transaction;
  * @author mgk3508
  */
 public class DatabaseRetriever implements IDatabaseRetriever{
-    
-    private final DatabaseManager dbManager;
-    private final Connection conn;
-    private Statement statement;
     private SessionFactory sessionFactory;
+    private Session session;
+    private Transaction tx;
 
     public DatabaseRetriever() {
-        dbManager = DatabaseManager.getDBInstance();
-        conn = dbManager.getConnection();
-        if (conn == null) {
-            System.err.println("Failed to establish a connection to the database.");
-            System.exit(1);
-        }
-        this.sessionFactory = HibernateUtils.getSessionFactory();
+        this.sessionFactory = DatabaseManager.getSessionFactory();
     }
     
-    public HashSet<Room> getRooms(){
-        HashSet<Room> roomSet = null;
+    @Override
+    public HashSet<Room> getAllRooms(){
+        HashSet<Room> roomSet;
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
         
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Query<Room> query = session.createQuery("FROM Room", Room.class);
+        //Retrieve Rooms from database
+        Query<Room> query = session.createQuery("FROM Room r", Room.class);
         List<Room> rooms = query.getResultList();
         roomSet = new HashSet<>(rooms);
-        session.getTransaction().commit();
+        
+        tx.commit();
+        DatabaseManager.closeSession(session);
         
         return roomSet;
     }
     
-    public HashSet<Person> getAdmins(){
-        HashSet<Person> adminSet = null;
+    @Override
+    public HashSet<Person> getAllAdmins(){
+        HashSet<Person> adminSet;
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
         
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Query<Admin> query = session.createQuery("FROM Admin", Admin.class);
+        //Retrieve Admins from database
+        Query<Admin> query = session.createQuery("FROM Admin a", Admin.class);
         List<Admin> admin = query.getResultList();
         adminSet = new HashSet<>(admin);
-        session.getTransaction().commit();
+        
+        tx.commit();
+        DatabaseManager.closeSession(session);
         
         return  adminSet;
     }
     
+    @Override
+    public HashSet<Booking> getAllBookings(){
+        HashSet<Booking> bookingSet;
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
+        
+        //Retrieve Bookings from database
+        Query<Booking> query = session.createQuery("FROM Booking b", Booking.class);
+        List<Booking> booking = query.getResultList();
+        bookingSet = new HashSet<>(booking);
+        
+        tx.commit();
+        DatabaseManager.closeSession(session);
+        return bookingSet;
+    } 
+    
+    @Override
     public Person getExsistingCustomer(Booking booking){
-        Session session = sessionFactory.openSession();
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
    
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Person WHERE email = :email OR phone = :phone");
+        Query query = session.createQuery("FROM Customer c WHERE c.email = :email OR c.phoneNumber = :phoneNumber");
         query.setParameter("email", ((Customer) booking.getCustomer()).getEmail());
-        query.setParameter("phone", ((Customer) booking.getCustomer()).getPhoneNumber());
+        query.setParameter("phoneNumber", ((Customer) booking.getCustomer()).getPhoneNumber());
 
         List<Person> result = query.list();
 
         if (result.isEmpty()) {
             tx.rollback();
+            DatabaseManager.closeSession(session);
             return null;
         } else {
             tx.rollback();
+            DatabaseManager.closeSession(session);
             return result.get(0);
         }
-    }
-    
-    public HashSet<Booking> getBookings(){
-        HashSet<Booking> bookingSet = null;
-        
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Query<Booking> query = session.createQuery("FROM Booking", Booking.class);
-        List<Booking> booking = query.getResultList();
-        bookingSet = new HashSet<>(booking);
-        session.getTransaction().commit();
-        
-        return bookingSet;
-    }
-    
-    public void closeConnection(){
-        this.dbManager.closeConnections();
     }
 }

@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import hibernateutils.HibernateUtils;
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
@@ -33,5 +26,17 @@ public class DatabaseManager {
 
     public static synchronized SessionFactory getSessionFactory() {
         return factory;
+    }
+    
+    public static Session getSession() {
+        return factory.openSession();
+    }
+
+    public static void closeSession(Session session) {
+        if (session != null) {
+            if (session.isOpen()) {
+                session.close();
+            }
+        }
     }
 }
