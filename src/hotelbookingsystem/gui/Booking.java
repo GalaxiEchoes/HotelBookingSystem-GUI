@@ -1,4 +1,4 @@
-    package hotelbookingsystem.gui;
+package hotelbookingsystem.gui;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,8 +6,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 /**
- * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
- * 21151229)
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 @Entity
 @Table(name = "Bookings")
@@ -69,53 +68,83 @@ public class Booking implements Serializable {
     /**
      * @return customer
      */
-    public Person getCustomer() {
+    public Customer getCustomer() {
         return this.customer;
     }
     
     /**
-     * @param room - Person object for booking
+     * @param customer - CUstomer object for booking
      */
-    public void getCustomer(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * @return the BookingID of the booking
+     */
     public int getBookingID() {
         return bookingID;
     }
 
+    /**
+     * @param bookingID - ID of the booking 
+     */
     public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
 
+    /**
+     * @return guestNotes of the booking
+     */
     public String getGuestNotes() {
         return guestNotes;
     }
 
+    /**
+     * @param guestNotes - String of notes about guests or other specifications of the booking
+     */
     public void setGuestNotes(String guestNotes) {
         this.guestNotes = guestNotes;
     }
 
+    /**
+     * @return start date of the booking
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * @param startDate - start date of the booking
+     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * @return end date of the booking
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * @param endDate - end date of the booking
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * @return total price of the booking
+     */
     public float getTotal() {
         return total;
     }
 
+    /**
+     * @param total - total price of the booking 
+     */
     public void setTotal(float total) {
         this.total = total;
     }

@@ -3,12 +3,12 @@ package hotelbookingsystem.gui;
 import java.util.HashSet;
 
 /**
- *
- * @author mgk3508
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 public interface IDatabaseRetriever {
     public HashSet<Room> getAllRooms();
-    public HashSet<Person> getAllAdmins();
+    public HashSet<Person> getAllPersons();
     public HashSet<Booking> getAllBookings();
-    public Person getExsistingCustomer(Booking booking);
+    public Customer getExsistingCustomer(Booking booking);
+    public Person findStaff(String username);
 }

@@ -16,7 +16,15 @@ public class Suite extends Room {
 
     public Suite() {
     }
-
+    
+    /**
+     * @return String representation of the room size
+     */
+    @Override
+    public String getSize() {
+        return "Suite";
+    }
+    
     /**
      * {@inheritDoc}
      * @return String representation for a large room
@@ -24,10 +32,5 @@ public class Suite extends Room {
     @Override
     public String toString() {
         return "Room ID: " + getRoomID() + " Size: " + getSize() + " Price: $" + getPrice();
-    }
-    
-    @Override
-    public String getSize() {
-        return "Suite";
     }
 }

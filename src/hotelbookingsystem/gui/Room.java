@@ -33,9 +33,16 @@ abstract public class Room implements Serializable {
     public int getRoomID() {
         return this.roomID;
     }
+    
+    /**
+     * @param roomID - ID number of the room
+     */
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
 
     /**
-     * @return size
+     * @return String representation of the room size
      */
     public abstract String getSize();
 
@@ -45,11 +52,10 @@ abstract public class Room implements Serializable {
     public double getPrice() {
         return this.price;
     }
-    
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
 
+    /**
+     * @param price - price of the room
+     */
     public void setPrice(double price) {
         this.price = price;
     }

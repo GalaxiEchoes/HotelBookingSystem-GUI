@@ -8,18 +8,18 @@ import javax.persistence.Entity;
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 @Entity
-@DiscriminatorValue("Admin")
-public class Admin extends Person {
+@DiscriminatorValue("User")
+public class User extends Person{
     
     @Column(name = "password")
     private String password;
 
-    public Admin(String password, String name) {
+    public User(String password, String name) {
         super(name);
         this.password = password;
     }
     
-    public Admin() {
+    public User() {
     }
     
     /**
@@ -35,12 +35,12 @@ public class Admin extends Person {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     /**
      * Indicates whether account has permission to create other accounts
-     * @return Boolean true
+     * @return Boolean false
      */
     public boolean hasPermissions(){
-        return true;
+        return false;
     }
 }

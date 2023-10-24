@@ -16,7 +16,15 @@ public class SingleRoom extends Room{
 
     public SingleRoom() {
     }
-
+    
+    /**
+     * @return String representation of the room size
+     */
+    @Override
+    public String getSize() {
+        return "Single";
+    }
+    
     /**
      * {@inheritDoc}
      * @return String representation for a small room
@@ -24,10 +32,5 @@ public class SingleRoom extends Room{
     @Override
     public String toString() {
         return "Room ID: " + getRoomID() + " Size: " + getSize() + " Price: $" + getPrice();
-    }
-    
-    @Override
-    public String getSize() {
-        return "Single";
     }
 }
