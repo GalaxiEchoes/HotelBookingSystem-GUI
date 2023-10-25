@@ -5,7 +5,7 @@ package hotelbookingsystem.gui;
  */
 public interface IDatabaseUpdater {
     public void deleteBooking(Booking booking);
-    public void addBooking(Booking booking, boolean saveCustomer );
+    public void addBooking(Booking booking);
     public void updateBooking(Booking changedBooking);
     public void saveNewStaff(Person newStaff);
 }

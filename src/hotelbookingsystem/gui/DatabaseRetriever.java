@@ -1,5 +1,7 @@
 package hotelbookingsystem.gui;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.hibernate.query.Query;
@@ -127,5 +129,48 @@ public class DatabaseRetriever implements IDatabaseRetriever{
             DatabaseManager.closeSession(session);
             return result.get(0);
         }
+    }
+    
+    /**
+     * Finds a booking between the specified dates (inclusive)
+     * @param startDate - start date of booking
+     * @param endDate - end date of booking
+     * @return HashSet of bookings that are between the specified dates
+     */
+    @Override
+    public HashSet<Booking> findBookingBetweenDates(Date startDate, Date endDate){
+        HashSet<Booking> bookingSet;
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
+        
+        //Sets end date to the last minute of the day to make it inclusive
+        Calendar calendar = Calendar.getInstance();    
+        calendar.setTime(endDate);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        endDate = calendar.getTime();
+        
+        if(startDate.before(endDate)){      
+            //Retrieve Bookings from database
+            Query<Booking> query = session.createQuery("FROM Booking b WHERE b.startDate BETWEEN :start AND :end OR b.endDate BETWEEN :start AND :end", Booking.class);
+            query.setParameter("start", startDate);
+            query.setParameter("end", endDate);
+            List<Booking> bookings = query.getResultList();
+
+            bookingSet = new HashSet<>(bookings);
+
+            tx.commit();
+            DatabaseManager.closeSession(session);
+        } else {
+            bookingSet = new HashSet<>();
+            tx.commit();
+            DatabaseManager.closeSession(session);
+            
+            throw new IllegalArgumentException("End date must be on or after the start date");
+        }
+
+        return bookingSet;
     }
 }

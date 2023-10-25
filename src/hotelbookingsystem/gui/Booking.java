@@ -1,6 +1,8 @@
 package hotelbookingsystem.gui;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
@@ -113,12 +115,28 @@ public class Booking implements Serializable {
     public Date getStartDate() {
         return startDate;
     }
+    
+    /**
+     * @return string representation of the booking startDate 
+     */
+    public String getStringStartDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = sdf.format(startDate);
+        return formattedDate;
+    }
 
     /**
-     * @param startDate - start date of the booking
+     * This sets the start date object of the booking
+     * @param day - int day
+     * @param month - int month 1-12
+     * @param year - int year
      */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(int day, int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        startDate = calendar.getTime();
     }
 
     /**
@@ -127,12 +145,28 @@ public class Booking implements Serializable {
     public Date getEndDate() {
         return endDate;
     }
+    
+    /**
+     * @return string representation of the booking endDate 
+     */
+    public String getStringEndDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = sdf.format(endDate);
+        return formattedDate;
+    }
 
     /**
-     * @param endDate - end date of the booking
+     * This sets the end date object of the booking
+     * @param day - int day
+     * @param month - int month 1-12
+     * @param year - int year
      */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(int day, int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        endDate = calendar.getTime();
     }
 
     /**

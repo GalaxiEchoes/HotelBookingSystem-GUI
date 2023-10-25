@@ -1,5 +1,8 @@
 package hotelbookingsystem.gui;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -9,21 +12,45 @@ import java.util.HashSet;
 public class ModelManager {
     private final IDatabaseRetriever dbRetriever;
     private final IDatabaseUpdater dbUpdater;
+    private HashSet<Room> allRooms;
 
     public ModelManager(){
-        dbRetriever = new DatabaseRetriever();
-        dbUpdater = new DatabaseUpdater();
+        dbRetriever = ObjectFactory.createDatabaseRetriever();
+        dbUpdater = ObjectFactory.createDatabaseUpdater();
+        
+        allRooms = dbRetriever.getAllRooms();
     }
     
     /**
-     * 
+     * Returns all rooms available for the time period (inclusive)
      * @param startDate - Date to start searching from (inclusive)
      * @param endDate - Date to end searching (inclusive)
      * @return HashSet of rooms that are available
      */
     public HashSet<Room> findAvailableRooms(Date startDate, Date endDate){
-        //Stub return
-        return new HashSet<Room>();
+        HashSet<Room> availableRooms = new HashSet<>(allRooms);
+        HashSet<Booking> allBookings = dbRetriever.findBookingBetweenDates(startDate, endDate);
+        
+        for(Booking current: allBookings){
+            availableRooms.remove(current.getRoom());
+        }
+
+        return availableRooms;
+    }
+    
+    /**
+     * Returns the room object corresponding to the RoomID
+     * @param roomID - int id of room
+     * @return Room or null if it does not exist
+     */
+    public Room getRoomByID(int roomID){
+        for(Room current: allRooms){
+            if(current.getRoomID() == roomID){
+                return current;
+            }
+        }
+        
+        return null;
     }
     
     /**
@@ -32,22 +59,23 @@ public class ModelManager {
      */
     public void saveNewBooking(Booking booking){
         Customer customer = dbRetriever.getExsistingCustomer(booking);
-        Boolean saveCustomer = (customer == null);
         
         //Synchonises customer if customer matches previous database entry
-        if(saveCustomer == false){
+        if(customer == null){
             booking.setCustomer(customer);
         }
         
-        dbUpdater.addBooking(booking, saveCustomer);
+        dbUpdater.addBooking(booking);
     }
     
     /**
-     * Updates the database info for the booking
+     * Updates the database info for the booking if the id is not default 0
      * @param booking - Booking to be updated
      */
     public void updateBooking(Booking booking){
-        dbUpdater.updateBooking(booking);
+        if(booking.getBookingID() != 0){
+            dbUpdater.updateBooking(booking);
+        }
     }
     
     /**
@@ -82,7 +110,39 @@ public class ModelManager {
      * @return HashSet of bookings that match the criteria
      */
     public HashSet<Booking> findBooking(Booking criteria){
-        //Stub return
-        return new HashSet<Booking>();
+        HashSet<Booking> bookings = dbRetriever.findBookingBetweenDates(criteria.getStartDate(), criteria.getEndDate());
+
+        bookings.removeIf(booking -> 
+            (criteria.getBookingID() != 0 && criteria.getBookingID() != booking.getBookingID()) ||
+            (criteria.getRoom() != null && criteria.getRoom().getRoomID() != booking.getRoom().getRoomID()) ||
+            (criteria.getCustomer() != null && 
+                (criteria.getCustomer().getName() != null && !criteria.getCustomer().getName().equalsIgnoreCase(booking.getCustomer().getName())) ||
+                (criteria.getCustomer().getEmail() != null && !criteria.getCustomer().getEmail().equalsIgnoreCase(booking.getCustomer().getEmail())) ||
+                (criteria.getCustomer().getPhoneNumber() != null && !criteria.getCustomer().getPhoneNumber().equalsIgnoreCase(booking.getCustomer().getPhoneNumber())))
+        );
+
+        return bookings;
+    }
+    
+    /**
+     * This calculates the total price and saves or updates
+     * @param booking 
+     */
+    public void invoiceBooking(Booking booking){
+        // Convert Date objects to LocalDate objects
+        LocalDate localStartDate = booking.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localEndDate = booking.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Calculate difference in days
+        long daysBetween = ChronoUnit.DAYS.between(localStartDate, localEndDate) + 1;
+        
+        booking.setTotal((float) (daysBetween * booking.getRoom().getPrice()));
+        
+        if(booking.getBookingID() == 0){
+            dbUpdater.addBooking(booking);
+        } else{
+            dbUpdater.updateBooking(booking);
+        }
+        
     }
 }

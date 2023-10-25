@@ -1,5 +1,6 @@
 package hotelbookingsystem.gui;
 
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -11,4 +12,5 @@ public interface IDatabaseRetriever {
     public HashSet<Booking> getAllBookings();
     public Customer getExsistingCustomer(Booking booking);
     public Person findStaff(String username);
+    public HashSet<Booking> findBookingBetweenDates(Date startDate, Date endDate);
 }

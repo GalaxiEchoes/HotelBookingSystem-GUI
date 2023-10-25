@@ -14,7 +14,7 @@ public class Admin extends Person {
     @Column(name = "password")
     private String password;
 
-    public Admin(String password, String name) {
+    public Admin(String name, String password ) {
         super(name);
         this.password = password;
     }

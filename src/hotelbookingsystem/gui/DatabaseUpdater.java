@@ -46,18 +46,15 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     /**
      * Adds the booking to the database
      * @param booking - Booking to be added
-     * @param saveCustomer - Boolean if customer is new and needs to be saved
      */
     @Override
-    public void addBooking(Booking booking, boolean saveCustomer ){
+    public void addBooking(Booking booking){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
 
         try {
             session.save(booking);
-            if(saveCustomer == true){
-                session.save(booking.getCustomer());
-            }
+            session.saveOrUpdate(booking.getCustomer());
 
             tx.commit();
         } catch (Exception e) {
