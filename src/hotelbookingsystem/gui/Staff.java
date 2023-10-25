@@ -1,10 +1,12 @@
 package hotelbookingsystem.gui;
+
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
 
 /**
- * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
+ * 21151229)
  */
 @Entity
 @Table(name = "Staff")
@@ -16,33 +18,47 @@ abstract public class Staff implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "staff_id")
     protected int staffId;
-    
+
     @Column(name = "name")
     protected String name;
-    
+
     public Staff(String name) {
         this.name = name;
     }
-    
+
+    @Column(name = "password")
+    protected String password;
+
+    public Staff(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
     public Staff() {
     }
 
     /**
-     * @return name  
+     * @return name
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     /**
      * @param name - String name of staff
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
-    
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     /**
      * @return staffId
      */
@@ -56,16 +72,17 @@ abstract public class Staff implements Serializable {
     public void setStaffId(int staffId) {
         this.staffId = staffId;
     }
-    
+
     /**
      * Indicates whether account has permission to create other accounts
+     *
      * @return Boolean true
      */
     abstract public boolean hasPermissions();
 
     /**
-     * {@inheritDoc}
-     * Generates a hash code for the object
+     * {@inheritDoc} Generates a hash code for the object
+     *
      * @return hash
      */
     @Override
@@ -76,9 +93,8 @@ abstract public class Staff implements Serializable {
     }
 
     /**
-     * {@inheritDoc}
-     * Compares Staff to obj for equality by comparing names
-     * 
+     * {@inheritDoc} Compares Staff to obj for equality by comparing names
+     *
      * @param obj - Staff object to compare this Staff to
      * @return true if equal and false otherwise
      */

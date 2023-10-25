@@ -9,7 +9,6 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,11 +19,10 @@ import javax.swing.JTextField;
  *
  * @author berri
  */
-public class GUIManager extends JFrame implements ActionListener {
+public class GUIManager extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
-    LogInManager login;
 
     public GUIManager() {
         cardLayout = new CardLayout();
@@ -36,6 +34,7 @@ public class GUIManager extends JFrame implements ActionListener {
         cardPanel.add(createAdminMenu(), "Admin Menu");
         cardPanel.add(createMakeBooking(), "Make Booking");
         cardPanel.add(createSearchBooking(), "Search for Booking");
+        cardPanel.add(createAddStaff(), "Add Staff");
         cardPanel.add(createEditBooking(new Booking()), "Edit Booking");
 
     }
@@ -60,6 +59,10 @@ public class GUIManager extends JFrame implements ActionListener {
         JPanel mainMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
+        
+        mainMenuPanel.add(makeBooking);
+        mainMenuPanel.add(findBooking);
+        
 
         return mainMenuPanel;
     }
@@ -75,6 +78,10 @@ public class GUIManager extends JFrame implements ActionListener {
         JButton findBooking = new JButton("Find a Booking");
         JButton addStaff = new JButton("Add Staff");
 
+        adminMenuPanel.add(makeBooking);
+        adminMenuPanel.add(findBooking);
+        adminMenuPanel.add(addStaff);
+
         return adminMenuPanel;
     }
 
@@ -83,10 +90,36 @@ public class GUIManager extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "Admin Menu");
     }
 
+    public JPanel createAddStaff() {
+        JPanel addStaffPanel = new JPanel();
+        JButton add = new JButton("Add");
+        JTextField username = new JTextField();
+        JLabel usernameLabel = new JLabel("Username: ");
+        JLabel passwordLabel = new JLabel("Password: ");
+        JTextField password = new JTextField();
+
+        addStaffPanel.add(add);  
+        addStaffPanel.add(usernameLabel);
+        addStaffPanel.add(username);
+        addStaffPanel.add(passwordLabel);
+        addStaffPanel.add(password);
+
+        return addStaffPanel;
+    }
+    
+    public void addStaff(){
+        cardLayout.show(cardPanel, "Add Staff");
+    }
+
     public JPanel createMakeBooking() {
         JPanel makeBookingPanel = new JPanel();
+        
 
         return makeBookingPanel;
+    }
+    
+    public void makeBooking(){
+        cardLayout.show(cardPanel, "Make a Booking");
     }
 
     public JPanel createSearchBooking() {
@@ -136,10 +169,8 @@ public class GUIManager extends JFrame implements ActionListener {
 
         return editBookingPanel;
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+    public void editBooking(){
+        cardLayout.show(cardPanel, "Edit a Booking");
     }
-
 }

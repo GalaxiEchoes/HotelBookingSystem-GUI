@@ -33,7 +33,6 @@ public class HotelController implements ActionListener {
             return false;
         }
         return false;
-
     }
 
     @Override
@@ -44,24 +43,31 @@ public class HotelController implements ActionListener {
         JTextField bookings = (JTextField) e.getSource();
 
         if (pressedButton.getText().equals("Login")) {
-            if(loginData(usernameInput.getText().toString(), passwordInput.getText().toString())){
-                if(
-                  gui.mainMenu();
+            if (loginData(usernameInput.getText(), passwordInput.getText())) {
+                if (loginM.checkAdmin(model.findStaff(usernameInput.getText()))) {
+                    gui.adminMenu();
+                } else {
+                    gui.mainMenu();
+                }
             }
-        }else if (pressedButton.getText().equals("Make a Booking")){
+        } else if (pressedButton.getText().equals("Make a Booking")) {
+            gui.makeBooking();
+        } else if (pressedButton.getText().equals("Find a Booking")) {
+
+        } else if (pressedButton.getText().equals("Add Staff")) {
+            gui.addStaff();
+        }else if(pressedButton.getText().equals("Add")){
+             Staff newStaff = new User(usernameInput.getText(), passwordInput.getText());
+            model.saveNewStaff(newStaff);
+            gui.adminMenu();
+        }else if (pressedButton.getText().equals("Submit")) {
             
-        }else if (pressedButton.getText().equals("Find a Booking")){
-            
-        }else if (pressedButton.getText().equals("Add Staff")){
-            
-        }else if (pressedButton.getText().equals("Submit")){
-            
-        }else if(pressedButton.getText().equals("Search")){
+        } else if (pressedButton.getText().equals("Search")) {
             bookings.setText(model.findBooking());
-        }else if(pressedButton.getText().equals("View")){
-            
+        } else if (pressedButton.getText().equals("View")) {
+
         }
-        
+
     }
 
 }
