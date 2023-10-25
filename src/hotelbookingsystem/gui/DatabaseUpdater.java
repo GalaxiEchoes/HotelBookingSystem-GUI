@@ -88,11 +88,11 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     }
     
     /**
-     * Saves a new Admin or User account to Person database
+     * Saves a new Admin or User account to Staff database
      * @param newStaff - Admin or User to be saved
      */
     @Override
-    public void saveNewStaff(Person newStaff){
+    public void saveNewStaff(Staff newStaff){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
         try {

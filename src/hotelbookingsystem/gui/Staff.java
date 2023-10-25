@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,13 +9,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Staff")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "person_type")
+@DiscriminatorColumn(name = "staff_type")
 abstract public class Staff implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "person_id")
-    protected int personId;
+    @Column(name = "staff_id")
+    protected int staffId;
     
     @Column(name = "name")
     protected String name;
@@ -40,7 +36,7 @@ abstract public class Staff implements Serializable {
     }
 
     /**
-     * @param name - String name of person
+     * @param name - String name of staff
      */
     public void setName(String name)
     {
@@ -48,17 +44,17 @@ abstract public class Staff implements Serializable {
     }
     
     /**
-     * @return personId  
+     * @return staffId
      */
-    public int getPersonId() {
-        return personId;
+    public int getStaffId() {
+        return staffId;
     }
 
     /**
-     * @param personId - int ID of person
+     * @param staffId - int ID of staff
      */
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
     }
 
     /**
@@ -75,9 +71,9 @@ abstract public class Staff implements Serializable {
 
     /**
      * {@inheritDoc}
-     * Compares Person to obj for equality by comparing names
+     * Compares Staff to obj for equality by comparing names
      * 
-     * @param obj - Person object to compare this Person to
+     * @param obj - Staff object to compare this Staff to
      * @return true if equal and false otherwise
      */
     @Override
@@ -91,7 +87,7 @@ abstract public class Staff implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Person other = (Person) obj;
+        final Staff other = (Staff) obj;
         return Objects.equals(this.name, other.name);
     }
 }

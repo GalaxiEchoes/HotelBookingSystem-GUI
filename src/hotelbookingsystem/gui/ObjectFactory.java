@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class ObjectFactory {
     
-    public static Person createStaff(String type, String name, String password){
+    public static Staff createStaff(String type, String name, String password){
         if("Admin".equalsIgnoreCase(type)){
             return new Admin(name, password);
         } else if("User".equalsIgnoreCase(type)){

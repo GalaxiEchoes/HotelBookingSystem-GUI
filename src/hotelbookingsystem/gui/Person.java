@@ -8,9 +8,8 @@ import javax.persistence.*;
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 @Entity
-@Table(name = "Persons")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "person_type")
+@Table(name = "Person")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract public class Person implements Serializable {
 
     @Id

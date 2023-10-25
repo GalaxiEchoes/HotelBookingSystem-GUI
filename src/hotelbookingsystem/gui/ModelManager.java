@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class ModelManager {
     private final IDatabaseRetriever dbRetriever;
     private final IDatabaseUpdater dbUpdater;
-    private HashSet<Room> allRooms;
+    private final HashSet<Room> allRooms;
 
     public ModelManager(){
         dbRetriever = ObjectFactory.createDatabaseRetriever();
@@ -89,10 +89,10 @@ public class ModelManager {
     /**
      * Finds Admin or User account with a matching username
      * @param username - username to be matched
-     * @return Person object or null if it does not exist in database
+     * @return Staff object or null if it does not exist in database
      */
-    public Person findStaff(String username){
-        Person staff = dbRetriever.findStaff(username); 
+    public Staff findStaff(String username){
+        Staff staff = dbRetriever.findStaff(username); 
         
         return staff;
     }
@@ -101,7 +101,7 @@ public class ModelManager {
      * Saves new Admin or User account to database
      * @param newStaff - account to be saved
      */
-    public void saveNewStaff(Person newStaff){
+    public void saveNewStaff(Staff newStaff){
         dbUpdater.saveNewStaff(newStaff);
     }
     

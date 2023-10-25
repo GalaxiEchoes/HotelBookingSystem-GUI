@@ -39,23 +39,23 @@ public class DatabaseRetriever implements IDatabaseRetriever{
     }
     
     /**
-     * @return HashSet of all Persons present in Person table
+     * @return HashSet of all Staff present in Staff table
      */
     @Override
-    public HashSet<Person> getAllPersons(){
-        HashSet<Person> personSet;
+    public HashSet<Staff> getAllStaff(){
+        HashSet<Staff> staffSet;
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
         
         //Retrieve Admins from database
-        Query<Person> query = session.createQuery("FROM Person p", Person.class);
-        List<Person> person = query.getResultList();
-        personSet = new HashSet<>(person);
+        Query<Staff> query = session.createQuery("FROM Staff s", Staff.class);
+        List<Staff> staff = query.getResultList();
+        staffSet = new HashSet<>(staff);
         
         tx.commit();
         DatabaseManager.closeSession(session);
         
-        return  personSet;
+        return  staffSet;
     }
     
     /**
@@ -105,20 +105,20 @@ public class DatabaseRetriever implements IDatabaseRetriever{
     }
     
     /**
-     * Retrieves the Person with the corresponding name from the database
+     * Retrieves the Staff with the corresponding name from the database
      * 
      * @param username - name of User or Admin account
-     * @return Person - User or Admin account
+     * @return Staff - User or Admin account
      */
     @Override
-    public Person findStaff(String username){
+    public Staff findStaff(String username){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
    
-        Query query = session.createQuery("FROM Person p WHERE p.name = :name ");
+        Query query = session.createQuery("FROM Staff s WHERE s.name = :name ");
         query.setParameter("name", username);
 
-        List<Person> result = query.list();
+        List<Staff> result = query.list();
         
         if (result.isEmpty()) {
             tx.rollback();

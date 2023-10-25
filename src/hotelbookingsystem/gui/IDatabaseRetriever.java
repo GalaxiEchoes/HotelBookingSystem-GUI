@@ -8,9 +8,9 @@ import java.util.HashSet;
  */
 public interface IDatabaseRetriever {
     public HashSet<Room> getAllRooms();
-    public HashSet<Person> getAllPersons();
+    public HashSet<Staff> getAllStaff();
     public HashSet<Booking> getAllBookings();
     public Customer getExsistingCustomer(Booking booking);
-    public Person findStaff(String username);
+    public Staff findStaff(String username);
     public HashSet<Booking> findBookingBetweenDates(Date startDate, Date endDate);
 }
