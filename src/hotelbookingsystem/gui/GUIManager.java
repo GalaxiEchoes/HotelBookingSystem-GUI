@@ -53,27 +53,34 @@ public class GUIManager extends JFrame implements ActionListener {
         loginPanel.add(passwordLabel);
         loginPanel.add(password);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (login.login(password.toString(), username.toString())) {
-
-                }
-            }
-        });
         return loginPanel;
     }
 
     public JPanel createMainMenu() {
         JPanel mainMenuPanel = new JPanel();
+        JButton makeBooking = new JButton("Make a Booking");
+        JButton findBooking = new JButton("Find a Booking");
 
         return mainMenuPanel;
     }
 
+    public void mainMenu() {
+
+        cardLayout.show(cardPanel, "Main Menu");
+    }
+
     public JPanel createAdminMenu() {
         JPanel adminMenuPanel = new JPanel();
+        JButton makeBooking = new JButton("Make a Booking");
+        JButton findBooking = new JButton("Find a Booking");
+        JButton addStaff = new JButton("Add Staff");
 
         return adminMenuPanel;
+    }
+
+    public void adminMenu() {
+
+        cardLayout.show(cardPanel, "Admin Menu");
     }
 
     public JPanel createMakeBooking() {
@@ -87,6 +94,7 @@ public class GUIManager extends JFrame implements ActionListener {
         JButton searchButton = new JButton("Search");
         JTextField search = new JTextField();
         JLabel result = new JLabel();
+        JButton view = new JButton("View");
 
         searchBookingPanel.add(search);
         searchBookingPanel.add(searchButton);

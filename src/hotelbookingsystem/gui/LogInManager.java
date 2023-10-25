@@ -34,8 +34,8 @@ public class LogInManager {
      * @param username
      * @return true if logged in, false if wrong password
      */
-    public boolean checkLogin(Admin aAdmin, String password, String username) {
-        if(password.equalsIgnoreCase(aAdmin.getPassword()) && username.equalsIgnoreCase(aAdmin.getName())) {
+    public boolean checkLogin(Staff aAdmin, String password, String username) {
+        if(findStaff(aAdmin.name)) {
             return true;
         }/*else if (password.equalsIgnoreCase(user.getPassword()) && username.equalsIgnoreCase(user.getName())){
             return true;

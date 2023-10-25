@@ -97,7 +97,7 @@ public class ModelManager {
         return staff;
     }
     
-    /**
+    /**         
      * Saves new Admin or User account to database
      * @param newStaff - account to be saved
      */

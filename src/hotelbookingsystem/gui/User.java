@@ -9,7 +9,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("User")
-public class User extends Person{
+public class User extends Staff{
     
     @Column(name = "password")
     private String password;
