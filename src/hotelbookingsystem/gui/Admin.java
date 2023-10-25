@@ -40,6 +40,7 @@ public class Admin extends Staff {
      * Indicates whether account has permission to create other accounts
      * @return Boolean true
      */
+    @Override
     public boolean hasPermissions(){
         return true;
     }

@@ -56,6 +56,12 @@ abstract public class Staff implements Serializable {
     public void setStaffId(int staffId) {
         this.staffId = staffId;
     }
+    
+    /**
+     * Indicates whether account has permission to create other accounts
+     * @return Boolean true
+     */
+    abstract public boolean hasPermissions();
 
     /**
      * {@inheritDoc}

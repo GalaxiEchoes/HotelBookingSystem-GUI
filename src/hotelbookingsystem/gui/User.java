@@ -40,6 +40,7 @@ public class User extends Staff{
      * Indicates whether account has permission to create other accounts
      * @return Boolean false
      */
+    @Override
     public boolean hasPermissions(){
         return false;
     }
