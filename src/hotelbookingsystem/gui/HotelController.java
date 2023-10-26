@@ -44,11 +44,8 @@ public class HotelController implements ActionListener {
         JButton pressedButton = (JButton) e.getSource();
         JTextField usernameInput = (JTextField) e.getSource();
         JTextField passwordInput = (JTextField) e.getSource();
-        JTextField bookings = (JTextField) e.getSource();
         JCheckBox addAdmin = (JCheckBox) e.getSource();
         DefaultListModel<Room> listModel = new DefaultListModel<>();
-        JList result = new JList<>(listModel);
-        //  JList result = (JList) e.getSource();
         AbstractButton selectedButton = (AbstractButton) e.getSource();
         JTextField startDateDay = (JTextField) e.getSource();
         JTextField startDateMonth = (JTextField) e.getSource();
@@ -56,6 +53,8 @@ public class HotelController implements ActionListener {
         JTextField endDateDay = (JTextField) e.getSource();
         JTextField endDateMonth = (JTextField) e.getSource();
         JTextField endDateYear = (JTextField) e.getSource();
+        JTextField name = (JTextField) e.getSource();
+        
 
         if (pressedButton.getText().equals("Login")) {
             if (loginData(usernameInput.getText(), passwordInput.getText())) {
@@ -79,8 +78,9 @@ public class HotelController implements ActionListener {
             }
             gui.adminMenu();
         } else if (pressedButton.getText().equals("Submit")) {
-            model.saveNewBooking();
-            model.invoiceBooking();
+            Booking booking = new Booking()
+            model.saveNewBooking(booking);
+            model.invoiceBooking(booking);  
 
         } else if (pressedButton.getText().equals("Search")) {
 
