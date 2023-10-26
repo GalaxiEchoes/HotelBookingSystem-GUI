@@ -6,6 +6,8 @@ package hotelbookingsystem.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractButton;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
@@ -44,8 +46,17 @@ public class HotelController implements ActionListener {
         JTextField passwordInput = (JTextField) e.getSource();
         JTextField bookings = (JTextField) e.getSource();
         JCheckBox addAdmin = (JCheckBox) e.getSource();
-        JList result = (JList) e.getSource();
-        
+        DefaultListModel<Room> listModel = new DefaultListModel<>();
+        JList result = new JList<>(listModel);
+        //  JList result = (JList) e.getSource();
+        AbstractButton selectedButton = (AbstractButton) e.getSource();
+        JTextField startDateDay = (JTextField) e.getSource();
+        JTextField startDateMonth = (JTextField) e.getSource();
+        JTextField startDateYear = (JTextField) e.getSource();
+        JTextField endDateDay = (JTextField) e.getSource();
+        JTextField endDateMonth = (JTextField) e.getSource();
+        JTextField endDateYear = (JTextField) e.getSource();
+
         if (pressedButton.getText().equals("Login")) {
             if (loginData(usernameInput.getText(), passwordInput.getText())) {
                 if (loginM.checkAdmin(model.findStaff(usernameInput.getText()))) {
@@ -68,14 +79,25 @@ public class HotelController implements ActionListener {
             }
             gui.adminMenu();
         } else if (pressedButton.getText().equals("Submit")) {
-            
-            
-            
+            model.saveNewBooking();
+            model.invoiceBooking();
+
         } else if (pressedButton.getText().equals("Search")) {
-           
-        } else if (pressedButton.getText().equals("Edit")){
-          
-            
+
+        } else if (pressedButton.getText().equals("Edit")) {
+
+        } else if (selectedButton.getText().equals("Single Room")) {
+            for (Room room : model.findAvailableRooms(ObjectFactory.createDate(Integer.parseInt(startDateDay.getText()), Integer.parseInt(startDateMonth.getText()), Integer.parseInt(startDateYear.getText())), ObjectFactory.createDate(Integer.parseInt(endDateDay.getText()), Integer.parseInt(endDateMonth.getText()), Integer.parseInt(endDateYear.getText())))) {
+                listModel.addElement(room);
+            }
+        } else if (selectedButton.getText().equals("Double Room")) {
+            for (Room room : model.findAvailableRooms(ObjectFactory.createDate(Integer.parseInt(startDateDay.getText()), Integer.parseInt(startDateMonth.getText()), Integer.parseInt(startDateYear.getText())), ObjectFactory.createDate(Integer.parseInt(endDateDay.getText()), Integer.parseInt(endDateMonth.getText()), Integer.parseInt(endDateYear.getText())))) {
+                listModel.addElement(room);
+            }
+        } else if (selectedButton.getText().equals("Suite")) {
+            for (Room room : model.findAvailableRooms(ObjectFactory.createDate(Integer.parseInt(startDateDay.getText()), Integer.parseInt(startDateMonth.getText()), Integer.parseInt(startDateYear.getText())), ObjectFactory.createDate(Integer.parseInt(endDateDay.getText()), Integer.parseInt(endDateMonth.getText()), Integer.parseInt(endDateYear.getText())))) {
+                listModel.addElement(room);
+            }
         }
 
     }

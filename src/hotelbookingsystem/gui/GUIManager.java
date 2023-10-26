@@ -6,15 +6,18 @@ package hotelbookingsystem.gui;
 
 import javax.swing.JFrame;
 import java.awt.CardLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -24,13 +27,19 @@ import javax.swing.JTextField;
  */
 public class GUIManager extends JFrame {
 
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
+    private final CardLayout cardLayout;
+    private final JPanel cardPanel;
+    private final JPanel controlPanel;
+    private DefaultListModel<Room> roomListModel;
+    private DefaultListModel<Booking> bookingListModel;
 
     public GUIManager() {
+        JFrame frame = new JFrame("Hotel Booking System");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        
+        controlPanel = new JPanel();
 
         cardPanel.add(createLogin(), "Login");
         cardPanel.add(createMainMenu(), "Main Menu");
@@ -39,10 +48,16 @@ public class GUIManager extends JFrame {
         cardPanel.add(createSearchBooking(), "Search for Booking");
         cardPanel.add(createAddStaff(), "Add Staff");
         cardPanel.add(createEditBooking(new Booking()), "Edit Booking");
+        cardPanel.add(availabeRooms(), "Avialable Rooms");
+
+        controlPanel.add(controlButton());
+
+        frame.add(cardPanel);
+        frame.add(controlPanel);
 
     }
 
-    public JPanel createLogin() {
+    private JPanel createLogin() {
         JPanel loginPanel = new JPanel();
         JButton loginButton = new JButton("Login");
         JTextField username = new JTextField();
@@ -54,11 +69,12 @@ public class GUIManager extends JFrame {
         loginPanel.add(username);
         loginPanel.add(passwordLabel);
         loginPanel.add(password);
+        loginPanel.add(loginButton);
 
         return loginPanel;
     }
 
-    public JPanel createMainMenu() {
+    private JPanel createMainMenu() {
         JPanel mainMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
@@ -74,7 +90,7 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Main Menu");
     }
 
-    public JPanel createAdminMenu() {
+    private JPanel createAdminMenu() {
         JPanel adminMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
@@ -92,7 +108,7 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Admin Menu");
     }
 
-    public JPanel createAddStaff() {
+    private JPanel createAddStaff() {
         JPanel addStaffPanel = new JPanel();
         JButton add = new JButton("Add");
         JTextField username = new JTextField();
@@ -115,9 +131,9 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Add Staff");
     }
 
-    public JPanel createMakeBooking() {
+    private JPanel createMakeBooking() {
         JPanel makeBookingPanel = new JPanel();
-         
+
         JLabel bookingDetials = new JLabel("Booking Details: ");
         JLabel nameLabel = new JLabel("Name: ");
         JTextField customerName = new JTextField("Eneter name");
@@ -126,9 +142,10 @@ public class GUIManager extends JFrame {
         JLabel startDateLabel = new JLabel("Start Date: ");
         JTextField startDate = new JTextField("Enter starting date");
         JLabel endDateLabel = new JLabel("End Date: ");
-        JTextField endDate = new JTextField("Enter end date");
+        JTextField endDateDay = new JTextField("day");
+        JTextField endDateMonth = new JTextField("month");
+        JTextField endDateYear = new JTextField("year");
         JLabel roomSizeLabel = new JLabel("Room size: ");
-        
 
         makeBookingPanel.add(bookingDetials);
         makeBookingPanel.setLayout(new GridLayout(0, 2));
@@ -139,18 +156,54 @@ public class GUIManager extends JFrame {
         makeBookingPanel.add(startDateLabel);
         makeBookingPanel.add(startDate);
         makeBookingPanel.add(endDateLabel);
-        makeBookingPanel.add(endDate);
+        makeBookingPanel.add(endDateDay);
+        makeBookingPanel.add(endDateMonth);
+        makeBookingPanel.add(endDateYear);
         makeBookingPanel.add(roomSizeLabel);
-   
 
         return makeBookingPanel;
+    }
+
+    private JPanel availabeRooms() {
+        JPanel availableRooms = new JPanel();
+        JPanel roomList = new JPanel();
+        JPanel buttonPanel = new JPanel();
+        JList result = new JList<>(roomListModel);
+
+        ButtonGroup roomSize = new ButtonGroup();
+        JRadioButton singleRoomButton = new JRadioButton("Single Room");
+        JRadioButton doubleRoomButton = new JRadioButton("Double Room");
+        JRadioButton suiteRoomButton = new JRadioButton("Suite");
+
+        roomSize.add(suiteRoomButton);
+        roomSize.add(singleRoomButton);
+        roomSize.add(doubleRoomButton);
+
+        buttonPanel.setLayout(new GridLayout(4, 1));
+        buttonPanel.add(singleRoomButton);
+        buttonPanel.add(doubleRoomButton);
+        buttonPanel.add(suiteRoomButton);
+
+        roomList.add(new JScrollPane(result));
+
+        return availableRooms;
+    }
+
+    private JPanel controlButton() {
+        JButton logout = new JButton("Logout");
+        JButton mainMenu = new JButton("Main Menu");
+
+        controlPanel.add(logout);
+        controlPanel.add(mainMenu);
+
+        return controlPanel;
     }
 
     public void makeBooking() {
         cardLayout.show(cardPanel, "Make a Booking");
     }
 
-    public JPanel createSearchBooking() {
+    private JPanel createSearchBooking() {
         JPanel searchBookingPanel = new JPanel();
         JButton searchButton = new JButton("Search");
         JTextField search = new JTextField();
@@ -164,21 +217,29 @@ public class GUIManager extends JFrame {
         return searchBookingPanel;
     }
 
-    public JPanel createEditBooking(Booking aBooking) {
+    private JPanel createEditBooking() {
         JPanel editBookingPanel = new JPanel();
         JLabel bookingDetials = new JLabel("Booking Details: ");
         JLabel nameLabel = new JLabel("Name: ");
-        JTextField customerName = new JTextField(aBooking.getCustomer().name);
-        JLabel guestListLabel = new JLabel("Email: ");
-        JTextField guestList = new JTextField(aBooking.getGuestNotes());
-        JLabel startDateLabel = new JLabel("Start Date(dd/mm/yy): ");
-        JTextField startDate = new JTextField(aBooking.getStartDate().toString());
-        JLabel endDateLabel = new JLabel("End Date(dd/mm/yy): ");
-        JTextField endDate = new JTextField(aBooking.getEndDate().toString());
+        JTextField customerName = new JTextField();
+        JLabel guestListLabel = new JLabel("Guest List:");
+        JTextArea guestList = new JTextArea();
+        JLabel startDateDayLabel = new JLabel("Start Date Day: ");
+        JTextField startDateDay = new JTextField();
+        JLabel startDateMonthLabel = new JLabel("Start Date Month: ");
+        JTextField startDateMonth = new JTextField();
+        JLabel startDateYearLabel = new JLabel("Start Date Year: ");
+        JTextField startDateYear = new JTextField();
+        JLabel endDateDayLabel = new JLabel("End Date Day: ");
+        JTextField endDateDay = new JTextField();
+        JLabel endDateMonthLabel = new JLabel("End Date Month: ");
+        JTextField endDateMonth = new JTextField();
+        JLabel endDateYearLabel = new JLabel("End Date Year: ");
+        JTextField endDateYear = new JTextField();
         JLabel roomLabel = new JLabel("Room ID: ");
-        JTextField room = new JTextField(aBooking.getRoom().roomID);
+        JTextField room = new JTextField();
         JLabel roomSizeLabel = new JLabel("Room size: ");
-        JTextField roomSize = new JTextField(aBooking.getRoom().getSize());
+        JTextField roomSize = new JTextField();
 
         editBookingPanel.add(bookingDetials);
         editBookingPanel.setLayout(new GridLayout(0, 2));
@@ -186,10 +247,18 @@ public class GUIManager extends JFrame {
         editBookingPanel.add(customerName);
         editBookingPanel.add(guestListLabel);
         editBookingPanel.add(guestList);
-        editBookingPanel.add(startDateLabel);
-        editBookingPanel.add(startDate);
-        editBookingPanel.add(endDateLabel);
-        editBookingPanel.add(endDate);
+        editBookingPanel.add(startDateDayLabel);
+        editBookingPanel.add(startDateDay);
+        editBookingPanel.add(startDateMonthLabel);
+        editBookingPanel.add(startDateMonth);
+        editBookingPanel.add(startDateYearLabel);
+        editBookingPanel.add(startDateYear);
+        editBookingPanel.add(endDateDayLabel);
+        editBookingPanel.add(endDateDay);
+        editBookingPanel.add(endDateMonthLabel);
+        editBookingPanel.add(endDateMonth);
+        editBookingPanel.add(endDateYearLabel);
+        editBookingPanel.add(endDateYear);
         editBookingPanel.add(roomLabel);
         editBookingPanel.add(room);
         editBookingPanel.add(roomSizeLabel);
