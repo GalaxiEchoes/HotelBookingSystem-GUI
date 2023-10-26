@@ -51,10 +51,16 @@ abstract public class Staff implements Serializable {
         this.name = name;
     }
 
+    /**
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @param password - password of staff 
+     */
     public void setPassword(String password) {
         this.password = password;
     }
@@ -112,4 +118,11 @@ abstract public class Staff implements Serializable {
         final Staff other = (Staff) obj;
         return Objects.equals(this.name, other.name);
     }
+
+    @Override
+    public String toString() {
+        return "Staff{" + "staffId: " + staffId + ", name: " + name + ", password: " + password + '}';
+    }
+    
+    
 }

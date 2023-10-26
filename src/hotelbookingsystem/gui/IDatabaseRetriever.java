@@ -13,4 +13,5 @@ public interface IDatabaseRetriever {
     public Customer getExsistingCustomer(Booking booking);
     public Staff findStaff(String username);
     public HashSet<Booking> findBookingBetweenDates(Date startDate, Date endDate);
+    public Booking findBookingById(int bookingId);
 }

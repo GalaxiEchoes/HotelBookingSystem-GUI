@@ -216,13 +216,21 @@ public class Booking implements Serializable {
         return Objects.equals(this.room, other.room);
     }
 
-    /**
+    /*
+    **
      * {@inheritDoc}
      *
      * @return String representation of booking
-     */
+     *
     @Override
     public String toString() {
         return "\n    Booking: " + this.customer + ", room: " + this.room;
     }
+    */
+
+    @Override
+    public String toString() {
+        return "Booking{" + "bookingID: " + bookingID + ", guestNotes: " + guestNotes + ", customer: " + customer + ", room: " + room + ", startDate: " + startDate + ", endDate: " + endDate + ", total: " + total + '}';
+    }
+    
 }

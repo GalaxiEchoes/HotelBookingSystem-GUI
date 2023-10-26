@@ -8,4 +8,5 @@ public interface IDatabaseUpdater {
     public void addBooking(Booking booking);
     public void updateBooking(Booking changedBooking);
     public void saveNewStaff(Staff newStaff);
+    public void saveNewRoom(Room room);
 }

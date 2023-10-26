@@ -125,6 +125,16 @@ public class ModelManager {
     }
     
     /**
+     * @param bookingId - int Id of the Booking
+     * @return Booking that matches the bookingId
+     */
+    public Booking findBookingById(int bookingId){
+        Booking booking = dbRetriever.findBookingById(bookingId);
+        
+        return booking;
+    }
+    
+    /**
      * This calculates the total price and saves or updates
      * @param booking 
      */

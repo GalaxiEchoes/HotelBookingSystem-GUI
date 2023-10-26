@@ -105,4 +105,23 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         
         DatabaseManager.closeSession(session);
     }
+    
+    /**
+     * Saves a new Room to database
+     * @param room - Room to be saved
+     */
+    @Override
+    public void saveNewRoom(Room room){
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
+        try {
+            session.save(room);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } 
+        
+        DatabaseManager.closeSession(session);
+    }
 }

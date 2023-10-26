@@ -4,6 +4,7 @@
  */
 package hotelbookingsystem.gui;
 
+import java.util.HashSet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,6 +17,7 @@ import org.apache.logging.log4j.EventLogger;
 public class TestMain {
     public static void main(String[] args) {
         org.apache.logging.log4j.LogManager.getContext(false);
+        /*
         // Create a new customer
         Customer customer = new Customer("John Doe", "john.doe@example.com", "1234567890");
 
@@ -60,6 +62,49 @@ public class TestMain {
 
         // Close the factory
         factory.close();
-    }
-    
+        
+        
+        Staff admin = ObjectFactory.createStaff("Admin", "admin", "password");
+        ModelManager mManager = new ModelManager();
+        mManager.saveNewStaff(admin);
+        
+        Staff retrieved = mManager.findStaff("admin");
+        System.out.println(retrieved);
+        
+        
+        IDatabaseUpdater dbUpdater = ObjectFactory.createDatabaseUpdater();
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(1, "Single"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(2, "Single"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(3, "Single"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(4, "Single"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(5, "Single"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(6, "Double"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(7, "Double"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(8, "Double"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(9, "Double"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(10, "Double"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(11, "Suite"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(12, "Suite"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(13, "Suite"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(14, "Suite"));
+        dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(15, "Suite"));
+        */
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+
+        
+        HashSet<Booking> bookings = dbRetriever.getAllBookings();
+        for(Booking b: bookings){
+            System.out.println(b);
+        }
+        
+        HashSet<Room> room = dbRetriever.getAllRooms();
+        for(Room r: room){
+            System.out.println(r);
+        }
+        
+        HashSet<Staff> staff = dbRetriever.getAllStaff();
+        for(Staff s: staff){
+            System.out.println(s);
+        }
+    }  
 }

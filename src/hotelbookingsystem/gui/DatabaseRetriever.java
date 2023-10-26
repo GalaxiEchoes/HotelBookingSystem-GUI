@@ -173,4 +173,30 @@ public class DatabaseRetriever implements IDatabaseRetriever{
 
         return bookingSet;
     }
+    
+    /**
+     * Retrieves booking with the matching bookingId
+     * @param bookingId - int ID number of booking
+     * @return Booking
+     */
+    @Override 
+    public Booking findBookingById(int bookingId){
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
+   
+        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.booking_id = :booking_id");
+        query.setParameter("booking_id",  bookingId);
+
+        List<Booking> result = query.list();
+
+        if (result.isEmpty()) {
+            tx.rollback();
+            DatabaseManager.closeSession(session);
+            return null;
+        } else {
+            tx.rollback();
+            DatabaseManager.closeSession(session);
+            return result.get(0);
+        }
+    }
 }

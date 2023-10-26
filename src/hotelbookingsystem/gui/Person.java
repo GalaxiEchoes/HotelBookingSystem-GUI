@@ -91,4 +91,9 @@ abstract public class Person implements Serializable {
         return Objects.equals(this.name, other.name);
     }
 
+    @Override
+    public String toString() {
+        return "Person{" + "personId: " + personId + ", name: " + name + '}';
+    }
+
 }

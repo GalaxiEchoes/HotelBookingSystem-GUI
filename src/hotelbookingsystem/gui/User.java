@@ -1,6 +1,5 @@
 package hotelbookingsystem.gui;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -10,30 +9,12 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("User")
 public class User extends Staff{
-    
-    @Column(name = "password")
-    private String password;
 
     public User(String name, String password) {
-        super(name);
-        this.password = password;
+        super(name, password);
     }
     
     public User() {
-    }
-    
-    /**
-     * @return password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password - password of admin 
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**
