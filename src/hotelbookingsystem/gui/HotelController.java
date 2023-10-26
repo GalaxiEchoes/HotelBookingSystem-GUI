@@ -7,6 +7,8 @@ package hotelbookingsystem.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JList;
 import javax.swing.JTextField;
 
 /**
@@ -41,7 +43,9 @@ public class HotelController implements ActionListener {
         JTextField usernameInput = (JTextField) e.getSource();
         JTextField passwordInput = (JTextField) e.getSource();
         JTextField bookings = (JTextField) e.getSource();
-
+        JCheckBox addAdmin = (JCheckBox) e.getSource();
+        JList result = (JList) e.getSource();
+        
         if (pressedButton.getText().equals("Login")) {
             if (loginData(usernameInput.getText(), passwordInput.getText())) {
                 if (loginM.checkAdmin(model.findStaff(usernameInput.getText()))) {
@@ -56,16 +60,22 @@ public class HotelController implements ActionListener {
 
         } else if (pressedButton.getText().equals("Add Staff")) {
             gui.addStaff();
-        }else if(pressedButton.getText().equals("Add")){
-             Staff newStaff = new User(usernameInput.getText(), passwordInput.getText());
-            model.saveNewStaff(newStaff);
+        } else if (pressedButton.getText().equals("Add")) {
+            if (addAdmin.isSelected()) {
+                model.saveNewStaff(ObjectFactory.createStaff("Admin", usernameInput.getText(), passwordInput.getText()));
+            } else {
+                model.saveNewStaff(ObjectFactory.createStaff("User", usernameInput.getText(), passwordInput.getText()));
+            }
             gui.adminMenu();
-        }else if (pressedButton.getText().equals("Submit")) {
+        } else if (pressedButton.getText().equals("Submit")) {
+            
+            
             
         } else if (pressedButton.getText().equals("Search")) {
-            bookings.setText(model.findBooking());
-        } else if (pressedButton.getText().equals("View")) {
-
+           
+        } else if (pressedButton.getText().equals("Edit")){
+          
+            
         }
 
     }

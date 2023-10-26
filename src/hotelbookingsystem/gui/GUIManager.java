@@ -10,9 +10,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -27,7 +30,7 @@ public class GUIManager extends JFrame {
     public GUIManager() {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        login = new LogInManager();
+        
 
         cardPanel.add(createLogin(), "Login");
         cardPanel.add(createMainMenu(), "Main Menu");
@@ -59,10 +62,9 @@ public class GUIManager extends JFrame {
         JPanel mainMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
-        
+
         mainMenuPanel.add(makeBooking);
         mainMenuPanel.add(findBooking);
-        
 
         return mainMenuPanel;
     }
@@ -96,29 +98,55 @@ public class GUIManager extends JFrame {
         JTextField username = new JTextField();
         JLabel usernameLabel = new JLabel("Username: ");
         JLabel passwordLabel = new JLabel("Password: ");
+        JCheckBox addAdmin = new JCheckBox("Admin");
         JTextField password = new JTextField();
 
-        addStaffPanel.add(add);  
+        addStaffPanel.add(add);
         addStaffPanel.add(usernameLabel);
         addStaffPanel.add(username);
         addStaffPanel.add(passwordLabel);
         addStaffPanel.add(password);
+        addStaffPanel.add(addAdmin);
 
         return addStaffPanel;
     }
-    
-    public void addStaff(){
+
+    public void addStaff() {
         cardLayout.show(cardPanel, "Add Staff");
     }
 
     public JPanel createMakeBooking() {
         JPanel makeBookingPanel = new JPanel();
+         
+        JLabel bookingDetials = new JLabel("Booking Details: ");
+        JLabel nameLabel = new JLabel("Name: ");
+        JTextField customerName = new JTextField("Eneter name");
+        JLabel guestListLabel = new JLabel("Email: ");
+        JTextField guestList = new JTextField("Add guest List");
+        JLabel startDateLabel = new JLabel("Start Date: ");
+        JTextField startDate = new JTextField("Enter starting date");
+        JLabel endDateLabel = new JLabel("End Date: ");
+        JTextField endDate = new JTextField("Enter end date");
+        JLabel roomSizeLabel = new JLabel("Room size: ");
         
+
+        makeBookingPanel.add(bookingDetials);
+        makeBookingPanel.setLayout(new GridLayout(0, 2));
+        makeBookingPanel.add(nameLabel);
+        makeBookingPanel.add(customerName);
+        makeBookingPanel.add(guestListLabel);
+        makeBookingPanel.add(guestList);
+        makeBookingPanel.add(startDateLabel);
+        makeBookingPanel.add(startDate);
+        makeBookingPanel.add(endDateLabel);
+        makeBookingPanel.add(endDate);
+        makeBookingPanel.add(roomSizeLabel);
+   
 
         return makeBookingPanel;
     }
-    
-    public void makeBooking(){
+
+    public void makeBooking() {
         cardLayout.show(cardPanel, "Make a Booking");
     }
 
@@ -126,8 +154,8 @@ public class GUIManager extends JFrame {
         JPanel searchBookingPanel = new JPanel();
         JButton searchButton = new JButton("Search");
         JTextField search = new JTextField();
-        JLabel result = new JLabel();
-        JButton view = new JButton("View");
+        JList result = new JList();
+        JButton edit = new JButton("Edit");
 
         searchBookingPanel.add(search);
         searchBookingPanel.add(searchButton);
@@ -169,8 +197,8 @@ public class GUIManager extends JFrame {
 
         return editBookingPanel;
     }
-    
-    public void editBooking(){
+
+    public void editBooking(Booking aBooking) {
         cardLayout.show(cardPanel, "Edit a Booking");
     }
 }
