@@ -9,7 +9,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
@@ -57,7 +59,7 @@ public class HotelController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton pressedButton = (JButton) e.getSource();
         JTextField usernameInput = (JTextField) e.getSource();
-        JTextField passwordInput = (JTextField) e.getSource();
+        JPasswordField passwordInput = (JPasswordField) e.getSource();
         JCheckBox addAdmin = (JCheckBox) e.getSource();
         DefaultListModel<Room> listModel = new DefaultListModel<>();
         JList list = (JList) e.getSource();
@@ -72,6 +74,7 @@ public class HotelController implements ActionListener {
         JTextField email = (JTextField) e.getSource();
         JTextField phoneNumber = (JTextField) e.getSource();
         JTextArea guestList = (JTextArea) e.getSource();
+        JLabel invalidInput = (JLabel) e.getSource();
 
         if (pressedButton.getText().equals("Login")) {
             if (loginData(usernameInput.getText(), passwordInput.getText())) {
@@ -83,6 +86,8 @@ public class HotelController implements ActionListener {
                     isAdmin = false;
                     gui.mainMenu();
                 }
+            } else {
+                invalidInput.setText("invalid input");
             }
         } else if (pressedButton.getText().equals("Make a Booking")) {
             gui.makeBooking();
@@ -108,9 +113,12 @@ public class HotelController implements ActionListener {
                         (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
                         (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
                 );
+
+                model.saveNewBooking(booking);
+                model.invoiceBooking(booking);
+            } else {
+                invalidInput.setText("invalid input");
             }
-            model.saveNewBooking(booking);
-            model.invoiceBooking(booking);
 
         } else if (pressedButton.getText().equals("Search")) {
             Booking aBooking = null;
@@ -123,8 +131,10 @@ public class HotelController implements ActionListener {
                         (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
                         (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
                 );
+                model.findBooking(aBooking);
+            } else {
+                invalidInput.setText("invalid input");
             }
-            model.findBooking(aBooking);
 
         } else if (pressedButton.getText().equals("Edit")) {
 
@@ -134,6 +144,7 @@ public class HotelController implements ActionListener {
                     if (!e.getValueIsAdjusting()) {
                         Booking selectedBooking = (Booking) list.getSelectedValue();
                         setSelectedBooking(selectedBooking);
+                        list.repaint();
                     }
                 }
             });
@@ -156,10 +167,12 @@ public class HotelController implements ActionListener {
             if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
 
                 for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
-
                     listModel.addElement(room);
                 }
+            } else {
+                invalidInput.setText("invalid input");
             }
+
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -177,7 +190,10 @@ public class HotelController implements ActionListener {
                 for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
                     listModel.addElement(room);
                 }
+            } else {
+                invalidInput.setText("invalid input");
             }
+
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -195,6 +211,8 @@ public class HotelController implements ActionListener {
                 for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
                     listModel.addElement(room);
                 }
+            } else {
+                invalidInput.setText("invalid input");
             }
 
             list.addListSelectionListener(new ListSelectionListener() {
@@ -214,10 +232,12 @@ public class HotelController implements ActionListener {
             if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
                 selectedBooking.setStartDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()));
                 selectedBooking.setEndDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()));
+                model.updateBooking(selectedBooking);
+                model.invoiceBooking(selectedBooking);
+                gui.mainMenu();
+            } else {
+                invalidInput.setText("invalid input");
             }
-            model.updateBooking(selectedBooking);
-            model.invoiceBooking(selectedBooking);
-            gui.mainMenu();
 
         } else if (pressedButton.getText().equals("Delete Booking")) {
             model.deleteBooking(model.findBookingById(selectedBooking.getBookingID()));

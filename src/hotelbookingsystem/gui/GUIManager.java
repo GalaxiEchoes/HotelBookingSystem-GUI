@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -64,7 +65,8 @@ public class GUIManager extends JFrame {
         JTextField username = new JTextField();
         JLabel usernameLabel = new JLabel("Username: ");
         JLabel passwordLabel = new JLabel("Password: ");
-        JTextField password = new JTextField();
+        JPasswordField password = new JPasswordField();
+        JLabel invalidInput = new JLabel(" ");
 
         loginPanel.add(usernameLabel);
         loginPanel.add(username);
@@ -190,6 +192,7 @@ public class GUIManager extends JFrame {
         JTextField startDate = new JTextField();
         JLabel endDateLabel = new JLabel("End Date(dd/mm/yyyy): ");
         JTextField endDate = new JTextField();
+        JLabel invalidInput = new JLabel(" ");
 
         //make JPanels for availableRooms, roomList and buttonPanel
         JPanel availableRooms = new JPanel();
@@ -235,6 +238,7 @@ public class GUIManager extends JFrame {
         makeBookingPanel.add(guestListLabel);
         makeBookingPanel.add(guestList);
         makeBookingPanel.add(submit);
+        makeBookingPanel.add(invalidInput);
 
         return makeBookingPanel;
     }
@@ -283,7 +287,7 @@ public class GUIManager extends JFrame {
         JTextField startDate = new JTextField();
         JLabel endDateLabel = new JLabel("End Date (dd/mm/yyyy): ");
         JTextField endDate = new JTextField();
-
+        JLabel invalidInput = new JLabel(" ");
         JList result = new JList();
         JButton edit = new JButton("Edit");
 
@@ -303,6 +307,7 @@ public class GUIManager extends JFrame {
         searchBookingPanel.add(searchButton);
         searchBookingPanel.add(result);
         searchBookingPanel.add(edit);
+        searchBookingPanel.add(invalidInput);
 
         return searchBookingPanel;
     }
@@ -342,6 +347,7 @@ public class GUIManager extends JFrame {
         JComboBox endDay = new JComboBox();
         JComboBox endMonth = new JComboBox();
         JComboBox endYear = new JComboBox();
+        JLabel invalidInput = new JLabel(" ");
 
         startDay.addItem("01");
         startDay.addItem("02");
@@ -487,6 +493,7 @@ public class GUIManager extends JFrame {
         editBookingPanel.add(endDay);
         editBookingPanel.add(endMonth);
         editBookingPanel.add(endYear);
+        editBookingPanel.add(invalidInput);
         editBookingPanel.add(availableRooms, BorderLayout.EAST);
         editBookingPanel.add(nameLabel);
         editBookingPanel.add(customerName);
