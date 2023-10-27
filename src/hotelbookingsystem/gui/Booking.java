@@ -22,7 +22,7 @@ public class Booking implements Serializable {
     @Column(name = "guest_notes")
     private String guestNotes;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
     

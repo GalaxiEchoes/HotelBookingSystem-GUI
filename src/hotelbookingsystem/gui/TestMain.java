@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.apache.logging.log4j.EventLogger;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -88,7 +89,7 @@ public class TestMain {
         dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(13, "Suite"));
         dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(14, "Suite"));
         dbUpdater.saveNewRoom(ObjectFactory.createNewRoom(15, "Suite"));
-        */
+
         IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
 
         
@@ -105,6 +106,54 @@ public class TestMain {
         HashSet<Staff> staff = dbRetriever.getAllStaff();
         for(Staff s: staff){
             System.out.println(s);
+        }
+        */
+        /*
+        ModelManager mManager = new ModelManager();
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+        Session session = DatabaseManager.getSession();
+        Transaction tx = session.beginTransaction();
+        Staff retrieved = mManager.findStaff("John");
+        System.out.println(retrieved);
+        session.delete(retrieved);
+        tx.commit();
+        
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+
+        
+        HashSet<Booking> bookings = dbRetriever.getAllBookings();
+        for(Booking b: bookings){
+            System.out.println(b);
+        }
+        
+        HashSet<Room> room = dbRetriever.getAllRooms();
+        for(Room r: room){
+            System.out.println(r);
+        }
+        
+        HashSet<Staff> staff = dbRetriever.getAllStaff();
+        for(Staff s: staff){
+            System.out.println(s);
+        }
+        */
+        
+        ModelManager mManager = new ModelManager();
+        Session session = DatabaseManager.getSession();
+        Transaction tx = session.beginTransaction();
+        Customer customer = ObjectFactory.createCustomer("John", "john@gmail.com", "9793893");
+        session.save(customer);
+        session.flush();
+
+        Booking booking = new Booking("this",customer , mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
+        System.out.println(booking.getRoom());
+        session.saveOrUpdate(booking);
+        tx.commit();
+        
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+        
+        HashSet<Booking> bookings = dbRetriever.getAllBookings();
+        for(Booking b: bookings){
+            System.out.println(b);
         }
     }  
 }

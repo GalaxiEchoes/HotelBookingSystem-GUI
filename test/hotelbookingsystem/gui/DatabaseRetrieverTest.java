@@ -40,14 +40,10 @@ public class DatabaseRetrieverTest {
     @AfterClass
     public static void tearDownClass() {
         tx = session.beginTransaction();
-        Query deleteStaff = session.createQuery("DELETE FROM Staff WHERE staffID = :staff_id");
-        deleteStaff.setParameter("staff_id", staff.getStaffID());
-        Query deleteRoom = session.createQuery("DELETE FROM Room WHERE roomID = :room_id");
-        deleteRoom.setParameter("room_id", room.getRoomID());
-        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
-        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
-        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
-        deleteBooking.setParameter("booking_id", booking.getBookingID());
+        session.delete(staff);
+        session.delete(room);
+        session.delete(booking.getCustomer());
+        session.delete(booking);
         tx.commit();
         
         DatabaseManager.closeSession(session);

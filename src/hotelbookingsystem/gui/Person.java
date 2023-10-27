@@ -8,8 +8,7 @@ import javax.persistence.*;
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 @Entity
-@Table(name = "Person")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 abstract public class Person implements Serializable {
 
     @Id

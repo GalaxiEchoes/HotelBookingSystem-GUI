@@ -1,6 +1,5 @@
 package hotelbookingsystem.gui;
 
-import java.util.Date;
 import java.util.HashSet;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,6 +17,7 @@ import static org.junit.Assert.*;
 public class ModelManagerTest {
     
     private static ModelManager mManager;
+    private static IDatabaseRetriever dbRetriever;
     private static Session session;
     private static Transaction tx;
     private static Booking booking;
@@ -28,6 +28,7 @@ public class ModelManagerTest {
     @BeforeClass
     public static void setUpClass() {
         mManager = new ModelManager();
+        dbRetriever = ObjectFactory.createDatabaseRetriever();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         booking.setBookingID(10);
         booking.getCustomer().setPersonID(10);
@@ -87,7 +88,7 @@ public class ModelManagerTest {
      * Test of getRoomByID method, of class ModelManager. Using Id for a room that does not exist.
      */
     @Test
-    public void testGetRoomByIDRoomDoesNotExist() {
+    public void testGetRoomByID_ShouldReturnNull_WhenRoomDoesNotExist() {
         System.out.println("getRoomByID");
         int roomID = 69;
         
@@ -102,11 +103,21 @@ public class ModelManagerTest {
     @Test
     public void testSaveNewBooking() {
         System.out.println("saveNewBooking");
-        Booking booking = null;
-        ModelManager instance = new ModelManager();
-        instance.saveNewBooking(booking);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        booking.setBookingID(0);
+        tx = session.beginTransaction();
+        
+        //Test
+        mManager.saveNewBooking(booking);
+        
+        //Validation
+        HashSet<Booking> result = dbRetriever.getAllBookings();
+        assertTrue(result.contains(booking));
+        
+        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
+        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
+        tx.commit();
+        mManager.deleteBooking(booking);
+        booking.setBookingID(10);
     }
 
     /**
@@ -130,13 +141,19 @@ public class ModelManagerTest {
     @Test
     public void testFindBooking() {
         System.out.println("findBooking");
-        Booking criteria = null;
-        ModelManager instance = new ModelManager();
-        HashSet<Booking> expResult = null;
-        HashSet<Booking> result = instance.findBooking(criteria);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.save(booking);
+        tx.commit();
+        
+        //Test
+        HashSet<Booking> result = mManager.findBooking(booking);
+        
+        //Verification
+        assertTrue(result.contains(booking));
+        
+        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
+        deleteBooking.setParameter("booking_id", booking.getBookingID());
+        tx.commit();
     }
 
     /**
@@ -145,11 +162,17 @@ public class ModelManagerTest {
     @Test
     public void testInvoiceBooking() {
         System.out.println("invoiceBooking");
-        Booking booking = null;
-        ModelManager instance = new ModelManager();
-        instance.invoiceBooking(booking);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        float total = 226.8f;
+        
+        //Test
+        mManager.invoiceBooking(booking);
+        
+        //Verification
+        assertTrue(booking.getTotal() == total);
+        
+        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
+        deleteBooking.setParameter("booking_id", booking.getBookingID());
+        tx.commit();
     }
-    
 }

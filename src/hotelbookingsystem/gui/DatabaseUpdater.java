@@ -1,5 +1,6 @@
 package hotelbookingsystem.gui;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.Session;
@@ -26,16 +27,9 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         tx = session.beginTransaction();
         
         try{
-            Query query = session.createQuery("DELETE FROM Booking WHERE bookingID = :bookingID");
-            query.setParameter("bookingID", booking.getBookingID());
-
-            int rowsAffected = query.executeUpdate();
-
-            if (rowsAffected > 0) {
-                tx.commit();
-            } else {
-                tx.rollback();
-            }
+            session.delete(booking);
+            tx.commit();
+            
         } catch (Exception ex) { 
             tx.rollback();
             Logger.getLogger(DatabaseUpdater.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +47,7 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         tx = session.beginTransaction();
 
         try {
-            session.save(booking);
+            session.saveOrUpdate(booking);
             session.saveOrUpdate(booking.getCustomer());
 
             tx.commit();
@@ -75,8 +69,8 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         tx = session.beginTransaction();
         
         try {
-            session.update(changedBooking);
-            session.update(changedBooking.getCustomer());
+            session.saveOrUpdate(changedBooking);
+            session.saveOrUpdate(changedBooking.getCustomer());
             tx.commit();
         
         } catch (Exception e) {
@@ -95,13 +89,23 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     public void saveNewStaff(Staff newStaff){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
-        try {
-            session.save(newStaff);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            e.printStackTrace();
-        } 
+        Query query = session.createQuery("FROM Staff s WHERE s.name = :name ");
+        query.setParameter("name", newStaff.getName());
+
+        List<Staff> result = query.list();
+        
+        if(result.isEmpty()){
+            try {
+                session.saveOrUpdate(newStaff);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                e.printStackTrace();
+            } 
+        } else {
+            throw new IllegalArgumentException("This username is not unique.");
+        }
+
         
         DatabaseManager.closeSession(session);
     }
@@ -115,7 +119,7 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
         try {
-            session.save(room);
+            session.saveOrUpdate(room);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
