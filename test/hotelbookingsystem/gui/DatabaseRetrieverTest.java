@@ -32,10 +32,18 @@ public class DatabaseRetrieverTest {
         ModelManager mManager = new ModelManager();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         booking.getCustomer().setCustomerID(10);
+        booking.setBookingID(10);
         room = ObjectFactory.createNewRoom(16, "Single");
-        staff = ObjectFactory.createStaff("Admin", "John", "John");
-        staff.setStaffID(201);
+        staff = ObjectFactory.createStaff("Admin", "James", "James");
+        staff.setStaffID(301);
+        
         session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
+        session.save(booking.getCustomer());
+        session.save(booking);
+        session.save(room);
+        session.save(staff);
+        tx.commit();
     }
     
     @AfterClass
@@ -44,14 +52,8 @@ public class DatabaseRetrieverTest {
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
         session.delete(staff);
-        tx.commit();
-        restartSession();
         session.delete(room);
-        tx.commit();
-        restartSession();
         session.delete(booking);
-        tx.commit();
-        restartSession();
         session.delete(booking.getCustomer());
         tx.commit();
         
@@ -75,8 +77,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllRooms() {
         System.out.println("getAllRooms");
-        session.saveOrUpdate(room);
-        tx.commit();
         
         //Test
         HashSet<Room> result = dbRetriever.getAllRooms();
@@ -91,8 +91,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllStaff() {
         System.out.println("getAllStaff");
-        session.saveOrUpdate(staff);
-        tx.commit();
         
         //Test
         HashSet<Staff> result = dbRetriever.getAllStaff();
@@ -107,11 +105,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllBookings() {
         System.out.println("getAllBookings");
-        session.saveOrUpdate(booking.getCustomer());
-        tx.commit();
-        restartSession();
-        session.saveOrUpdate(booking);
-        tx.commit();
         
         //Test
         HashSet<Booking> result = dbRetriever.getAllBookings();
@@ -126,11 +119,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetExsistingCustomer() {
         System.out.println("getExsistingCustomer");
-        session.saveOrUpdate(booking.getCustomer());
-        tx.commit();
-        restartSession();
-        session.saveOrUpdate(booking);
-        tx.commit();
         
         //Test
         Customer result = dbRetriever.getExsistingCustomer(booking);
@@ -145,8 +133,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindStaff() {
         System.out.println("findStaff");
-        session.saveOrUpdate(staff);
-        tx.commit();
         
         //Test
         Staff result = dbRetriever.findStaff(staff.getName());
@@ -161,11 +147,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindBookingBetweenDates() {
         System.out.println("findBookingBetweenDates");
-        session.saveOrUpdate(booking.getCustomer());
-        tx.commit();
-        restartSession();
-        session.saveOrUpdate(booking);
-        tx.commit();
         
         //Test
         HashSet<Booking> result = dbRetriever.findBookingBetweenDates(booking.getStartDate(), booking.getEndDate());
@@ -180,11 +161,6 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindBookingById() {
         System.out.println("findBookingById");
-        session.saveOrUpdate(booking.getCustomer());
-        tx.commit();
-        restartSession();
-        session.saveOrUpdate(booking);
-        tx.commit();
         
         //Test
         Booking result = dbRetriever.findBookingById(booking.getBookingID());
@@ -192,13 +168,4 @@ public class DatabaseRetrieverTest {
         //Verification
         assertEquals(booking, result);
     }  
-    
-    /**
-     * Utility method to restart the session.
-     */
-    static public void restartSession(){
-        DatabaseManager.closeSession(session);
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
-    }
 }

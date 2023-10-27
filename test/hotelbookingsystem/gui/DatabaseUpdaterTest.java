@@ -32,8 +32,6 @@ public class DatabaseUpdaterTest {
         dbUpdater = ObjectFactory.createDatabaseUpdater();
         mManager = new ModelManager();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
-        booking.setBookingID(10);
-        booking.getCustomer().setCustomerID(10);
         room = ObjectFactory.createNewRoom(16, "Single");
         staff = ObjectFactory.createStaff("Admin", "John", "John");
     }
@@ -44,6 +42,14 @@ public class DatabaseUpdaterTest {
     
     @Before
     public void setUp() {
+        restartSession();
+        if(booking.getBookingID() != 0){
+            session.delete(booking);
+            session.delete(booking.getCustomer());
+            booking.setBookingID(0);
+            booking.getCustomer().setCustomerID(0);
+            tx.commit();
+        }
         restartSession();
     }
     
@@ -60,6 +66,7 @@ public class DatabaseUpdaterTest {
         System.out.println("deleteBooking");
         
         //Setup
+        session.save(booking.getCustomer());
         session.save(booking);
         tx.commit();
         restartSession();
@@ -71,7 +78,9 @@ public class DatabaseUpdaterTest {
         Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
-        tx.rollback();
+        booking.setBookingID(0);
+        session.save(booking);
+        tx.commit();
         assertTrue(result.isEmpty());
     }
 
@@ -90,10 +99,6 @@ public class DatabaseUpdaterTest {
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
         tx.rollback();
-        restartSession();
-        session.delete(booking);
-        session.delete(booking.getCustomer());
-        tx.commit();
         assertTrue(result.contains(booking));
     }
 
@@ -105,6 +110,7 @@ public class DatabaseUpdaterTest {
         System.out.println("updateBooking");
         
         //Setup
+        session.save(booking.getCustomer());
         session.save(booking);
         tx.commit();
         booking.setTotal(160.00f);
@@ -117,10 +123,6 @@ public class DatabaseUpdaterTest {
         Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
-        tx.commit();
-        restartSession();
-        session.delete(booking);
-        session.delete(booking.getCustomer());
         tx.commit();
         assertTrue(result.contains(booking));
     }
@@ -170,7 +172,7 @@ public class DatabaseUpdaterTest {
     /**
      * Utility method to restart the session.
      */
-    public void restartSession(){
+    static public void restartSession(){
         DatabaseManager.closeSession(session);
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
