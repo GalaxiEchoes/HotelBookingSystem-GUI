@@ -248,12 +248,17 @@ public class TestMain {
             System.out.println(s);
         }
         
+        DatabaseManager.closeSession(session);
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();     
+        
         Query query = session.createQuery("FROM Customer c");
         List<Customer> result = query.list();
         HashSet<Customer> customers = new HashSet<>(result);
         for(Customer c: customers){
             System.out.println(c);
         }
+        
         DatabaseManager.closeSession(session);
     }  
 }
