@@ -13,7 +13,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
@@ -26,9 +25,9 @@ import javax.swing.text.BadLocationException;
  */
 public class HotelController implements ActionListener {
 
-    private ModelManager model;
-    private LogInManager loginM;
-    private GUIManager gui;
+    private final ModelManager model;
+    private final LogInManager loginM;
+    private final GUIManager gui;
     private Room selectedRoom;
     private Booking selectedBooking;
     private boolean isAdmin = false;
@@ -149,22 +148,22 @@ public class HotelController implements ActionListener {
         } else if (selectedButton.getText().equals("Single Room")) {
             try {
                 for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))), (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)))))) {
-                    
+
                     listModel.addElement(room);
                 }
             } catch (BadLocationException ex) {
                 Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
             }
-                list.addListSelectionListener(new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        if (!e.getValueIsAdjusting()) {
-                            Room selectedRoom = (Room) list.getSelectedValue();
-                            setSelectedRoom(selectedRoom);
-                        }
+            list.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        Room selectedRoom = (Room) list.getSelectedValue();
+                        setSelectedRoom(selectedRoom);
                     }
-                });
-            }else if (selectedButton.getText().equals("Double Room")) {
+                }
+            });
+        } else if (selectedButton.getText().equals("Double Room")) {
             try {
                 for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))), (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)))))) {
                     listModel.addElement(room);
@@ -228,5 +227,5 @@ public class HotelController implements ActionListener {
                 gui.mainMenu();
             }
         }
-        }
     }
+}
