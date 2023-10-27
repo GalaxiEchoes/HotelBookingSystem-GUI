@@ -99,28 +99,31 @@ public class HotelController implements ActionListener {
             gui.adminMenu();
         } else if (pressedButton.getText().equals("Submit")) {//to finalise the booking and add the booking to database
 
-            Booking booking;
+            Booking booking = null;
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
 
-            booking = new Booking((guestList.getText()),
-                    (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
-                    (model.getRoomByID(selectedRoom.roomID)),
-                    (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
-                    (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
-            );
-
+                booking = new Booking((guestList.getText()),
+                        (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
+                        (model.getRoomByID(selectedRoom.roomID)),
+                        (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
+                        (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
+                );
+            }
             model.saveNewBooking(booking);
             model.invoiceBooking(booking);
 
         } else if (pressedButton.getText().equals("Search")) {
-            Booking aBooking;
+            Booking aBooking = null;
 
-            aBooking = new Booking((guestList.getText()),
-                    (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
-                    (model.getRoomByID(selectedRoom.roomID)),
-                    (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
-                    (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
-            );
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
 
+                aBooking = new Booking((guestList.getText()),
+                        (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
+                        (model.getRoomByID(selectedRoom.roomID)),
+                        (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
+                        (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
+                );
+            }
             model.findBooking(aBooking);
 
         } else if (pressedButton.getText().equals("Edit")) {
@@ -135,7 +138,14 @@ public class HotelController implements ActionListener {
                 }
             });
             gui.editBooking();
-            startDay.setSelectedItem(selectedBooking);
+            int[] startDateArray = model.convertDateToIntArray(selectedBooking.getStartDate());
+            int[] endDateArray = model.convertDateToIntArray(selectedBooking.getEndDate());
+            startDay.setSelectedItem(startDateArray[0]);
+            startMonth.setSelectedItem(startDateArray[1]);
+            startYear.setSelectedItem(startDateArray[2]);
+            endDay.setSelectedItem(endDateArray[0]);
+            endMonth.setSelectedItem(endDateArray[1]);
+            endYear.setSelectedItem(endDateArray[2]);
             name.setText(selectedBooking.getCustomer().getName());
             email.setText(selectedBooking.getCustomer().getEmail());
             phoneNumber.setText(selectedBooking.getCustomer().getPhoneNumber());
@@ -143,11 +153,13 @@ public class HotelController implements ActionListener {
 
         } else if (selectedButton.getText().equals("Single Room")) {
 
-            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
 
-                listModel.addElement(room);
+                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+
+                    listModel.addElement(room);
+                }
             }
-
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -160,10 +172,12 @@ public class HotelController implements ActionListener {
             });
         } else if (selectedButton.getText().equals("Double Room")) {
 
-            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
-                listModel.addElement(room);
-            }
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
 
+                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+                    listModel.addElement(room);
+                }
+            }
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -176,8 +190,11 @@ public class HotelController implements ActionListener {
             });
         } else if (selectedButton.getText().equals("Suite")) {
 
-            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
-                listModel.addElement(room);
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
+
+                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+                    listModel.addElement(room);
+                }
             }
 
             list.addListSelectionListener(new ListSelectionListener() {
@@ -194,8 +211,10 @@ public class HotelController implements ActionListener {
             selectedBooking.setCustomer(ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText()));
             selectedBooking.setRoom(selectedRoom);
             selectedBooking.setGuestNotes(guestList.getText());
-            selectedBooking.setStartDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()));
-            selectedBooking.setEndDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()));
+            if ((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))).before(ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))) {
+                selectedBooking.setStartDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()));
+                selectedBooking.setEndDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()));
+            }
             model.updateBooking(selectedBooking);
             model.invoiceBooking(selectedBooking);
             gui.mainMenu();
