@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 
 import java.awt.event.ActionEvent;
@@ -20,8 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 
 /**
- *
- * @author berri
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 public class HotelController implements ActionListener {
 
@@ -38,6 +33,7 @@ public class HotelController implements ActionListener {
         gui = new GUIManager();
     }
 
+    
     private boolean loginData(String username, String password) {
         if (model.findStaff(username).equals(username)) {
             if (loginM.checkLogin(model.findStaff(username), username, password)) {
@@ -160,6 +156,7 @@ public class HotelController implements ActionListener {
                     if (!e.getValueIsAdjusting()) {
                         Room selectedRoom = (Room) list.getSelectedValue();
                         setSelectedRoom(selectedRoom);
+                        list.repaint();
                     }
                 }
             });
@@ -177,6 +174,7 @@ public class HotelController implements ActionListener {
                     if (!e.getValueIsAdjusting()) {
                         Room selectedRoom = (Room) list.getSelectedValue();
                         setSelectedRoom(selectedRoom);
+                        list.repaint();
                     }
                 }
             });
@@ -195,6 +193,7 @@ public class HotelController implements ActionListener {
                     if (!e.getValueIsAdjusting()) {
                         Room selectedRoom = (Room) list.getSelectedValue();
                         setSelectedRoom(selectedRoom);
+                        list.repaint();
                     }
                 }
             });
