@@ -3,6 +3,7 @@ package hotelbookingsystem.gui;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -157,5 +158,23 @@ public class ModelManager {
         } else{
             dbUpdater.updateBooking(booking);
         }  
+    }
+    
+    /**
+     * Converts a date into its individual integers
+     * @param date - Date to be converted
+     * @return int array with day, month, year as int's
+     */
+    public int[] convertDateToIntArray(Date date){
+        int[] timeArray = new int[3];
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Extract the day, month, and year from the calendar
+        timeArray[0]= calendar.get(Calendar.DAY_OF_MONTH);
+        timeArray[1]= calendar.get(Calendar.MONTH) + 1; 
+        timeArray[2]= calendar.get(Calendar.YEAR);
+        return timeArray;
     }
 }
