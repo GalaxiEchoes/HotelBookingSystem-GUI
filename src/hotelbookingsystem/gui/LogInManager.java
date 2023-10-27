@@ -13,13 +13,13 @@ public class LogInManager {
     /**
      * Checks if user input matches password in file
      *
-     * @param aAdmin
+     * @param staff - User or Admin account
      * @param password - String password used to login
      * @param username
      * @return true if logged in, false if wrong password
      */
     public boolean checkLogin(Staff staff, String password, String username) {
-        if (staff.name.equals(username) && staff.password.equals(password)) {
+        if(staff.name.equals(username) && staff.password.equals(password)) {
             return true;
         }
         return false;

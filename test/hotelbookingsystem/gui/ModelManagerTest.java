@@ -29,19 +29,32 @@ public class ModelManagerTest {
     public static void setUpClass() {
         mManager = new ModelManager();
         dbRetriever = ObjectFactory.createDatabaseRetriever();
-        booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
-        booking.setBookingID(10);
-        booking.getCustomer().setCustomerID(10);
+        booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         session = DatabaseManager.getSession();
     }
     
     @AfterClass
     public static void tearDownClass() {
+        restartSession();
+        if(booking.getBookingID() != 0){
+            session.delete(booking);
+            session.delete(booking.getCustomer());
+            tx.commit();
+        }
         DatabaseManager.closeSession(session);
     }
     
     @Before
     public void setUp() {
+        restartSession();
+        if(booking.getBookingID() != 0){
+            session.delete(booking);
+            session.delete(booking.getCustomer());
+            booking.setBookingID(0);
+            booking.getCustomer().setCustomerID(0);
+            tx.commit();
+        }
+        restartSession();
     }
     
     @After
@@ -54,19 +67,15 @@ public class ModelManagerTest {
     @Test
     public void testFindAvailableRooms() {
         System.out.println("findAvailableRooms");
-        mManager.saveNewBooking(booking);
-        tx = session.beginTransaction();
+        session.save(booking.getCustomer());
+        session.save(booking);
+        tx.commit();
         
         //Test
         HashSet<Room> result = mManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
         
         //Verification
         assertFalse(result.contains(booking.getRoom()));
-        
-        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE customerID = :customer_id");
-        deleteCustomer.setParameter("customer_id", booking.getCustomer().getCustomerID());
-        tx.commit();
-        mManager.deleteBooking(booking);
     }
 
     /**
@@ -89,7 +98,7 @@ public class ModelManagerTest {
      */
     @Test
     public void testGetRoomByID_ShouldReturnNull_WhenRoomDoesNotExist() {
-        System.out.println("getRoomByID");
+        System.out.println("getRoomByID_ShouldReturnNull_WhenRoomDoesNotExist");
         int roomID = 69;
         
         //Test
@@ -103,8 +112,6 @@ public class ModelManagerTest {
     @Test
     public void testSaveNewBooking() {
         System.out.println("saveNewBooking");
-        booking.setBookingID(0);
-        tx = session.beginTransaction();
         
         //Test
         mManager.saveNewBooking(booking);
@@ -112,21 +119,14 @@ public class ModelManagerTest {
         //Validation
         HashSet<Booking> result = dbRetriever.getAllBookings();
         assertTrue(result.contains(booking));
-        
-        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE CustomerID = :customer_id");
-        deleteCustomer.setParameter("customer_id", booking.getCustomer().getCustomerID());
-        tx.commit();
-        mManager.deleteBooking(booking);
-        booking.setBookingID(10);
     }
 
     /**
-     * Test of updateBooking method, of class ModelManager. Booking Id is 0 so shouldn't Update.
+     * Test of updateBooking method, of class ModelManager.
      */
     @Test
     public void testUpdateBookingWithNewBooking() {
-        System.out.println("updateBooking");
-        Booking booking = new Booking();
+        System.out.println("updateBookingWithNewBooking");
         
         //Test
         mManager.updateBooking(booking);
@@ -141,7 +141,7 @@ public class ModelManagerTest {
     @Test
     public void testFindBooking() {
         System.out.println("findBooking");
-        tx = session.beginTransaction();
+        session.save(booking.getCustomer());
         session.save(booking);
         tx.commit();
         
@@ -150,10 +150,6 @@ public class ModelManagerTest {
         
         //Verification
         assertTrue(result.contains(booking));
-        
-        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
-        deleteBooking.setParameter("booking_id", booking.getBookingID());
-        tx.commit();
     }
 
     /**
@@ -162,7 +158,6 @@ public class ModelManagerTest {
     @Test
     public void testInvoiceBooking() {
         System.out.println("invoiceBooking");
-        tx = session.beginTransaction();
         float total = 226.8f;
         
         //Test
@@ -170,9 +165,14 @@ public class ModelManagerTest {
         
         //Verification
         assertTrue(booking.getTotal() == total);
-        
-        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
-        deleteBooking.setParameter("booking_id", booking.getBookingID());
-        tx.commit();
+    }
+    
+    /**
+     * Utility method to restart the session.
+     */
+    static public void restartSession(){
+        DatabaseManager.closeSession(session);
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
     }
 }

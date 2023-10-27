@@ -3,7 +3,6 @@ package hotelbookingsystem.gui;
 import java.util.HashSet;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

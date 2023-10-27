@@ -62,7 +62,7 @@ public class ModelManager {
             Customer customer = dbRetriever.getExsistingCustomer(booking);
         
             //Synchonises customer if customer matches previous database entry
-            if(customer == null){
+            if(customer != null){
                 booking.setCustomer(customer);
             }
         
@@ -102,9 +102,11 @@ public class ModelManager {
     /**         
      * Saves new Admin or User account to database
      * @param newStaff - account to be saved
+     * @return true if successful, false if
      */
-    public void saveNewStaff(Staff newStaff){
-        dbUpdater.saveNewStaff(newStaff);
+    public boolean saveNewStaff(Staff newStaff){
+        boolean result = dbUpdater.saveNewStaff(newStaff);
+        return result;
     }
     
     /**
