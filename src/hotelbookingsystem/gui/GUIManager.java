@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hotelbookingsystem.gui;
 
 import java.awt.BorderLayout;
@@ -21,8 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- *
- * @author berri
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
+ * 21151229)
  */
 public class GUIManager extends JFrame {
 
@@ -55,6 +51,12 @@ public class GUIManager extends JFrame {
 
     }
 
+    /**
+     * makes the loginPanel for the cardLayout frame sets the contorlPanel's
+     * visibility to false
+     *
+     * @return loginPanel
+     */
     private JPanel createLogin() {
         JPanel loginPanel = new JPanel();
         JButton loginButton = new JButton("Login");
@@ -74,11 +76,20 @@ public class GUIManager extends JFrame {
         return loginPanel;
     }
 
+    /**
+     * sets the login as the current displayed panel
+     */
     public void login() {
         controlPanel.setVisible(false);
         cardLayout.show(cardPanel, "Login");
     }
 
+    /**
+     * *
+     * makes user mainMenuPanel for the cardLayout frame
+     *
+     * @return mainMenuPanel
+     */
     private JPanel createMainMenu() {
         JPanel mainMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
@@ -90,11 +101,21 @@ public class GUIManager extends JFrame {
         return mainMenuPanel;
     }
 
+    /**
+     * sets mainMenu as the current displayed panel
+     */
     public void mainMenu() {
         controlPanel.setVisible(true);
         cardLayout.show(cardPanel, "Main Menu");
     }
 
+    /**
+     * *
+     * makes the AdminMenuPanel for the cardLayout frame add the option of
+     * adding staff where normal mainMenu cant add staff
+     *
+     * @return adminMenuPanel
+     */
     private JPanel createAdminMenu() {
         JPanel adminMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
@@ -108,11 +129,19 @@ public class GUIManager extends JFrame {
         return adminMenuPanel;
     }
 
+    /**
+     * sets adminMenu to the current displayed panel
+     */
     public void adminMenu() {
-
+        controlPanel.setVisible(true);
         cardLayout.show(cardPanel, "Admin Menu");
     }
 
+    /**
+     * makes the addStaffPanel for the cardLayout frame
+     *
+     * @return addStaffPanel
+     */
     private JPanel createAddStaff() {
         JPanel addStaffPanel = new JPanel();
         JButton add = new JButton("Add");
@@ -132,10 +161,18 @@ public class GUIManager extends JFrame {
         return addStaffPanel;
     }
 
+    /**
+     * sets addStaff to the current displayed panel
+     */
     public void addStaff() {
         cardLayout.show(cardPanel, "Add Staff");
     }
 
+    /**
+     * makes the makeBookingPanel where all information for a booking is entered
+     *
+     * @return makeBookingPanel
+     */
     private JPanel createMakeBooking() {
         JPanel makeBookingPanel = new JPanel();
         JButton submit = new JButton("Submit");
@@ -153,20 +190,24 @@ public class GUIManager extends JFrame {
         JLabel endDateLabel = new JLabel("End Date(dd/mm/yyyy): ");
         JTextField endDate = new JTextField();
 
+        //make JPanels for availableRooms, roomList and buttonPanel
         JPanel availableRooms = new JPanel();
         JPanel roomList = new JPanel();
         JPanel buttonPanel = new JPanel();
         JList result = new JList<>(roomListModel);
 
+        //make buttons for roomSizes
         ButtonGroup roomSizeButtons = new ButtonGroup();
         JRadioButton singleRoomButton = new JRadioButton("Single Room");
         JRadioButton doubleRoomButton = new JRadioButton("Double Room");
         JRadioButton suiteRoomButton = new JRadioButton("Suite");
 
+        //add butons to buttonGroup
         roomSizeButtons.add(suiteRoomButton);
         roomSizeButtons.add(singleRoomButton);
         roomSizeButtons.add(doubleRoomButton);
 
+        //add componets to buttonPanel
         buttonPanel.setLayout(new GridLayout(3, 1));
         buttonPanel.add(singleRoomButton);
         buttonPanel.add(doubleRoomButton);
@@ -174,6 +215,7 @@ public class GUIManager extends JFrame {
 
         roomList.add(new JScrollPane(result));
 
+        //add allcomponets to makeBookingPanel
         availableRooms.add(buttonPanel, BorderLayout.PAGE_START);
         availableRooms.add(roomList, BorderLayout.CENTER);
         makeBookingPanel.add(bookingDetials);
@@ -192,14 +234,24 @@ public class GUIManager extends JFrame {
         makeBookingPanel.add(guestListLabel);
         makeBookingPanel.add(guestList);
         makeBookingPanel.add(submit);
-        
+
         return makeBookingPanel;
     }
 
+    /**
+     * sets makeBookingPanel to current displayed panel
+     */
     public void makeBooking() {
         cardLayout.show(cardPanel, "Make a Booking");
     }
 
+    /**
+     * the controlPanel is so that a user can either go back to the main menu or
+     * log out if an admin is loged in if they press main menu it will go back
+     * to admin menu
+     *
+     * @return controlPanel
+     */
     private JPanel controlButton() {
         JButton logout = new JButton("Logout");
         JButton mainMenu = new JButton("Main Menu");
@@ -210,26 +262,64 @@ public class GUIManager extends JFrame {
         return controlPanel;
     }
 
+    /**
+     * makes the panel for searching for a booking
+     *
+     * @return searchBookingPanel
+     */
     private JPanel createSearchBooking() {
         JPanel searchBookingPanel = new JPanel();
         JButton searchButton = new JButton("Search");
-        JTextField search = new JTextField();
+        JLabel nameLabel = new JLabel("Name: ");
+        JTextField customerName = new JTextField();
+        JLabel emailLabel = new JLabel("Email: ");
+        JTextField email = new JTextField();
+        JLabel numberLabel = new JLabel("Phone Number: ");
+        JTextField phoneNumber = new JTextField();
+        JLabel guestListLabel = new JLabel("Guest List:");
+        JTextArea guestList = new JTextArea();
+        JLabel startDateLabel = new JLabel("Start Date (ss/mm/yyyy): ");
+        JTextField startDate = new JTextField();
+        JLabel endDateLabel = new JLabel("End Date (dd/mm/yyyy): ");
+        JTextField endDate = new JTextField();
+
         JList result = new JList();
         JButton edit = new JButton("Edit");
 
-        searchBookingPanel.add(search);
+        //add all componets to searchBookingPanel
+        searchBookingPanel.add(nameLabel);
+                searchBookingPanel.add(customerName);
+        searchBookingPanel.add(emailLabel);
+        searchBookingPanel.add(email);
+                searchBookingPanel.add(numberLabel);
+        searchBookingPanel.add(phoneNumber);
+        searchBookingPanel.add(guestListLabel);
+        searchBookingPanel.add(guestList);
+        searchBookingPanel.add(startDateLabel);
+        searchBookingPanel.add(startDate);
+        searchBookingPanel.add(endDateLabel);
+        searchBookingPanel.add(endDate);
         searchBookingPanel.add(searchButton);
         searchBookingPanel.add(result);
         searchBookingPanel.add(edit);
 
         return searchBookingPanel;
     }
-    
-    public void searchBooking(){
+
+    /**
+     * makes searchBookingPanel to current displayed panel
+     */
+    public void searchBooking() {
         cardLayout.show(cardPanel, "Search for Booking");
     }
-    
+
+    /**
+     * makes the editBookingPanel
+     *
+     * @return editBookingPanel
+     */
     private JPanel createEditBooking() {
+        //editBookingPanel and all its componets
         JPanel editBookingPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         JButton update = new JButton("Update Detials");
@@ -248,41 +338,48 @@ public class GUIManager extends JFrame {
         JLabel endDateLabel = new JLabel("End Date (dd/mm/yyyy): ");
         JTextField endDate = new JTextField();
 
-
+        //make Jpanel for availableRooms, roomlist,radioButtonPanel
         JPanel availableRooms = new JPanel();
         JPanel roomList = new JPanel();
         JPanel radioButtonPanel = new JPanel();
         JList result = new JList<>(roomListModel);
 
+        //make buttonGroup for radioButtons for roomsizes
         ButtonGroup roomSizeButtons = new ButtonGroup();
         JRadioButton singleRoomButton = new JRadioButton("Single Room");
         JRadioButton doubleRoomButton = new JRadioButton("Double Room");
         JRadioButton suiteRoomButton = new JRadioButton("Suite");
 
+        //add the radioButtons to buttonGroup
         roomSizeButtons.add(suiteRoomButton);
         roomSizeButtons.add(singleRoomButton);
         roomSizeButtons.add(doubleRoomButton);
 
+        //set layout off raidoButtonPanel and add the radioButtons to it
         radioButtonPanel.setLayout(new GridLayout(3, 1));
         radioButtonPanel.add(singleRoomButton);
         radioButtonPanel.add(doubleRoomButton);
         radioButtonPanel.add(suiteRoomButton);
 
+        //add ScrollPane for roomlist
         roomList.add(new JScrollPane(result));
 
+        //add radioButtonPanel and roomlist to availableRooms panel
         availableRooms.add(radioButtonPanel, BorderLayout.PAGE_START);
         availableRooms.add(roomList, BorderLayout.CENTER);
 
+        //add buttons to buttonPanel
         buttonPanel.add(update);
         buttonPanel.add(delete);
 
+        //adds all panels and componets to editbookingPanel
         editBookingPanel.add(bookingDetials);
         editBookingPanel.add(buttonPanel, BorderLayout.PAGE_END);
-        editBookingPanel.setLayout(new GridLayout(0, 3));       
+        editBookingPanel.setLayout(new GridLayout(0, 3));
         editBookingPanel.add(startDateLabel);
         editBookingPanel.add(startDate);
         editBookingPanel.add(endDateLabel);
-        editBookingPanel.add(endDate);  
+        editBookingPanel.add(endDate);
         editBookingPanel.add(availableRooms, BorderLayout.EAST);
         editBookingPanel.add(nameLabel);
         editBookingPanel.add(customerName);
@@ -297,6 +394,9 @@ public class GUIManager extends JFrame {
         return editBookingPanel;
     }
 
+    /**
+     * sets editBookinngPanel to current displayed panel
+     */
     public void editBooking() {
         cardLayout.show(cardPanel, "Edit a Booking");
     }
