@@ -31,7 +31,7 @@ public class DatabaseUpdaterTest {
         dbUpdater = ObjectFactory.createDatabaseUpdater();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         booking.setBookingID(10);
-        booking.getCustomer().setPersonId(10);
+        booking.getCustomer().setPersonID(10);
         room = ObjectFactory.createNewRoom(16, "Single");
         staff = ObjectFactory.createStaff("Admin", "John", "John");
         session = DatabaseManager.getSession();
@@ -66,7 +66,7 @@ public class DatabaseUpdaterTest {
         dbUpdater.deleteBooking(booking);
 
         //Verification
-        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.booking_id = :booking_id");
+        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
         assertTrue(result.isEmpty());
@@ -85,7 +85,7 @@ public class DatabaseUpdaterTest {
         dbUpdater.addBooking(booking);
         
         //Verification
-        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.booking_id = :booking_id");
+        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
         assertEquals(booking.getBookingID(), result.get(0).getBookingID(), 0);
@@ -110,7 +110,7 @@ public class DatabaseUpdaterTest {
         dbUpdater.updateBooking(booking);
         
         //Verification
-        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.booking_id = :booking_id");
+        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
         assertEquals(booking.getTotal(), result.get(0).getTotal(), 0);
@@ -130,13 +130,13 @@ public class DatabaseUpdaterTest {
         dbUpdater.saveNewStaff(staff);
         
         //Verification
-        Query<Staff> query = session.createQuery("FROM Staff s WHERE s.staff_id = :staff_id");
-        query.setParameter("staff_id",  staff.getStaffId());
+        Query<Staff> query = session.createQuery("FROM Staff s WHERE s.staffID = :staff_id");
+        query.setParameter("staff_id",  staff.getStaffID());
         List<Staff> result = query.list();
-        assertEquals(staff.getStaffId(), result.get(0).getStaffId(), 0);
+        assertEquals(staff.getStaffID(), result.get(0).getStaffID(), 0);
         tx.rollback();
-        Query queryDelete = session.createQuery("DELETE FROM Staff WHERE staff_id = :staff_id");
-        queryDelete.setParameter("staff_id", staff.getStaffId());
+        Query queryDelete = session.createQuery("DELETE FROM Staff WHERE staffID = :staff_id");
+        queryDelete.setParameter("staff_id", staff.getStaffID());
         tx.commit();
     }
 
@@ -152,12 +152,12 @@ public class DatabaseUpdaterTest {
         dbUpdater.saveNewRoom(room);
         
         //Verification
-        Query<Room> query = session.createQuery("FROM Room r WHERE r.room_id = :room_id");
+        Query<Room> query = session.createQuery("FROM Room r WHERE r.roomID = :room_id");
         query.setParameter("room_id",  room.getRoomID());
         List<Room> result = query.list();
         assertEquals(room.getRoomID(), result.get(0).getRoomID(), 0);
         tx.rollback();
-        Query queryDelete = session.createQuery("DELETE FROM Room WHERE room_id = :room_id");
+        Query queryDelete = session.createQuery("DELETE FROM Room WHERE roomID = :room_id");
         queryDelete.setParameter("room_id", room.getRoomID());
         tx.commit();
     }

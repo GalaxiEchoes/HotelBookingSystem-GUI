@@ -184,7 +184,7 @@ public class DatabaseRetriever implements IDatabaseRetriever{
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
    
-        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.booking_id = :booking_id");
+        Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  bookingId);
 
         List<Booking> result = query.list();

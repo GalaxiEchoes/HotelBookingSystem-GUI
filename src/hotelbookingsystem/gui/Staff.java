@@ -17,7 +17,7 @@ abstract public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "staff_id")
-    protected int staffId;
+    protected int staffID;
 
     @Column(name = "name")
     protected String name;
@@ -66,17 +66,17 @@ abstract public class Staff implements Serializable {
     }
 
     /**
-     * @return staffId
+     * @return staffID
      */
-    public int getStaffId() {
-        return staffId;
+    public int getStaffID() {
+        return staffID;
     }
 
     /**
-     * @param staffId - int ID of staff
+     * @param staffID - int ID of staff
      */
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
+    public void setStaffID(int staffID) {
+        this.staffID = staffID;
     }
 
     /**
@@ -121,7 +121,7 @@ abstract public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "Staff{" + "staffId: " + staffId + ", name: " + name + ", password: " + password + '}';
+        return "Staff{" + "staffId: " + staffID + ", name: " + name + ", password: " + password + '}';
     }
     
     

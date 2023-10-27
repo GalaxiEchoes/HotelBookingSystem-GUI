@@ -58,14 +58,16 @@ public class ModelManager {
      * @param booking - Booking to be saved 
      */
     public void saveNewBooking(Booking booking){
-        Customer customer = dbRetriever.getExsistingCustomer(booking);
+        if(booking.getBookingID() == 0){
+            Customer customer = dbRetriever.getExsistingCustomer(booking);
         
-        //Synchonises customer if customer matches previous database entry
-        if(customer == null){
-            booking.setCustomer(customer);
+            //Synchonises customer if customer matches previous database entry
+            if(customer == null){
+                booking.setCustomer(customer);
+            }
+        
+            dbUpdater.addBooking(booking);
         }
-        
-        dbUpdater.addBooking(booking);
     }
     
     /**
@@ -152,7 +154,6 @@ public class ModelManager {
             dbUpdater.addBooking(booking);
         } else{
             dbUpdater.updateBooking(booking);
-        }
-        
+        }  
     }
 }

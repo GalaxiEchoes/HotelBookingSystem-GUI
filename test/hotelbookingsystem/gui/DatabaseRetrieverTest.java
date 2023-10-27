@@ -1,7 +1,9 @@
 package hotelbookingsystem.gui;
 
-import java.util.Date;
 import java.util.HashSet;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,6 +17,11 @@ import static org.junit.Assert.*;
 public class DatabaseRetrieverTest {
     
     private static IDatabaseRetriever dbRetriever;
+    private static Booking booking;
+    private static Room room;
+    private static Staff staff;
+    private static Session session;
+    private static Transaction tx;
     
     public DatabaseRetrieverTest() {
     }
@@ -22,10 +29,28 @@ public class DatabaseRetrieverTest {
     @BeforeClass
     public static void setUpClass() {
         dbRetriever = ObjectFactory.createDatabaseRetriever();
+        booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
+        booking.setBookingID(10);
+        booking.getCustomer().setPersonID(10);
+        room = ObjectFactory.createNewRoom(16, "Single");
+        staff = ObjectFactory.createStaff("Admin", "John", "John");
+        session = DatabaseManager.getSession();
     }
     
     @AfterClass
     public static void tearDownClass() {
+        tx = session.beginTransaction();
+        Query deleteStaff = session.createQuery("DELETE FROM Staff WHERE staffID = :staff_id");
+        deleteStaff.setParameter("staff_id", staff.getStaffID());
+        Query deleteRoom = session.createQuery("DELETE FROM Room WHERE roomID = :room_id");
+        deleteRoom.setParameter("room_id", room.getRoomID());
+        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
+        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
+        Query deleteBooking = session.createQuery("DELETE FROM Booking WHERE bookingID = :booking_id");
+        deleteBooking.setParameter("booking_id", booking.getBookingID());
+        tx.commit();
+        
+        DatabaseManager.closeSession(session);
     }
     
     @Before
@@ -42,12 +67,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllRooms() {
         System.out.println("getAllRooms");
-        DatabaseRetriever instance = new DatabaseRetriever();
-        HashSet<Room> expResult = null;
-        HashSet<Room> result = instance.getAllRooms();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.save(room);
+        tx.commit();
+        
+        //Test
+        HashSet<Room> result = dbRetriever.getAllRooms();
+        
+        //Verification
+        assertTrue(result.contains(room));
     }
 
     /**
@@ -56,12 +84,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllStaff() {
         System.out.println("getAllStaff");
-        DatabaseRetriever instance = new DatabaseRetriever();
-        HashSet<Staff> expResult = null;
-        HashSet<Staff> result = instance.getAllStaff();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.saveOrUpdate(staff);
+        tx.commit();
+        
+        //Test
+        HashSet<Staff> result = dbRetriever.getAllStaff();
+        
+        //Verification
+        assertTrue(result.contains(staff));
     }
 
     /**
@@ -70,12 +101,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetAllBookings() {
         System.out.println("getAllBookings");
-        DatabaseRetriever instance = new DatabaseRetriever();
-        HashSet<Booking> expResult = null;
-        HashSet<Booking> result = instance.getAllBookings();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.saveOrUpdate(booking);
+        tx.commit();
+        
+        //Test
+        HashSet<Booking> result = dbRetriever.getAllBookings();
+        
+        //Verification
+        assertTrue(result.contains(booking));
     }
 
     /**
@@ -84,13 +118,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testGetExsistingCustomer() {
         System.out.println("getExsistingCustomer");
-        Booking booking = null;
-        DatabaseRetriever instance = new DatabaseRetriever();
-        Customer expResult = null;
-        Customer result = instance.getExsistingCustomer(booking);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.saveOrUpdate(booking);
+        tx.commit();
+        
+        //Test
+        Customer result = dbRetriever.getExsistingCustomer(booking);
+        
+        //Verification
+        assertEquals(booking.getCustomer(), result);
     }
 
     /**
@@ -99,13 +135,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindStaff() {
         System.out.println("findStaff");
-        String username = "";
-        DatabaseRetriever instance = new DatabaseRetriever();
-        Staff expResult = null;
-        Staff result = instance.findStaff(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.saveOrUpdate(staff);
+        tx.commit();
+        
+        //Test
+        Staff result = dbRetriever.findStaff(staff.getName());
+        
+        //Verification
+        assertEquals(staff, result);
     }
 
     /**
@@ -114,14 +152,15 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindBookingBetweenDates() {
         System.out.println("findBookingBetweenDates");
-        Date startDate = null;
-        Date endDate = null;
-        DatabaseRetriever instance = new DatabaseRetriever();
-        HashSet<Booking> expResult = null;
-        HashSet<Booking> result = instance.findBookingBetweenDates(startDate, endDate);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        tx = session.beginTransaction();
+        session.saveOrUpdate(booking);
+        tx.commit();
+        
+        //Test
+        HashSet<Booking> result = dbRetriever.findBookingBetweenDates(booking.getStartDate(), booking.getEndDate());
+        
+        //Verification
+        assertTrue(result.contains(booking));
     }
 
     /**
@@ -130,13 +169,14 @@ public class DatabaseRetrieverTest {
     @Test
     public void testFindBookingById() {
         System.out.println("findBookingById");
-        int bookingId = 0;
-        DatabaseRetriever instance = new DatabaseRetriever();
-        Booking expResult = null;
-        Booking result = instance.findBookingById(bookingId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+        tx = session.beginTransaction();
+        session.saveOrUpdate(booking);
+        tx.commit();
+        
+        //Test
+        Booking result = dbRetriever.findBookingById(booking.getBookingID());
+        
+        //Verification
+        assertEquals(booking, result);
+    }  
 }

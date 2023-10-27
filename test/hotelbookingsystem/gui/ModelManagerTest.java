@@ -2,6 +2,9 @@ package hotelbookingsystem.gui;
 
 import java.util.Date;
 import java.util.HashSet;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,15 +17,26 @@ import static org.junit.Assert.*;
  */
 public class ModelManagerTest {
     
+    private static ModelManager mManager;
+    private static Session session;
+    private static Transaction tx;
+    private static Booking booking;
+    
     public ModelManagerTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        mManager = new ModelManager();
+        booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
+        booking.setBookingID(10);
+        booking.getCustomer().setPersonID(10);
+        session = DatabaseManager.getSession();
     }
     
     @AfterClass
     public static void tearDownClass() {
+        DatabaseManager.closeSession(session);
     }
     
     @Before
@@ -39,14 +53,19 @@ public class ModelManagerTest {
     @Test
     public void testFindAvailableRooms() {
         System.out.println("findAvailableRooms");
-        Date startDate = null;
-        Date endDate = null;
-        ModelManager instance = new ModelManager();
-        HashSet<Room> expResult = null;
-        HashSet<Room> result = instance.findAvailableRooms(startDate, endDate);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        mManager.saveNewBooking(booking);
+        tx = session.beginTransaction();
+        
+        //Test
+        HashSet<Room> result = mManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
+        
+        //Verification
+        assertFalse(result.contains(booking.getRoom()));
+        
+        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
+        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
+        tx.commit();
+        mManager.deleteBooking(booking);
     }
 
     /**
@@ -55,13 +74,26 @@ public class ModelManagerTest {
     @Test
     public void testGetRoomByID() {
         System.out.println("getRoomByID");
-        int roomID = 0;
-        ModelManager instance = new ModelManager();
-        Room expResult = null;
-        Room result = instance.getRoomByID(roomID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int roomID = 15;
+        
+        //Test
+        Room result = mManager.getRoomByID(roomID);
+        
+        //Validation
+        assertEquals(roomID, result.getRoomID());
+    }
+    
+    /**
+     * Test of getRoomByID method, of class ModelManager. Using Id for a room that does not exist.
+     */
+    @Test
+    public void testGetRoomByIDRoomDoesNotExist() {
+        System.out.println("getRoomByID");
+        int roomID = 69;
+        
+        //Test
+        Room result = mManager.getRoomByID(roomID);
+        assertNull(result);
     }
 
     /**
@@ -78,57 +110,18 @@ public class ModelManagerTest {
     }
 
     /**
-     * Test of updateBooking method, of class ModelManager.
+     * Test of updateBooking method, of class ModelManager. Booking Id is 0 so shouldn't Update.
      */
     @Test
-    public void testUpdateBooking() {
+    public void testUpdateBookingWithNewBooking() {
         System.out.println("updateBooking");
-        Booking booking = null;
-        ModelManager instance = new ModelManager();
-        instance.updateBooking(booking);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of deleteBooking method, of class ModelManager.
-     */
-    @Test
-    public void testDeleteBooking() {
-        System.out.println("deleteBooking");
-        Booking booking = null;
-        ModelManager instance = new ModelManager();
-        instance.deleteBooking(booking);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of findStaff method, of class ModelManager.
-     */
-    @Test
-    public void testFindStaff() {
-        System.out.println("findStaff");
-        String username = "";
-        ModelManager instance = new ModelManager();
-        Staff expResult = null;
-        Staff result = instance.findStaff(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of saveNewStaff method, of class ModelManager.
-     */
-    @Test
-    public void testSaveNewStaff() {
-        System.out.println("saveNewStaff");
-        Staff newStaff = null;
-        ModelManager instance = new ModelManager();
-        instance.saveNewStaff(newStaff);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Booking booking = new Booking();
+        
+        //Test
+        mManager.updateBooking(booking);
+        
+        //Validation
+        assertTrue(booking.getBookingID() == 0);
     }
 
     /**
@@ -141,21 +134,6 @@ public class ModelManagerTest {
         ModelManager instance = new ModelManager();
         HashSet<Booking> expResult = null;
         HashSet<Booking> result = instance.findBooking(criteria);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of findBookingById method, of class ModelManager.
-     */
-    @Test
-    public void testFindBookingById() {
-        System.out.println("findBookingById");
-        int bookingId = 0;
-        ModelManager instance = new ModelManager();
-        Booking expResult = null;
-        Booking result = instance.findBookingById(bookingId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

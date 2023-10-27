@@ -15,7 +15,7 @@ abstract public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "person_id")
-    protected int personId;
+    protected int personID;
     
     @Column(name = "name")
     protected String name;
@@ -44,17 +44,17 @@ abstract public class Person implements Serializable {
     }
     
     /**
-     * @return personId  
+     * @return personID  
      */
-    public int getPersonId() {
-        return personId;
+    public int getPersonID() {
+        return personID;
     }
 
     /**
-     * @param personId - int ID of person
+     * @param personID - int ID of person
      */
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setPersonID(int personID) {
+        this.personID = personID;
     }
 
     /**
@@ -93,7 +93,7 @@ abstract public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" + "personId: " + personId + ", name: " + name + '}';
+        return "Person{" + "personId: " + personID + ", name: " + name + '}';
     }
 
 }
