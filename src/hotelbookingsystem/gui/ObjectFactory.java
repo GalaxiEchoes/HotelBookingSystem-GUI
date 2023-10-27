@@ -1,5 +1,7 @@
 package hotelbookingsystem.gui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -88,4 +90,18 @@ public class ObjectFactory {
         
         return date;
     }
+    
+    /**
+     * Turns a string back into a date
+     * @param date - String in the correct date format dd/MM/yyyy
+     * @return Date object
+     */
+    public static Date createDateFromString(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return sdf.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+    } 
 }
