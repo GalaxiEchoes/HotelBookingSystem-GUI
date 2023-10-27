@@ -175,17 +175,17 @@ public class DatabaseRetriever implements IDatabaseRetriever{
     }
     
     /**
-     * Retrieves booking with the matching bookingId
-     * @param bookingId - int ID number of booking
+     * Retrieves booking with the matching bookingID
+     * @param bookingID - int ID number of booking
      * @return Booking
      */
     @Override 
-    public Booking findBookingById(int bookingId){
+    public Booking findBookingById(int bookingID){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
    
         Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
-        query.setParameter("booking_id",  bookingId);
+        query.setParameter("booking_id",  bookingID);
 
         List<Booking> result = query.list();
 

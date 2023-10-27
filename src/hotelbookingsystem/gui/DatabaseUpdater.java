@@ -1,8 +1,6 @@
 package hotelbookingsystem.gui;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -32,7 +30,6 @@ public class DatabaseUpdater implements IDatabaseUpdater{
             
         } catch (Exception ex) { 
             tx.rollback();
-            Logger.getLogger(DatabaseUpdater.class.getName()).log(Level.SEVERE, null, ex);
         }
         DatabaseManager.closeSession(session);
     }
@@ -47,13 +44,12 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         tx = session.beginTransaction();
 
         try {
-            session.saveOrUpdate(booking);
-            session.saveOrUpdate(booking.getCustomer());
-
+            session.save(booking.getCustomer());
+            session.save(booking);
             tx.commit();
+            
         } catch (Exception e) {
             tx.rollback();
-            e.printStackTrace();
         } 
         
         DatabaseManager.closeSession(session);
@@ -69,13 +65,13 @@ public class DatabaseUpdater implements IDatabaseUpdater{
         tx = session.beginTransaction();
         
         try {
-            session.saveOrUpdate(changedBooking);
             session.saveOrUpdate(changedBooking.getCustomer());
+            session.saveOrUpdate(changedBooking);
+            
             tx.commit();
         
         } catch (Exception e) {
             tx.rollback();
-            e.printStackTrace();
         }
         
         DatabaseManager.closeSession(session);
@@ -84,30 +80,33 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     /**
      * Saves a new Admin or User account to Staff database
      * @param newStaff - Admin or User to be saved
+     * @return True if successful, false if name already exists
      */
     @Override
-    public void saveNewStaff(Staff newStaff){
+    public boolean saveNewStaff(Staff newStaff){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
+        
+        //Check if name is unique
         Query query = session.createQuery("FROM Staff s WHERE s.name = :name ");
         query.setParameter("name", newStaff.getName());
-
         List<Staff> result = query.list();
         
         if(result.isEmpty()){
             try {
-                session.saveOrUpdate(newStaff);
+                session.save(newStaff);
                 tx.commit();
+                
             } catch (Exception e) {
                 tx.rollback();
-                e.printStackTrace();
             } 
         } else {
-            throw new IllegalArgumentException("This username is not unique.");
+            DatabaseManager.closeSession(session);
+            return false;
         }
-
         
         DatabaseManager.closeSession(session);
+        return true;
     }
     
     /**
@@ -118,12 +117,13 @@ public class DatabaseUpdater implements IDatabaseUpdater{
     public void saveNewRoom(Room room){
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
+        
         try {
-            session.saveOrUpdate(room);
+            session.save(room);
             tx.commit();
+            
         } catch (Exception e) {
             tx.rollback();
-            e.printStackTrace();
         } 
         
         DatabaseManager.closeSession(session);

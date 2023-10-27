@@ -17,9 +17,10 @@ public class DatabaseManager {
         cfg.addAnnotatedClass(DoubleRoom.class);
         cfg.addAnnotatedClass(Suite.class);
         cfg.addAnnotatedClass(Booking.class);
-        cfg.addAnnotatedClass(Person.class);
         cfg.addAnnotatedClass(Customer.class);
         cfg.addAnnotatedClass(Admin.class);
+        cfg.addAnnotatedClass(Staff.class);
+        cfg.addAnnotatedClass(User.class);
         factory = cfg.buildSessionFactory();
     }
     

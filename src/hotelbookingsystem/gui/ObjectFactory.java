@@ -8,6 +8,13 @@ import java.util.Date;
  */
 public class ObjectFactory {
     
+    /**
+     * Creates a Staff object depending on input string
+     * @param type - String type of Staff
+     * @param name - username of account
+     * @param password - password of account
+     * @return Staff object
+     */
     public static Staff createStaff(String type, String name, String password){
         if("Admin".equalsIgnoreCase(type)){
             return new Admin(name, password);
@@ -17,18 +24,39 @@ public class ObjectFactory {
         return null;
     }
     
+    /**
+     * Creates a customer object
+     * @param name - name of customer
+     * @param email - email of customer
+     * @param phoneNumber - phoneNumber of customer
+     * @return Customer
+     */
     public static Customer createCustomer(String name, String email, String phoneNumber){
         return new Customer(name, email, phoneNumber);
     } 
     
+    /**
+     * Creates a DatabaseRetriever
+     * @return DatabaseRetriever object
+     */
     public static IDatabaseRetriever createDatabaseRetriever() {
         return new DatabaseRetriever();
     }
     
+    /**
+     * Creates a DatabaseUpdater
+     * @return DatabaseUpdater object
+     */
     public static IDatabaseUpdater createDatabaseUpdater() {
         return new DatabaseUpdater();
     }
     
+    /**
+     * creates new room depending on input string
+     * @param roomID - ID of room/ room number
+     * @param roomSize - size of room as a string
+     * @return Room object
+     */
     public static Room createNewRoom(int roomID, String roomSize){
         if("Suite".equalsIgnoreCase(roomSize)){
             return new Suite(roomID); 

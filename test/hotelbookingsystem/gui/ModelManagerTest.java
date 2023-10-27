@@ -31,7 +31,7 @@ public class ModelManagerTest {
         dbRetriever = ObjectFactory.createDatabaseRetriever();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), ObjectFactory.createNewRoom(1, "Single"), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         booking.setBookingID(10);
-        booking.getCustomer().setPersonID(10);
+        booking.getCustomer().setCustomerID(10);
         session = DatabaseManager.getSession();
     }
     
@@ -63,8 +63,8 @@ public class ModelManagerTest {
         //Verification
         assertFalse(result.contains(booking.getRoom()));
         
-        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
-        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
+        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE customerID = :customer_id");
+        deleteCustomer.setParameter("customer_id", booking.getCustomer().getCustomerID());
         tx.commit();
         mManager.deleteBooking(booking);
     }
@@ -113,8 +113,8 @@ public class ModelManagerTest {
         HashSet<Booking> result = dbRetriever.getAllBookings();
         assertTrue(result.contains(booking));
         
-        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE personID = :person_id");
-        deleteCustomer.setParameter("person_id", booking.getCustomer().getPersonID());
+        Query deleteCustomer = session.createQuery("DELETE FROM Customer WHERE CustomerID = :customer_id");
+        deleteCustomer.setParameter("customer_id", booking.getCustomer().getCustomerID());
         tx.commit();
         mManager.deleteBooking(booking);
         booking.setBookingID(10);

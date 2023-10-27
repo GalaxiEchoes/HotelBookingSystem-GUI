@@ -5,6 +5,7 @@
 package hotelbookingsystem.gui;
 
 import java.util.HashSet;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -135,25 +136,124 @@ public class TestMain {
         for(Staff s: staff){
             System.out.println(s);
         }
-        */
         
-        ModelManager mManager = new ModelManager();
-        Session session = DatabaseManager.getSession();
-        Transaction tx = session.beginTransaction();
+        
+       
+        
         Customer customer = ObjectFactory.createCustomer("John", "john@gmail.com", "9793893");
-        session.save(customer);
+        session.saveOrUpdate(customer);
         session.flush();
-
+                
+        Query query = session.createQuery("FROM Person p");
+        List<Person> result = query.list();
+        HashSet<Person> persons = new HashSet<>(result);
+        for(Person p: persons){
+            System.out.println(p);
+        }
+        
+        HashSet<Room> rooms = dbRetriever.getAllRooms();
+        for(Room r: rooms){
+            System.out.println(r);
+        }
+        
         Booking booking = new Booking("this",customer , mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         System.out.println(booking.getRoom());
         session.saveOrUpdate(booking);
         tx.commit();
         
-        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
         
         HashSet<Booking> bookings = dbRetriever.getAllBookings();
         for(Booking b: bookings){
             System.out.println(b);
         }
+         
+        ModelManager mManager = new ModelManager();
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+        Session session = DatabaseManager.getSession();
+        Transaction tx = session.beginTransaction();
+        
+        String hql1 = "DELETE FROM Booking b";
+        Query query = session.createQuery(hql1);
+        query.executeUpdate();
+        
+        String hql = "DELETE FROM Person";
+        query = session.createQuery(hql);
+        query.executeUpdate();
+
+        tx.commit();
+        session.close();
+        
+        Customer customer = ObjectFactory.createCustomer("John", "john@gmail.com", "9793893");
+        session.save(customer);
+        tx.commit();
+        
+        Room room = mManager.getRoomByID(1);
+        
+        Booking booking = new Booking("this",customer , room, ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
+        session.save(booking);
+        tx.commit();
+        
+        HashSet<Booking> bookings = dbRetriever.getAllBookings();
+        for(Booking b: bookings){
+            System.out.println(b);
+        }
+        
+        DatabaseManager.closeSession(session);
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
+        
+        session.delete(booking);
+        session.delete(customer);
+        tx.commit();
+        DatabaseManager.closeSession(session);
+        
+        
+        
+        Staff staff = ObjectFactory.createStaff("Admin", "admin", "password");
+        session.save(staff);
+        
+        Customer customer = ObjectFactory.createCustomer("John", "john@gmail.com", "9793893");
+        session.save(customer);
+        tx.commit();
+        
+        Query query = session.createQuery("FROM Customer c WHERE c.customerID = 2");
+        Customer customer = (Customer) query.uniqueResult();
+        
+        ModelManager mManager = new ModelManager();
+        Room room = mManager.getRoomByID(1);
+        
+        Booking booking = new Booking("this", customer, room, ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
+        session.save(booking);
+        tx.commit();
+        */
+        
+        
+        IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
+        Session session = DatabaseManager.getSession();
+        Transaction tx = session.beginTransaction();
+        
+        HashSet<Booking> bookings = dbRetriever.getAllBookings();
+        for(Booking b: bookings){
+            System.out.println(b);
+
+        }
+
+        HashSet<Room> rooms = dbRetriever.getAllRooms();
+        for(Room r: rooms){
+            System.out.println(r);
+        }
+        
+        HashSet<Staff> staffs = dbRetriever.getAllStaff();
+        for(Staff s: staffs){
+            System.out.println(s);
+        }
+        
+        Query query = session.createQuery("FROM Customer c");
+        List<Customer> result = query.list();
+        HashSet<Customer> customers = new HashSet<>(result);
+        for(Customer c: customers){
+            System.out.println(c);
+        }
+        DatabaseManager.closeSession(session);
     }  
 }

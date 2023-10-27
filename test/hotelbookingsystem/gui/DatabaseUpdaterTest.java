@@ -33,25 +33,23 @@ public class DatabaseUpdaterTest {
         mManager = new ModelManager();
         booking = new Booking("this", ObjectFactory.createCustomer("John", "john@gmail.com", "9793893"), mManager.getRoomByID(1), ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         booking.setBookingID(10);
-        booking.getCustomer().setPersonID(10);
+        booking.getCustomer().setCustomerID(10);
         room = ObjectFactory.createNewRoom(16, "Single");
         staff = ObjectFactory.createStaff("Admin", "John", "John");
     }
     
     @AfterClass
     public static void tearDownClass() {
-        
     }
     
     @Before
     public void setUp() {
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
+        restartSession();
     }
     
     @After
     public void tearDown() {
-        DatabaseManager.closeSession(session);
+        
     }
 
     /**
@@ -64,9 +62,7 @@ public class DatabaseUpdaterTest {
         //Setup
         session.save(booking);
         tx.commit();
-        DatabaseManager.closeSession(session);
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
+        restartSession();
         
         //Test
         dbUpdater.deleteBooking(booking);
@@ -94,9 +90,7 @@ public class DatabaseUpdaterTest {
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
         tx.rollback();
-        DatabaseManager.closeSession(session);
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
+        restartSession();
         session.delete(booking);
         session.delete(booking.getCustomer());
         tx.commit();
@@ -119,13 +113,12 @@ public class DatabaseUpdaterTest {
         dbUpdater.updateBooking(booking);
         
         //Verification
+        restartSession();
         Query<Booking> query = session.createQuery("FROM Booking b WHERE b.bookingID = :booking_id");
         query.setParameter("booking_id",  booking.getBookingID());
         List<Booking> result = query.list();
-        tx.rollback();
-        DatabaseManager.closeSession(session);
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
+        tx.commit();
+        restartSession();
         session.delete(booking);
         session.delete(booking.getCustomer());
         tx.commit();
@@ -147,9 +140,7 @@ public class DatabaseUpdaterTest {
         query.setParameter("staff_id",  staff.getStaffID());
         List<Staff> result = query.list();
         tx.commit();
-        DatabaseManager.closeSession(session);
-        session = DatabaseManager.getSession();
-        tx = session.beginTransaction();
+        restartSession();
         session.delete(staff);
         tx.commit();
         assertTrue(result.contains(staff));
@@ -170,8 +161,18 @@ public class DatabaseUpdaterTest {
         query.setParameter("room_id",  room.getRoomID());
         List<Room> result = query.list();
         tx.rollback();
+        restartSession();
         session.delete(room);
         tx.commit();
         assertTrue(result.contains(room));
+    }
+    
+    /**
+     * Utility method to restart the session.
+     */
+    public void restartSession(){
+        DatabaseManager.closeSession(session);
+        session = DatabaseManager.getSession();
+        tx = session.beginTransaction();
     }
 }

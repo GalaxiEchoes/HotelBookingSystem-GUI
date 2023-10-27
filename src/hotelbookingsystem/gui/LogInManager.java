@@ -10,23 +10,6 @@ public class LogInManager {
 
     }
 
-    /*
-    old Login stuff from admin
-      **
-     * This first validates the old password to login, then sets new password if successful
-     * 
-     * @param oldPassword - String password to log in
-     * @param newPassword - String new password to log in
-     * @return true if change successful, false otherwise
-     *//*
-    public boolean setPassword(String oldPassword, String newPassword) {
-        if(this.login(oldPassword)){
-            this.password = newPassword;
-            return true;
-        }
-        return false;
-    }*/
-
     /**
      * Checks if user input matches password in file
      *
@@ -42,6 +25,11 @@ public class LogInManager {
         return false;
     }
 
+    /**
+     * Checks if Staff has admin permissions
+     * @param user - Staff object
+     * @return - True if staff has permission, false if not
+     */
     public boolean checkAdmin(Staff user) {
         if (user instanceof Admin) {
             if (user.hasPermissions()) {

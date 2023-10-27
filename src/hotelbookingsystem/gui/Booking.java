@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  */
 @Entity
-@Table(name = "Bookings")
+@Table(name = "Booking")
 public class Booking implements Serializable {
 
     @Id
@@ -22,7 +22,7 @@ public class Booking implements Serializable {
     @Column(name = "guest_notes")
     private String guestNotes;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
@@ -182,7 +182,7 @@ public class Booking implements Serializable {
     public void setTotal(float total) {
         this.total = total;
     }
-
+    
     /**
      * {@inheritDoc} Generates a hash code for the Booking
      *
@@ -190,13 +190,14 @@ public class Booking implements Serializable {
      */
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.room);
+        int hash = 7;
+        hash = 43 * hash + this.bookingID;
+        hash = 43 * hash + Objects.hashCode(this.room);
         return hash;
     }
 
     /**
-     * {@inheritDoc} Compares booking to obj for equality by comparing rooms
+     * {@inheritDoc} Compares booking to obj for equality by comparing rooms and ID's
      *
      * @param obj - Booking object to compare this booking to
      * @return true if equal and false otherwise
@@ -213,21 +214,18 @@ public class Booking implements Serializable {
             return false;
         }
         final Booking other = (Booking) obj;
+        if (this.bookingID != other.bookingID) {
+            return false;
+        }
         return Objects.equals(this.room, other.room);
     }
 
-    /*
-    **
+    /**
      * {@inheritDoc}
      *
      * @return String representation of booking
      *
-    @Override
-    public String toString() {
-        return "\n    Booking: " + this.customer + ", room: " + this.room;
-    }
-    */
-
+     */
     @Override
     public String toString() {
         return "Booking{" + "bookingID: " + bookingID + ", guestNotes: " + guestNotes + ", customer: " + customer + ", room: " + room + ", startDate: " + startDate + ", endDate: " + endDate + ", total: " + total + '}';
