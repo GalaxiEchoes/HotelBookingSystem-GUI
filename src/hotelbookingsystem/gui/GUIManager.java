@@ -229,7 +229,7 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Search for Booking");
     }
     
-    public JPanel createEditBooking() {
+    private JPanel createEditBooking() {
         JPanel editBookingPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         JButton update = new JButton("Update Detials");
