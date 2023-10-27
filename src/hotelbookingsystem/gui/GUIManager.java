@@ -17,7 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
+ * 21151229)
  */
 public class GUIManager extends JFrame {
 
@@ -51,9 +52,9 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes the loginPanel for the cardLayout frame
-     * sets the contorlPanel's visibility to false
-     * 
+     * makes the loginPanel for the cardLayout frame sets the contorlPanel's
+     * visibility to false
+     *
      * @return loginPanel
      */
     private JPanel createLogin() {
@@ -83,9 +84,10 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Login");
     }
 
-    /***
+    /**
+     * *
      * makes user mainMenuPanel for the cardLayout frame
-     * 
+     *
      * @return mainMenuPanel
      */
     private JPanel createMainMenu() {
@@ -107,10 +109,11 @@ public class GUIManager extends JFrame {
         cardLayout.show(cardPanel, "Main Menu");
     }
 
-    /***
-     * makes the AdminMenuPanel for the cardLayout frame
-     * add the option of adding staff where normal mainMenu cant add staff
-     * 
+    /**
+     * *
+     * makes the AdminMenuPanel for the cardLayout frame add the option of
+     * adding staff where normal mainMenu cant add staff
+     *
      * @return adminMenuPanel
      */
     private JPanel createAdminMenu() {
@@ -136,7 +139,7 @@ public class GUIManager extends JFrame {
 
     /**
      * makes the addStaffPanel for the cardLayout frame
-     * 
+     *
      * @return addStaffPanel
      */
     private JPanel createAddStaff() {
@@ -167,6 +170,7 @@ public class GUIManager extends JFrame {
 
     /**
      * makes the makeBookingPanel where all information for a booking is entered
+     *
      * @return makeBookingPanel
      */
     private JPanel createMakeBooking() {
@@ -230,7 +234,7 @@ public class GUIManager extends JFrame {
         makeBookingPanel.add(guestListLabel);
         makeBookingPanel.add(guestList);
         makeBookingPanel.add(submit);
-        
+
         return makeBookingPanel;
     }
 
@@ -242,8 +246,10 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * the controlPanel is so that a user can either go back to the main menu or log out
-     * if an admin is loged in if they press main menu it will go back to admin menu
+     * the controlPanel is so that a user can either go back to the main menu or
+     * log out if an admin is loged in if they press main menu it will go back
+     * to admin menu
+     *
      * @return controlPanel
      */
     private JPanel controlButton() {
@@ -258,33 +264,58 @@ public class GUIManager extends JFrame {
 
     /**
      * makes the panel for searching for a booking
+     *
      * @return searchBookingPanel
      */
     private JPanel createSearchBooking() {
         JPanel searchBookingPanel = new JPanel();
         JButton searchButton = new JButton("Search");
-        JTextField search = new JTextField();
+        JLabel nameLabel = new JLabel("Name: ");
+        JTextField customerName = new JTextField();
+        JLabel emailLabel = new JLabel("Email: ");
+        JTextField email = new JTextField();
+        JLabel numberLabel = new JLabel("Phone Number: ");
+        JTextField phoneNumber = new JTextField();
+        JLabel guestListLabel = new JLabel("Guest List:");
+        JTextArea guestList = new JTextArea();
+        JLabel startDateLabel = new JLabel("Start Date (ss/mm/yyyy): ");
+        JTextField startDate = new JTextField();
+        JLabel endDateLabel = new JLabel("End Date (dd/mm/yyyy): ");
+        JTextField endDate = new JTextField();
+
         JList result = new JList();
         JButton edit = new JButton("Edit");
 
         //add all componets to searchBookingPanel
-        searchBookingPanel.add(search);
+        searchBookingPanel.add(nameLabel);
+                searchBookingPanel.add(customerName);
+        searchBookingPanel.add(emailLabel);
+        searchBookingPanel.add(email);
+                searchBookingPanel.add(numberLabel);
+        searchBookingPanel.add(phoneNumber);
+        searchBookingPanel.add(guestListLabel);
+        searchBookingPanel.add(guestList);
+        searchBookingPanel.add(startDateLabel);
+        searchBookingPanel.add(startDate);
+        searchBookingPanel.add(endDateLabel);
+        searchBookingPanel.add(endDate);
         searchBookingPanel.add(searchButton);
         searchBookingPanel.add(result);
         searchBookingPanel.add(edit);
 
         return searchBookingPanel;
     }
-    
+
     /**
      * makes searchBookingPanel to current displayed panel
      */
-    public void searchBooking(){
+    public void searchBooking() {
         cardLayout.show(cardPanel, "Search for Booking");
     }
-    
+
     /**
-     * makes the editBookingPanel 
+     * makes the editBookingPanel
+     *
      * @return editBookingPanel
      */
     private JPanel createEditBooking() {
@@ -344,11 +375,11 @@ public class GUIManager extends JFrame {
         //adds all panels and componets to editbookingPanel
         editBookingPanel.add(bookingDetials);
         editBookingPanel.add(buttonPanel, BorderLayout.PAGE_END);
-        editBookingPanel.setLayout(new GridLayout(0, 3));       
+        editBookingPanel.setLayout(new GridLayout(0, 3));
         editBookingPanel.add(startDateLabel);
         editBookingPanel.add(startDate);
         editBookingPanel.add(endDateLabel);
-        editBookingPanel.add(endDate);  
+        editBookingPanel.add(endDate);
         editBookingPanel.add(availableRooms, BorderLayout.EAST);
         editBookingPanel.add(nameLabel);
         editBookingPanel.add(customerName);

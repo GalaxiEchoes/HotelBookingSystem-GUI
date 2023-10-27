@@ -118,7 +118,7 @@ public class HotelController implements ActionListener {
                         (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4))))
                 );
             } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
             model.findBooking(aBooking);
 
