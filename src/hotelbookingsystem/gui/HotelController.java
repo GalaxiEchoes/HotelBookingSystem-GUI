@@ -8,6 +8,7 @@ import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,7 +17,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 
 /**
- * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
+ * 21151229)
  */
 public class HotelController implements ActionListener {
 
@@ -33,7 +35,6 @@ public class HotelController implements ActionListener {
         gui = new GUIManager();
     }
 
-    
     private boolean loginData(String username, String password) {
         if (model.findStaff(username).equals(username)) {
             if (loginM.checkLogin(model.findStaff(username), username, password)) {
@@ -61,8 +62,12 @@ public class HotelController implements ActionListener {
         DefaultListModel<Room> listModel = new DefaultListModel<>();
         JList list = (JList) e.getSource();
         AbstractButton selectedButton = (AbstractButton) e.getSource();
-        JTextField startDate = (JTextField) e.getSource();
-        JTextField endDate = (JTextField) e.getSource();
+        JComboBox startDay = (JComboBox) e.getSource();
+        JComboBox startMonth = (JComboBox) e.getSource();
+        JComboBox startYear = (JComboBox) e.getSource();
+        JComboBox endDay = (JComboBox) e.getSource();
+        JComboBox endMonth = (JComboBox) e.getSource();
+        JComboBox endYear = (JComboBox) e.getSource();
         JTextField name = (JTextField) e.getSource();
         JTextField email = (JTextField) e.getSource();
         JTextField phoneNumber = (JTextField) e.getSource();
@@ -94,32 +99,28 @@ public class HotelController implements ActionListener {
             gui.adminMenu();
         } else if (pressedButton.getText().equals("Submit")) {//to finalise the booking and add the booking to database
 
-            Booking booking = null;
-            try {
-                booking = new Booking((guestList.getText()),
-                        (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
-                        (model.getRoomByID(selectedRoom.roomID)),
-                        (ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))),
-                        (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4))))
-                );
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Booking booking;
+
+            booking = new Booking((guestList.getText()),
+                    (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
+                    (model.getRoomByID(selectedRoom.roomID)),
+                    (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
+                    (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
+            );
+
             model.saveNewBooking(booking);
             model.invoiceBooking(booking);
 
         } else if (pressedButton.getText().equals("Search")) {
-            Booking aBooking = null;
-            try {
-                aBooking = new Booking((guestList.getText()),
-                        (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
-                        (model.getRoomByID(selectedRoom.roomID)),
-                        (ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))),
-                        (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4))))
-                );
-            } catch (BadLocationException ex) {
-                
-            }
+            Booking aBooking;
+
+            aBooking = new Booking((guestList.getText()),
+                    (ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText())),
+                    (model.getRoomByID(selectedRoom.roomID)),
+                    (ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))),
+                    (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString())))
+            );
+
             model.findBooking(aBooking);
 
         } else if (pressedButton.getText().equals("Edit")) {
@@ -134,22 +135,19 @@ public class HotelController implements ActionListener {
                 }
             });
             gui.editBooking();
-            startDate.setText(selectedBooking.getStringStartDate());
-            endDate.setText(selectedBooking.getStringEndDate());
+            startDay.setSelectedItem(selectedBooking);
             name.setText(selectedBooking.getCustomer().getName());
             email.setText(selectedBooking.getCustomer().getEmail());
             phoneNumber.setText(selectedBooking.getCustomer().getPhoneNumber());
             guestList.setText(selectedBooking.getGuestNotes());
 
         } else if (selectedButton.getText().equals("Single Room")) {
-            try {
-                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))), (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)))))) {
 
-                    listModel.addElement(room);
-                }
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
+            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+
+                listModel.addElement(room);
             }
+
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -161,13 +159,11 @@ public class HotelController implements ActionListener {
                 }
             });
         } else if (selectedButton.getText().equals("Double Room")) {
-            try {
-                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))), (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)))))) {
-                    listModel.addElement(room);
-                }
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
+
+            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+                listModel.addElement(room);
             }
+
             list.addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -179,12 +175,9 @@ public class HotelController implements ActionListener {
                 }
             });
         } else if (selectedButton.getText().equals("Suite")) {
-            try {
-                for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)))), (ObjectFactory.createDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)))))) {
-                    listModel.addElement(room);
-                }
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
+
+            for (Room room : model.findAvailableRooms((ObjectFactory.createDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()))), (ObjectFactory.createDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()))))) {
+                listModel.addElement(room);
             }
 
             list.addListSelectionListener(new ListSelectionListener() {
@@ -201,16 +194,8 @@ public class HotelController implements ActionListener {
             selectedBooking.setCustomer(ObjectFactory.createCustomer(name.getText(), email.getText(), phoneNumber.getText()));
             selectedBooking.setRoom(selectedRoom);
             selectedBooking.setGuestNotes(guestList.getText());
-            try {
-                selectedBooking.setStartDate(Integer.parseInt(startDate.getText(0, 2)), Integer.parseInt(startDate.getText(3, 2)), Integer.parseInt(startDate.getText(6, 4)));
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                selectedBooking.setEndDate(Integer.parseInt(endDate.getText(0, 2)), Integer.parseInt(endDate.getText(3, 2)), Integer.parseInt(endDate.getText(6, 4)));
-            } catch (BadLocationException ex) {
-                Logger.getLogger(HotelController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            selectedBooking.setStartDate(Integer.parseInt(startDay.getSelectedItem().toString()), Integer.parseInt(startMonth.getSelectedItem().toString()), Integer.parseInt(startYear.getSelectedItem().toString()));
+            selectedBooking.setEndDate(Integer.parseInt(endDay.getSelectedItem().toString()), Integer.parseInt(endMonth.getSelectedItem().toString()), Integer.parseInt(endYear.getSelectedItem().toString()));
             model.updateBooking(selectedBooking);
             model.invoiceBooking(selectedBooking);
             gui.mainMenu();
