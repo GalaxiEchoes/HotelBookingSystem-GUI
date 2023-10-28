@@ -1,5 +1,6 @@
 package hotelbookingsystem.gui;
 
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -8,7 +9,15 @@ package hotelbookingsystem.gui;
 public class HotelBookingSystemGUI {
 
     public static void main(String[] args) {
-       GUIManager gui = new GUIManager();
-       gui.setVisible(true);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                HotelController controller = new HotelController();
+                GUIManager viewManager = new GUIManager(controller);
+                controller.addView(viewManager);
+                viewManager.setVisible(true);
+            }
+        });
     }
 }

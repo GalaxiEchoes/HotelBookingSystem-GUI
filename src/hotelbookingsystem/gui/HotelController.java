@@ -72,14 +72,8 @@ public class HotelController implements ActionListener {
             menu();
 
         } else if ("Find Rooms".equals(actionCommand)) {
-            Booking booking = GUIManager.getBooking();
+            findRooms();
 
-            if (booking == null) {
-                GUIManager.DateUserError();
-            } else {
-                HashSet<Room> rooms = modelManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
-                GUIManager.showRoomsFound(rooms);
-            }
         } else if ("Submit".equals(actionCommand)) {
             submit();
 
@@ -87,36 +81,10 @@ public class HotelController implements ActionListener {
             search();
 
         } else if ("Save Changes".equals(actionCommand)) {
-            GUIManager.detatchComponents(currentPanel);
-            Booking booking = GUIManager.getBooking();
-
-            if (booking != null) {
-                if (adminMode == true) {
-                    GUIManager.switchToAdminMenu();
-                    currentPanel = panelState.AdminMenuPanel;
-                } else {
-                    GUIManager.switchToMenu();
-                    currentPanel = panelState.MenuPanel;
-                }
-            } else {
-                GUIManager.DateUserError();
-            }
+            saveChanges();
 
         } else if ("Delete".equals(actionCommand)) {
-            GUIManager.detatchComponents(currentPanel);
-            Booking booking = GUIManager.getBooking();
-
-            if (booking != null) {
-                if (adminMode == true) {
-                    GUIManager.switchToAdminMenu();
-                    currentPanel = panelState.AdminMenuPanel;
-                } else {
-                    GUIManager.switchToMenu();
-                    currentPanel = panelState.MenuPanel;
-                }
-            } else {
-                GUIManager.DateUserError();
-            }
+            delete();
 
         } else if ("Edit".equals(actionCommand)) {
             edit();
@@ -125,7 +93,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happpens when login is pressed
+     * handels what happens when login is pressed
      */
     private void login() {
         String[] loginInfo = GUIManager.getLogin();
@@ -144,16 +112,20 @@ public class HotelController implements ActionListener {
                     currentPanel = panelState.MenuPanel;
                 }
             } else {
-                GUIManager.LoginUserError();
+                GUIManager.clearAllText();
+                GUIManager.userIncorrectInputWarning("Incorrect Username or Password, please check Report.");
+
             }
         } else {
-            GUIManager.LoginUserError();
+            GUIManager.clearAllText();
+            GUIManager.userIncorrectInputWarning("Incorrect Username or Password, please check Report.");
+
         }
 
     }
 
     /**
-     * handels what happpens when logout is pressed
+     * handels what happens when logout is pressed
      */
     public void logOut() {
         GUIManager.detatchComponents(currentPanel);
@@ -162,7 +134,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happpens when add staff is pressed
+     * handels what happens when add staff is pressed
      */
     private void addStaff() {
         GUIManager.detatchComponents(currentPanel);
@@ -170,8 +142,19 @@ public class HotelController implements ActionListener {
         GUIManager.switchToAddStaff();
     }
 
+    private void findRooms() {
+        Booking booking = GUIManager.getBooking();
+
+        if (booking == null) {
+            GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
+        } else {
+            HashSet<Room> rooms = modelManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
+            GUIManager.showRoomsFound(rooms);
+        }
+    }
+
     /**
-     * handels what happpens when make booking is pressed
+     * handels what happens when make booking is pressed
      */
     public void makeBooking() {
         GUIManager.detatchComponents(currentPanel);
@@ -180,7 +163,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happpens when search booking is pressed
+     * handels what happens when search booking is pressed
      */
     public void searchBooking() {
         GUIManager.detatchComponents(currentPanel);
@@ -207,12 +190,13 @@ public class HotelController implements ActionListener {
      * handels what happens when submit user is pressed
      */
     private void submitUser() {
-        GUIManager.detatchComponents(currentPanel);
+
         String[] loginInfo = GUIManager.getLogin();
         Staff staff = ObjectFactory.createStaff("User", loginInfo[0], loginInfo[1]);
 
         if (modelManager.saveNewStaff(staff)) {
             if (adminMode == true) {
+                GUIManager.detatchComponents(currentPanel);
                 GUIManager.switchToAdminMenu();
                 currentPanel = panelState.AdminMenuPanel;
             } else {
@@ -220,19 +204,19 @@ public class HotelController implements ActionListener {
                 currentPanel = panelState.MenuPanel;
             }
         } else {
-            GUIManager.StaffUserError();
+            GUIManager.userIncorrectInputWarning("Username must be unique, please try another.");
         }
     }
 
     /**
-     * handels what happens when submit admin is pressed 
+     * handels what happens when submit admin is pressed
      */
     private void submitAdmin() {
-        GUIManager.detatchComponents(currentPanel);
         String[] loginInfo = GUIManager.getLogin();
         Staff staff = ObjectFactory.createStaff("Admin", loginInfo[0], loginInfo[1]);
 
         if (modelManager.saveNewStaff(staff)) {
+            GUIManager.detatchComponents(currentPanel);
             if (adminMode == true) {
                 GUIManager.switchToAdminMenu();
                 currentPanel = panelState.AdminMenuPanel;
@@ -241,7 +225,7 @@ public class HotelController implements ActionListener {
                 currentPanel = panelState.MenuPanel;
             }
         } else {
-            GUIManager.StaffUserError();
+            GUIManager.userIncorrectInputWarning("Username must be unique, please try another.");
         }
     }
 
@@ -252,11 +236,13 @@ public class HotelController implements ActionListener {
         GUIManager.detatchComponents(currentPanel);
         Booking booking = GUIManager.getBooking();
         if (booking == null) {
-            GUIManager.DateUserError();
+            GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
         } else if (booking.getCustomer().getEmail().isEmpty() || booking.getCustomer().getName().isEmpty() || booking.getCustomer().getPhoneNumber().isEmpty() || booking.getRoom() == null) {
-            GUIManager.FieldsEmptyError();
+            GUIManager.userIncorrectInputWarning("All fields must be filled");
         } else {
             modelManager.saveNewBooking(booking);
+            modelManager.invoiceBooking(booking);
+            GUIManager.detatchComponents(currentPanel);
 
             if (adminMode == true) {
                 GUIManager.switchToAdminMenu();
@@ -276,7 +262,7 @@ public class HotelController implements ActionListener {
 
         //Cchecks if valid object
         if (booking == null) {
-            GUIManager.DateUserError();
+            GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
         } else {
             HashSet<Booking> returnedBookings = modelManager.findBooking(booking);
             GUIManager.showBookingsFound(returnedBookings);
@@ -293,8 +279,60 @@ public class HotelController implements ActionListener {
             GUIManager.switchToEditBooking(booking, rooms);
             currentPanel = panelState.EditBookingPanel;
         } else {
-            GUIManager.DateUserError();
+            GUIManager.userIncorrectInputWarning("Please select a booking to edit.");
         }
     }
 
+    /**
+     * Handels what happens when saveChanges is pressed
+     */
+    private void saveChanges() {
+        Booking booking = GUIManager.getBooking();
+
+        if (booking != null) {
+            //Getting all available rooms
+            HashSet<Room> availableRooms = modelManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
+            Booking oldBooking = modelManager.findBookingById(booking.getBookingID());
+            availableRooms.add(oldBooking.getRoom());
+
+            if (availableRooms.contains(booking.getRoom())) {
+                modelManager.invoiceBooking(booking);
+                GUIManager.detatchComponents(currentPanel);
+
+                if (adminMode == true) {
+                    GUIManager.switchToAdminMenu();
+                    currentPanel = panelState.AdminMenuPanel;
+                } else {
+                    GUIManager.switchToMenu();
+                    currentPanel = panelState.MenuPanel;
+                }
+            } else {
+                GUIManager.userIncorrectInputWarning("This room is occupied, please choose another.");
+            }
+        } else {
+            GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
+        }
+    }
+
+    /**
+     * Handels what happens when delete is pressed
+     */
+    public void delete() {
+        Booking booking = GUIManager.getBooking();
+
+        if (booking != null) {
+            modelManager.updateBooking(booking);
+            modelManager.deleteBooking(booking);
+            GUIManager.detatchComponents(currentPanel);
+            if (adminMode == true) {
+                GUIManager.switchToAdminMenu();
+                currentPanel = panelState.AdminMenuPanel;
+            } else {
+                GUIManager.switchToMenu();
+                currentPanel = panelState.MenuPanel;
+            }
+        } else {
+            GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
+        }
+    }
 }
