@@ -2,6 +2,7 @@ package hotelbookingsystem.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -19,7 +20,7 @@ import javax.swing.event.ListSelectionListener;
 /**
  * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
  * 21151229)
- */
+ *
 public class HotelController implements ActionListener {
 
     private final ModelManager model;
@@ -249,4 +250,203 @@ public class HotelController implements ActionListener {
             }
         }
     }
+}*/
+public class HotelController implements ActionListener{
+    public enum panelState {
+        LoginPanel,
+        MenuPanel,
+        AdminMenuPanel,
+        MakeBookingPanel,
+        SearchBookingPanel,
+        EditBookingPanel,
+        AddStaffPanel,
+    }
+    
+    public GUIManager GUIManager;
+    public ModelManager modelManager;
+    public LogInManager liManager;
+    public panelState currentPanel;
+    boolean adminMode;
+
+    public HotelController() {
+        this.modelManager = new ModelManager();
+        this.liManager = new LogInManager();
+        currentPanel = panelState.LoginPanel;
+    }
+    
+    public void addView(GUIManager GUIManager){
+        this.GUIManager = GUIManager;
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String actionCommand = e.getActionCommand();
+        if ("Login".equals(actionCommand)) {
+            GUIManager.detatchComponents(currentPanel);
+            
+            String[] loginInfo = GUIManager.getLogin();
+            //Staff staff = modelManager.findStaff(loginInfo[0]);
+            //if(liManager.checkLogin(staff, loginInfo[1], loginInfo[0])){
+                //adminMode = liManager.checkAdmin(staff);
+
+                //Check login details
+                if(adminMode == true){
+                    GUIManager.switchToAdminMenu();
+                    currentPanel = panelState.AdminMenuPanel;
+                } else {
+                    GUIManager.switchToMenu();
+                    currentPanel = panelState.MenuPanel;
+                }
+            //}
+            
+            
+        } else if("Log Out".equals(actionCommand)) {
+            logOut();
+            
+        } else if("Make Booking".equals(actionCommand)){
+            makeBooking();
+            
+        } else if("Search/Edit Booking".equals(actionCommand)){
+            searchBooking();
+            
+        } else if("Add Staff".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+            
+            
+            currentPanel = panelState.AddStaffPanel;
+            GUIManager.switchToAddStaff();
+            
+        } else if("Submit User".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+            
+            String[] loginInfo = GUIManager.getLogin();
+            if(modelManager.saveNewStaff(ObjectFactory.createStaff("User", loginInfo[0], loginInfo[1])) == false){
+                GUIManager.StaffUserError();
+            } else{
+                if(adminMode == true){
+                    GUIManager.switchToAdminMenu();
+                    currentPanel = panelState.AdminMenuPanel;
+                } else {
+                    GUIManager.switchToMenu();
+                    currentPanel = panelState.MenuPanel;
+                }
+            }
+            
+        } else if("Submit Admin".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+
+            String[] loginInfo = GUIManager.getLogin();
+            if(modelManager.saveNewStaff(ObjectFactory.createStaff("Admin", loginInfo[0], loginInfo[1])) == false) {
+                GUIManager.StaffUserError();
+            } else{
+                if(adminMode == true){
+                    GUIManager.switchToAdminMenu();
+                    currentPanel = panelState.AdminMenuPanel;
+                } else {
+                    GUIManager.switchToMenu();
+                    currentPanel = panelState.MenuPanel;
+                }
+            }
+             
+        } else if("Menu".equals(actionCommand)){
+            menu();
+            
+        } else if("Find Rooms".equals(actionCommand)){
+            Booking booking = GUIManager.getBooking();
+            if(booking != null){
+                HashSet<Room> rooms = modelManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
+                GUIManager.showRoomsFound(rooms);
+            } else {
+                GUIManager.DateUserError();
+            }
+        } else if("Submit".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+            //grab details and submit
+            if(adminMode == true){
+                GUIManager.switchToAdminMenu();
+                currentPanel = panelState.AdminMenuPanel;
+            } else{
+                GUIManager.switchToMenu();
+                currentPanel = panelState.MenuPanel;
+            }
+            
+        } else if("Search".equals(actionCommand)){
+            Booking booking = GUIManager.getBooking();
+            
+            //Checks if valid object
+            if(booking == null){
+                GUIManager.DateUserError();
+            } else {
+                HashSet<Booking> returnedBookings = modelManager.findBooking(booking);
+                GUIManager.showBookingsFound(returnedBookings);
+            }
+            
+        } else if("Save Changes".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+            //grab selected booking
+            //save changes
+            
+            if(adminMode == true){
+                GUIManager.switchToAdminMenu();
+                currentPanel = panelState.AdminMenuPanel;
+            } else{
+                GUIManager.switchToMenu();
+                currentPanel = panelState.MenuPanel;
+            }
+            
+        } else if("Delete".equals(actionCommand)){
+            GUIManager.detatchComponents(currentPanel);
+            //grab selected booking
+            //delete booking
+            if(adminMode == true){
+                GUIManager.switchToAdminMenu();
+                currentPanel = panelState.AdminMenuPanel;
+            } else{
+                GUIManager.switchToMenu();
+                currentPanel = panelState.MenuPanel;
+            }
+            
+        } else if("Edit".equals(actionCommand)){
+            Booking booking = GUIManager.getSelectedSearchBooking();
+            if(booking != null){
+                HashSet<Room> rooms = modelManager.findAvailableRooms(booking.getStartDate(), booking.getEndDate());
+                GUIManager.switchToEditBooking(booking, rooms);
+                currentPanel = panelState.EditBookingPanel;
+            }
+        }
+        
+    }
+    
+    public void logOut(){
+        GUIManager.detatchComponents(currentPanel);
+        GUIManager.switchToLogin();
+        currentPanel = panelState.LoginPanel;
+    }
+    
+    public void makeBooking(){
+        GUIManager.detatchComponents(currentPanel);
+        currentPanel = panelState.MakeBookingPanel;
+        GUIManager.switchToMakeBooking();
+    }
+    
+    public void searchBooking(){
+        GUIManager.detatchComponents(currentPanel);
+        currentPanel = panelState.SearchBookingPanel;
+        HashSet<Room> allRooms = modelManager.getAllRooms();
+        GUIManager.switchToSearchBooking(allRooms);
+    }
+    
+    public void menu(){
+        GUIManager.detatchComponents(currentPanel);
+        if(adminMode == true){
+            GUIManager.switchToAdminMenu();
+            currentPanel = panelState.AdminMenuPanel;
+        } else{
+            GUIManager.switchToMenu();
+            currentPanel = panelState.MenuPanel;
+        }
+    }
+    
+    
+
 }

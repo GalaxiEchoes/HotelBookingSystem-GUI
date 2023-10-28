@@ -165,7 +165,7 @@ public class ModelManager {
      * @param date - Date to be converted
      * @return int array with day, month, year as int's
      */
-    public int[] convertDateToIntArray(Date date){
+   /* public int[] convertDateToIntArray(Date date){
         int[] timeArray = new int[3];
         
         Calendar calendar = Calendar.getInstance();
@@ -176,7 +176,7 @@ public class ModelManager {
         timeArray[1]= calendar.get(Calendar.MONTH) + 1; 
         timeArray[2]= calendar.get(Calendar.YEAR);
         return timeArray;
-    }
+    }*/
     
     /**
      * Retrieves all booking from database
