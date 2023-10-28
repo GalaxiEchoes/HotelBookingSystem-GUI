@@ -3,7 +3,6 @@ package hotelbookingsystem.gui;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -121,9 +120,9 @@ public class ModelManager {
             (criteria.getBookingID() != 0 && criteria.getBookingID() != booking.getBookingID()) ||
             (criteria.getRoom() != null && criteria.getRoom().getRoomID() != booking.getRoom().getRoomID()) ||
             (criteria.getCustomer() != null && 
-                (criteria.getCustomer().getName() != null && !criteria.getCustomer().getName().equalsIgnoreCase(booking.getCustomer().getName())) ||
-                (criteria.getCustomer().getEmail() != null && !criteria.getCustomer().getEmail().equalsIgnoreCase(booking.getCustomer().getEmail())) ||
-                (criteria.getCustomer().getPhoneNumber() != null && !criteria.getCustomer().getPhoneNumber().equalsIgnoreCase(booking.getCustomer().getPhoneNumber())))
+                (criteria.getCustomer().getName() != null && !criteria.getCustomer().getName().isEmpty() && !criteria.getCustomer().getName().equalsIgnoreCase(booking.getCustomer().getName())) ||
+                (criteria.getCustomer().getEmail() != null && !criteria.getCustomer().getEmail().isEmpty() && !criteria.getCustomer().getEmail().equalsIgnoreCase(booking.getCustomer().getEmail())) ||
+                (criteria.getCustomer().getPhoneNumber() != null && !criteria.getCustomer().getPhoneNumber().isEmpty() && !criteria.getCustomer().getPhoneNumber().equalsIgnoreCase(booking.getCustomer().getPhoneNumber())))
         );
 
         return bookings;

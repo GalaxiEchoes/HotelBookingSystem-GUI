@@ -224,11 +224,10 @@ public class Booking implements Serializable {
      * {@inheritDoc}
      *
      * @return String representation of booking
-     *
      */
     @Override
     public String toString() {
-        return "Booking{" + "bookingID: " + bookingID + ", guestNotes: " + guestNotes + ", customer: " + customer + ", room: " + room + ", startDate: " + startDate + ", endDate: " + endDate + ", total: " + total + '}';
+        return "BookingID: " + bookingID + ", Customer: " + customer.getName() + ", Room: " + room + ", Start Date: " + startDate + ", End Date: " + endDate;
     }
     
 }
