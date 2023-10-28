@@ -87,10 +87,12 @@ public class DatabaseRetriever implements IDatabaseRetriever{
         session = DatabaseManager.getSession();
         tx = session.beginTransaction();
    
-        Query<Customer> query = session.createQuery("FROM Customer c WHERE c.email = :email OR c.phoneNumber = :phoneNumber");
+        Query<Customer> query = session.createQuery("FROM Customer c WHERE c.email = :email OR c.phoneNumber = :phoneNumber OR c.name = :name OR c.customerID = :customerID ");
         query.setParameter("email",  booking.getCustomer().getEmail());
         query.setParameter("phoneNumber", booking.getCustomer().getPhoneNumber());
-
+        query.setParameter("name", booking.getCustomer().getName());
+        query.setParameter("customerID", booking.getCustomer().getCustomerID());
+        
         List<Customer> result = query.list();
 
         if (result.isEmpty()) {
