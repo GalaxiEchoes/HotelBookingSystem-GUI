@@ -23,25 +23,26 @@ import javax.swing.JTextField;
  * 21151229)
  */
 public class GUIManager extends JFrame {
-
+    
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
     private final JPanel controlPanel;
     private DefaultListModel<Room> roomListModel;
     private final DefaultListModel<Booking> bookingListModel;
     private final ModelManager model = new ModelManager();
-
+    
     public GUIManager() {
         this.bookingListModel = new DefaultListModel<Booking>();
         this.roomListModel = new DefaultListModel<Room>();
         JFrame frame = new JFrame("Hotel Booking System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-
+        frame.setSize(600, 600);
+        
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         controlPanel = new JPanel();
-
+        
+        cardPanel.setSize(200, 200);
         cardPanel.add(createLogin(), "Login");
         cardPanel.add(createMainMenu(), "Main Menu");
         cardPanel.add(createAdminMenu(), "Admin Menu");
@@ -49,13 +50,15 @@ public class GUIManager extends JFrame {
         cardPanel.add(createSearchBooking(), "Search for Booking");
         cardPanel.add(createAddStaff(), "Add Staff");
         cardPanel.add(createEditBooking(), "Edit Booking");
-
+        
         controlPanel.add(controlButton());
-
+        controlPanel.setSize(200, 200);
+        
         frame.add(cardPanel, BorderLayout.NORTH);
         frame.add(controlPanel, BorderLayout.SOUTH);
+        frame.setVisible(true);
         cardLayout.show(cardPanel, "Login");
-       
+        
     }
 
     /**
@@ -67,20 +70,22 @@ public class GUIManager extends JFrame {
     private JPanel createLogin() {
         JPanel loginPanel = new JPanel();
         JButton loginButton = new JButton("Login");
-        JTextField username = new JTextField();
+        JTextField username = new JTextField(50);
+       // username.setSize(WIDTH, HEIGHT);
         JLabel usernameLabel = new JLabel("Username: ");
         JLabel passwordLabel = new JLabel("Password: ");
-        JPasswordField password = new JPasswordField();
+        JPasswordField password = new JPasswordField(50);
+       // password.setSize(WIDTH, HEIGHT);
         JLabel invalidInput = new JLabel(" ");
-
+        
         loginPanel.add(usernameLabel);
         loginPanel.add(username);
-        loginPanel.add(passwordLabel);
+        loginPanel.add(passwordLabel, BorderLayout.CENTER);
         loginPanel.add(password);
-        loginPanel.add(loginButton);
-
+        loginPanel.add(loginButton, BorderLayout.SOUTH);
+        loginPanel.add(invalidInput);
         controlPanel.setVisible(false);
-        loginPanel.repaint();
+        //loginPanel.repaint();
         return loginPanel;
     }
 
@@ -90,7 +95,7 @@ public class GUIManager extends JFrame {
     public void login() {
         controlPanel.setVisible(false);
         cardLayout.show(cardPanel, "Login");
-       
+        
     }
 
     /**
@@ -103,10 +108,10 @@ public class GUIManager extends JFrame {
         JPanel mainMenuPanel = new JPanel();
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
-
+        
         mainMenuPanel.add(makeBooking);
         mainMenuPanel.add(findBooking);
-
+        
         return mainMenuPanel;
     }
 
@@ -130,11 +135,11 @@ public class GUIManager extends JFrame {
         JButton makeBooking = new JButton("Make a Booking");
         JButton findBooking = new JButton("Find a Booking");
         JButton addStaff = new JButton("Add Staff");
-
+        
         adminMenuPanel.add(makeBooking);
         adminMenuPanel.add(findBooking);
         adminMenuPanel.add(addStaff);
-
+        
         return adminMenuPanel;
     }
 
@@ -159,14 +164,14 @@ public class GUIManager extends JFrame {
         JLabel passwordLabel = new JLabel("Password: ");
         JCheckBox addAdmin = new JCheckBox("Admin");
         JTextField password = new JTextField();
-
+        
         addStaffPanel.add(add);
         addStaffPanel.add(usernameLabel);
         addStaffPanel.add(username);
         addStaffPanel.add(passwordLabel);
         addStaffPanel.add(password);
         addStaffPanel.add(addAdmin);
-
+        
         return addStaffPanel;
     }
 
@@ -203,7 +208,7 @@ public class GUIManager extends JFrame {
         JComboBox endMonth = new JComboBox();
         JComboBox endYear = new JComboBox();
         JLabel invalidInput = new JLabel(" ");
-
+        
         startDay.addItem("01");
         startDay.addItem("02");
         startDay.addItem("03");
@@ -235,7 +240,7 @@ public class GUIManager extends JFrame {
         startDay.addItem("29");
         startDay.addItem("30");
         startDay.addItem("31");
-
+        
         startMonth.addItem("01");
         startMonth.addItem("02");
         startMonth.addItem("03");
@@ -248,11 +253,11 @@ public class GUIManager extends JFrame {
         startMonth.addItem("10");
         startMonth.addItem("11");
         startMonth.addItem("12");
-
+        
         startYear.addItem("2023");
         startYear.addItem("2024");
         startYear.addItem("2025");
-
+        
         endDay.addItem("01");
         endDay.addItem("02");
         endDay.addItem("03");
@@ -284,7 +289,7 @@ public class GUIManager extends JFrame {
         endDay.addItem("29");
         endDay.addItem("30");
         endDay.addItem("31");
-
+        
         endMonth.addItem("01");
         endMonth.addItem("02");
         endMonth.addItem("03");
@@ -297,7 +302,7 @@ public class GUIManager extends JFrame {
         endMonth.addItem("10");
         endMonth.addItem("11");
         endMonth.addItem("12");
-
+        
         endYear.addItem("2023");
         endYear.addItem("2024");
         endYear.addItem("2025");
@@ -307,7 +312,7 @@ public class GUIManager extends JFrame {
         JPanel roomList = new JPanel();
         JPanel buttonPanel = new JPanel();
         JList roomResult = new JList<>(roomListModel);
-
+        
         for (Room room : model.getAllRooms()) {
             roomListModel.addElement(room);
         }
@@ -328,7 +333,7 @@ public class GUIManager extends JFrame {
         buttonPanel.add(singleRoomButton);
         buttonPanel.add(doubleRoomButton);
         buttonPanel.add(suiteRoomButton);
-
+        
         roomList.add(new JScrollPane(roomResult));
 
         //add allcomponets to makeBookingPanel
@@ -355,7 +360,7 @@ public class GUIManager extends JFrame {
         makeBookingPanel.add(guestList);
         makeBookingPanel.add(submit);
         makeBookingPanel.add(invalidInput);
-
+        
         return makeBookingPanel;
     }
 
@@ -377,10 +382,10 @@ public class GUIManager extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton logout = new JButton("Logout");
         JButton mainMenu = new JButton("Main Menu");
-
+        
         buttonPanel.add(logout);
         buttonPanel.add(mainMenu);
-
+        
         return buttonPanel;
     }
 
@@ -409,7 +414,7 @@ public class GUIManager extends JFrame {
         JComboBox endMonth = new JComboBox();
         JComboBox endYear = new JComboBox();
         JLabel invalidInput = new JLabel(" ");
-
+        
         startDay.addItem("01");
         startDay.addItem("02");
         startDay.addItem("03");
@@ -441,7 +446,7 @@ public class GUIManager extends JFrame {
         startDay.addItem("29");
         startDay.addItem("30");
         startDay.addItem("31");
-
+        
         startMonth.addItem("01");
         startMonth.addItem("02");
         startMonth.addItem("03");
@@ -454,11 +459,11 @@ public class GUIManager extends JFrame {
         startMonth.addItem("10");
         startMonth.addItem("11");
         startMonth.addItem("12");
-
+        
         startYear.addItem("2023");
         startYear.addItem("2024");
         startYear.addItem("2025");
-
+        
         endDay.addItem("01");
         endDay.addItem("02");
         endDay.addItem("03");
@@ -490,7 +495,7 @@ public class GUIManager extends JFrame {
         endDay.addItem("29");
         endDay.addItem("30");
         endDay.addItem("31");
-
+        
         endMonth.addItem("01");
         endMonth.addItem("02");
         endMonth.addItem("03");
@@ -503,18 +508,18 @@ public class GUIManager extends JFrame {
         endMonth.addItem("10");
         endMonth.addItem("11");
         endMonth.addItem("12");
-
+        
         endYear.addItem("2023");
         endYear.addItem("2024");
         endYear.addItem("2025");
-
+        
         JList result = new JList<>(bookingListModel);
         JButton edit = new JButton("Edit");
-
+        
         for (Booking booking : model.getAllBookings()) {
             bookingListModel.addElement(booking);
         }
-
+        
         JPanel bookingList = new JPanel();
         bookingList.add(new JScrollPane(result));
         //add all componets to searchBookingPanel
@@ -538,7 +543,7 @@ public class GUIManager extends JFrame {
         searchBookingPanel.add(bookingList);
         searchBookingPanel.add(edit);
         searchBookingPanel.add(invalidInput);
-
+        
         return searchBookingPanel;
     }
 
@@ -578,7 +583,7 @@ public class GUIManager extends JFrame {
         JComboBox endMonth = new JComboBox();
         JComboBox endYear = new JComboBox();
         JLabel invalidInput = new JLabel(" ");
-
+        
         startDay.addItem("01");
         startDay.addItem("02");
         startDay.addItem("03");
@@ -610,7 +615,7 @@ public class GUIManager extends JFrame {
         startDay.addItem("29");
         startDay.addItem("30");
         startDay.addItem("31");
-
+        
         startMonth.addItem("01");
         startMonth.addItem("02");
         startMonth.addItem("03");
@@ -623,11 +628,11 @@ public class GUIManager extends JFrame {
         startMonth.addItem("10");
         startMonth.addItem("11");
         startMonth.addItem("12");
-
+        
         startYear.addItem("2023");
         startYear.addItem("2024");
         startYear.addItem("2025");
-
+        
         endDay.addItem("01");
         endDay.addItem("02");
         endDay.addItem("03");
@@ -659,7 +664,7 @@ public class GUIManager extends JFrame {
         endDay.addItem("29");
         endDay.addItem("30");
         endDay.addItem("31");
-
+        
         endMonth.addItem("01");
         endMonth.addItem("02");
         endMonth.addItem("03");
@@ -672,7 +677,7 @@ public class GUIManager extends JFrame {
         endMonth.addItem("10");
         endMonth.addItem("11");
         endMonth.addItem("12");
-
+        
         endYear.addItem("2023");
         endYear.addItem("2024");
         endYear.addItem("2025");
@@ -736,7 +741,7 @@ public class GUIManager extends JFrame {
         editBookingPanel.add(guestListLabel);
         editBookingPanel.add(guestList);
         editBookingPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+        
         return editBookingPanel;
     }
 
