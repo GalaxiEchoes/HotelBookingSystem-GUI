@@ -260,5 +260,8 @@ public class TestMain {
         }
         
         DatabaseManager.closeSession(session);
+        
+            GUIManager gui = new GUIManager();
+       gui.setVisible(true);
     }  
 }
