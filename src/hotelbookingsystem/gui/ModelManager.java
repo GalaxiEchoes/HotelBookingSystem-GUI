@@ -177,4 +177,19 @@ public class ModelManager {
         timeArray[2]= calendar.get(Calendar.YEAR);
         return timeArray;
     }
+    
+    /**
+     * Retrieves all booking from database
+     * @return HashSet of bookings
+     */
+    public HashSet<Booking> getAllBookings(){
+        return dbRetriever.getAllBookings();
+    }
+    
+    /**
+     * @return HashSet of rooms
+     */
+    public HashSet<Room> getAllRooms(){
+        return this.allRooms;
+    }
 }
