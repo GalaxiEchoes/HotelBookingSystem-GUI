@@ -118,7 +118,7 @@ public class ObjectFactory {
      * @param date
      * @return 
      */
-    public int[] convertDateToIntArray(Date date) {
+    public static int[] convertDateToIntArray(Date date) {
         int[] timeArray = new int[3];
 
         Calendar calendar = Calendar.getInstance();

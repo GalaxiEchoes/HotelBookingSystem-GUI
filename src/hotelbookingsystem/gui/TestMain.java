@@ -6,6 +6,7 @@ package hotelbookingsystem.gui;
 
 import java.util.HashSet;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,6 +18,7 @@ import org.hibernate.query.Query;
  * @author jenni
  */
 public class TestMain {
+
     public static void main(String[] args) {
         org.apache.logging.log4j.LogManager.getContext(false);
         /*
@@ -108,8 +110,8 @@ public class TestMain {
         for(Staff s: staff){
             System.out.println(s);
         }
-        */
-        /*
+         */
+ /*
         ModelManager mManager = new ModelManager();
         IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
         Session session = DatabaseManager.getSession();
@@ -225,43 +227,50 @@ public class TestMain {
         Booking booking = new Booking("this", customer, room, ObjectFactory.createDate(10, 10, 2023),ObjectFactory.createDate(12, 10, 2023));
         session.save(booking);
         tx.commit();
-        */
-        
-        
+         */
+
         IDatabaseRetriever dbRetriever = ObjectFactory.createDatabaseRetriever();
         Session session = DatabaseManager.getSession();
         Transaction tx = session.beginTransaction();
-        
+
         HashSet<Booking> bookings = dbRetriever.getAllBookings();
-        for(Booking b: bookings){
+        for (Booking b : bookings) {
             System.out.println(b);
 
         }
 
         HashSet<Room> rooms = dbRetriever.getAllRooms();
-        for(Room r: rooms){
+        for (Room r : rooms) {
             System.out.println(r);
         }
-        
+
         HashSet<Staff> staffs = dbRetriever.getAllStaff();
-        for(Staff s: staffs){
+        for (Staff s : staffs) {
             System.out.println(s);
         }
-        
+
         DatabaseManager.closeSession(session);
         session = DatabaseManager.getSession();
-        tx = session.beginTransaction();     
-        
+        tx = session.beginTransaction();
+
         Query query = session.createQuery("FROM Customer c");
         List<Customer> result = query.list();
         HashSet<Customer> customers = new HashSet<>(result);
-        for(Customer c: customers){
+        for (Customer c : customers) {
             System.out.println(c);
         }
-        
+
         DatabaseManager.closeSession(session);
-        
-            GUIManager gui = new GUIManager();
-      // gui.setVisible(true);
-    }  
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                HotelController controller = new HotelController();
+                GUIManager GUIManager = new GUIManager(controller);
+                controller.addView(GUIManager);
+                GUIManager.setVisible(true);
+            }
+        });
+    }
 }
+
