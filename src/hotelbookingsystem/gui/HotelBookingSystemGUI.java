@@ -8,6 +8,7 @@ package hotelbookingsystem.gui;
 public class HotelBookingSystemGUI {
 
     public static void main(String[] args) {
-        
+       GUIManager gui = new GUIManager();
+       gui.setVisible(true);
     }
 }

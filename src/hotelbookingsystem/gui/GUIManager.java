@@ -29,11 +29,21 @@ public class GUIManager extends JFrame {
     private final JPanel controlPanel;
     private DefaultListModel<Room> roomListModel;
     private DefaultListModel<Booking> bookingListModel;
-
+    private final ModelManager model = new ModelManager();
+    
+   
     public GUIManager() {
         JFrame frame = new JFrame("Hotel Booking System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        for(Room room : model.getAllRooms()){
+            roomListModel.addElement(room);
+        }
+        
+        for(Booking booking: model.getAllBookings()){
+            bookingListModel.addElement(booking);
+        }
+        
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         controlPanel = new JPanel();
@@ -198,7 +208,7 @@ public class GUIManager extends JFrame {
         JPanel availableRooms = new JPanel();
         JPanel roomList = new JPanel();
         JPanel buttonPanel = new JPanel();
-        JList result = new JList<>(roomListModel);
+        JList roomResult = new JList<>(roomListModel);
 
         //make buttons for roomSizes
         ButtonGroup roomSizeButtons = new ButtonGroup();
@@ -217,7 +227,7 @@ public class GUIManager extends JFrame {
         buttonPanel.add(doubleRoomButton);
         buttonPanel.add(suiteRoomButton);
 
-        roomList.add(new JScrollPane(result));
+        roomList.add(new JScrollPane(roomResult));
 
         //add allcomponets to makeBookingPanel
         availableRooms.add(buttonPanel, BorderLayout.PAGE_START);
@@ -288,9 +298,11 @@ public class GUIManager extends JFrame {
         JLabel endDateLabel = new JLabel("End Date (dd/mm/yyyy): ");
         JTextField endDate = new JTextField();
         JLabel invalidInput = new JLabel(" ");
-        JList result = new JList();
+        JList result = new JList<>(bookingListModel);
         JButton edit = new JButton("Edit");
 
+        JPanel bookingList = new JPanel();
+        bookingList.add(new JScrollPane(result));
         //add all componets to searchBookingPanel
         searchBookingPanel.add(nameLabel);
         searchBookingPanel.add(customerName);
@@ -305,7 +317,7 @@ public class GUIManager extends JFrame {
         searchBookingPanel.add(endDateLabel);
         searchBookingPanel.add(endDate);
         searchBookingPanel.add(searchButton);
-        searchBookingPanel.add(result);
+        searchBookingPanel.add(bookingList);
         searchBookingPanel.add(edit);
         searchBookingPanel.add(invalidInput);
 
