@@ -116,14 +116,24 @@ public class ModelManager {
     public HashSet<Booking> findBooking(Booking criteria){
         HashSet<Booking> bookings = dbRetriever.findBookingBetweenDates(criteria.getStartDate(), criteria.getEndDate());
 
-        bookings.removeIf(booking -> 
-            (criteria.getBookingID() != 0 && criteria.getBookingID() != booking.getBookingID()) ||
-            (criteria.getRoom() != null && criteria.getRoom().getRoomID() != booking.getRoom().getRoomID()) ||
-            (criteria.getCustomer() != null && 
-                (criteria.getCustomer().getName() != null && !criteria.getCustomer().getName().isEmpty() && !criteria.getCustomer().getName().equalsIgnoreCase(booking.getCustomer().getName())) ||
-                (criteria.getCustomer().getEmail() != null && !criteria.getCustomer().getEmail().isEmpty() && !criteria.getCustomer().getEmail().equalsIgnoreCase(booking.getCustomer().getEmail())) ||
-                (criteria.getCustomer().getPhoneNumber() != null && !criteria.getCustomer().getPhoneNumber().isEmpty() && !criteria.getCustomer().getPhoneNumber().equalsIgnoreCase(booking.getCustomer().getPhoneNumber())))
-        );
+        bookings.removeIf(booking -> {
+            if (criteria.getRoom().getRoomID() != booking.getRoom().getRoomID()) {
+                return true;
+            }
+            if (criteria.getCustomer().getName() != null && !criteria.getCustomer().getName().isEmpty() && !booking.getCustomer().getName().contains(criteria.getCustomer().getName())) {
+                return true;
+            }
+            if (criteria.getCustomer().getEmail() != null && !criteria.getCustomer().getEmail().isEmpty() && !booking.getCustomer().getEmail().contains(criteria.getCustomer().getEmail())) {
+                return true;
+            }
+            if (criteria.getCustomer().getPhoneNumber() != null && !criteria.getCustomer().getPhoneNumber().isEmpty() && !booking.getCustomer().getPhoneNumber().contains(criteria.getCustomer().getPhoneNumber())) {
+                return true;
+            }
+            if (criteria.getBookingID() != 0 && criteria.getBookingID() != booking.getBookingID()) {
+                return true;
+            }
+            return false;
+        });
 
         return bookings;
     }
