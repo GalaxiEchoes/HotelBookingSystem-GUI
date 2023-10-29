@@ -76,7 +76,8 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * Makes the loginPanel for the cardLayout frame
+     * Makes the loginPanel for the cardLayout frame sets the layout of the
+     * componets
      *
      * @return loginPanel
      */
@@ -101,7 +102,7 @@ public class GUIManager extends JFrame {
     /**
      * makes the main menu for the cardLayout
      *
-     * @return loginPanel
+     * @return menuPanel
      */
     private JPanel createMainMenu() {
         menuPanel = new JPanel(new GridBagLayout());
@@ -132,28 +133,32 @@ public class GUIManager extends JFrame {
      * makes the admin menu for the cardLayout which has the added add staff
      * button
      *
+     *
      * @return loginPanel
      */
     private JPanel createAdminMenu() {
         adminMenuPanel = new JPanel(new GridBagLayout());
         addComponent(adminMenuPanel, new JLabel("Welcome to Hotel Booking System Main Menu"), 0, 0);
 
-        //Buttons
+        //Button for logout
         JButton logoutButton = new JButton("Log Out");
         logoutButton.setActionCommand("Log Out");
         logoutButton.addActionListener(controllerListener);
         addComponent(adminMenuPanel, logoutButton, 0, 4);
 
+        //make a booking button
         JButton makeBookingButton = new JButton("Make Booking");
         makeBookingButton.setActionCommand("Make Booking");
         makeBookingButton.addActionListener(controllerListener);
         addComponent(adminMenuPanel, makeBookingButton, 0, 1);
 
+        //search/editbooking button
         JButton searchOrEditBooking = new JButton("Search/Edit Booking");
         searchOrEditBooking.setActionCommand("Search/Edit Booking");
         searchOrEditBooking.addActionListener(controllerListener);
         addComponent(adminMenuPanel, searchOrEditBooking, 0, 2);
 
+        //add staff button
         JButton addStaff = new JButton("Add Staff");
         addStaff.setActionCommand("Add Staff");
         addStaff.addActionListener(controllerListener);
@@ -163,7 +168,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes the make a booking panel
+     * makes the make a booking panel where the user will input customer details
      *
      * @return makeBookingPanel
      */
@@ -171,16 +176,19 @@ public class GUIManager extends JFrame {
         makeBookingPanel = new JPanel(new GridBagLayout());
         addComponent(makeBookingPanel, new JLabel("Make Booking"), 0, 0);
 
+        //menu button to go back to main menu 
         JButton menuButton = new JButton("Menu");
         menuButton.setActionCommand("Menu");
         menuButton.addActionListener(controllerListener);
         addComponent(makeBookingPanel, menuButton, 0, 1);
 
+        //find rooms buttoon to find available rooms for selected dates
         JButton findRoomsButton = new JButton("Find Rooms");
         findRoomsButton.setActionCommand("Find Rooms");
         findRoomsButton.addActionListener(controllerListener);
         addComponent(makeBookingPanel, findRoomsButton, 0, 5);
 
+        //Submit button to save the booking in the sysetem
         JButton submitButton = new JButton("Submit");
         submitButton.setActionCommand("Submit");
         submitButton.addActionListener(controllerListener);
@@ -190,7 +198,8 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes the search for booking panel
+     * makes the search for booking panel where user can search for a spesific
+     * booking
      *
      * @return searchBookingPanel
      */
@@ -198,16 +207,19 @@ public class GUIManager extends JFrame {
         searchBookingPanel = new JPanel(new GridBagLayout());
         addComponent(searchBookingPanel, new JLabel("Search Booking"), 0, 0);
 
+        //menu button to go back to main menu
         JButton menuButton = new JButton("Menu");
         menuButton.setActionCommand("Menu");
         menuButton.addActionListener(controllerListener);
         addComponent(searchBookingPanel, menuButton, 0, 1);
 
+        //search button to search for spesific booking
         JButton searchButton = new JButton("Search");
         searchButton.setActionCommand("Search");
         searchButton.addActionListener(controllerListener);
         addComponent(searchBookingPanel, searchButton, 0, 5);
 
+        //edit button to edit selected booking
         JButton editButton = new JButton("Edit");
         editButton.setActionCommand("Edit");
         editButton.addActionListener(controllerListener);
@@ -217,7 +229,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes addStaffPanel
+     * makes addStaffPanel where a admin can add new staff
      *
      * @return addStaffPanel
      */
@@ -226,16 +238,19 @@ public class GUIManager extends JFrame {
         addStaffPanel.add(new JLabel("Add Staff"));
         addComponent(addStaffPanel, new JLabel("Add Staff"), 0, 0);
 
+        //menu button to go back to main menu
         JButton menuButton = new JButton("Menu");
         menuButton.setActionCommand("Menu");
         menuButton.addActionListener(controllerListener);
         addComponent(addStaffPanel, menuButton, 0, 1);
 
+        //submit user button to add new staff type user
         JButton addUserButton = new JButton("Submit User");
         addUserButton.setActionCommand("Submit User");
         addUserButton.addActionListener(controllerListener);
         addComponent(addStaffPanel, addUserButton, 0, 5);
 
+        //submit admin button to add new staff type admin
         JButton addAdminButton = new JButton("Submit Admin");
         addAdminButton.setActionCommand("Submit Admin");
         addAdminButton.addActionListener(controllerListener);
@@ -245,7 +260,8 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes the editBookingPanel
+     * makes the editBookingPanel where selected booking's details form search
+     * is displayed and user is able to edit the details and save it or delete said booking
      *
      * @return editBookingPanel
      */
@@ -253,16 +269,19 @@ public class GUIManager extends JFrame {
         editBookingPanel = new JPanel(new GridBagLayout());
         addComponent(editBookingPanel, new JLabel("Edit Booking"), 0, 0);
 
+        //menu button to go back to main menu
         JButton menuButton = new JButton("Menu");
         menuButton.setActionCommand("Menu");
         menuButton.addActionListener(controllerListener);
         addComponent(editBookingPanel, menuButton, 0, 1);
 
+        //save changes button to save the updated detials of booking
         JButton saveButton = new JButton("Save Changes");
         saveButton.setActionCommand("Save Changes");
         saveButton.addActionListener(controllerListener);
         addComponent(editBookingPanel, saveButton, 0, 5);
 
+        //delete button to delete booking
         JButton deleteButton = new JButton("Delete");
         deleteButton.setActionCommand("Delete");
         deleteButton.addActionListener(controllerListener);
@@ -277,12 +296,12 @@ public class GUIManager extends JFrame {
     public void switchToLogin() {
         clearAllText();
         gbc.gridwidth = 2;
-        addComponent(loginPanel, new JLabel("Username:"), 0, 1);
+        addComponent(loginPanel, new JLabel("Username:"), 0, 1); //positions and adds the label
         addComponent(loginPanel, new JLabel("Password:"), 0, 2);
-        addComponent(loginPanel, warningMessages, 1, 3);
+        addComponent(loginPanel, warningMessages, 1, 3); // adds the warning messages componest
         gbc.gridwidth = 1;
-        addComponent(loginPanel, name, 2, 1);
-        addComponent(loginPanel, password, 2, 2);
+        addComponent(loginPanel, name, 2, 1); //adds and positions textfield for username inpu
+        addComponent(loginPanel, password, 2, 2); //adds and positions the passwordField
 
         //Refresh
         loginPanel.revalidate();
@@ -306,6 +325,7 @@ public class GUIManager extends JFrame {
 
     /**
      * switches to makeBookingpanel
+     * adds components and positions them
      */
     public void switchToMakeBooking() {
         clearAllText();
@@ -338,6 +358,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
+     * adds components and positions them
      * switches to searchBookingPanel
      *
      * @param allRooms
@@ -386,21 +407,23 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * switches to editBookingPanel
+     * populates the editBookingPanel also refreshes it
      *
      * @param booking
      * @param availableRooms
      */
     public void switchToEditBooking(Booking booking, HashSet<Room> availableRooms) {
         clearAllText();
-        name.setText(booking.getCustomer().getName());
-        email.setText(booking.getCustomer().getEmail());
-        phoneNumber.setText(booking.getCustomer().getPhoneNumber());
-        warningMessages.setText("");
+        name.setText(booking.getCustomer().getName());//sets text to customer name of the booking
+        email.setText(booking.getCustomer().getEmail());//set text to email
+        phoneNumber.setText(booking.getCustomer().getPhoneNumber());//sets test to phonenumber
+        warningMessages.setText("");//resets the warning label to blank
+        
+        //adds availble rooms to combobox
         for (Room r : availableRooms) {
             rooms.addItem(r);
         }
-        rooms.addItem(booking.getRoom());
+        rooms.addItem(booking.getRoom());  
         bookingID.setText(booking.getBookingID() + "");
         rooms.setSelectedItem(booking.getRoom());
         totalPrice.setText("Total: " + booking.getTotal());
@@ -418,6 +441,7 @@ public class GUIManager extends JFrame {
         endMonth.setSelectedItem(endDate[1]);
         endYear.setSelectedItem(endDate[2]);
 
+        //adds all componets to panel
         addComponent(editBookingPanel, new JLabel("Name:"), 1, 1);
         addComponent(editBookingPanel, new JLabel("Email:"), 1, 2);
         addComponent(editBookingPanel, new JLabel("Phone:"), 1, 3);
@@ -449,7 +473,8 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * changes to addStaffPanel
+     * adds and positions componets 
+     * switches to addStaffPanel 
      */
     public void switchToAddStaff() {
         clearAllText();
@@ -466,7 +491,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * get bookings found
+     * adds bookings that fit the search criteria to combobox 
      *
      * @param bookingsFound
      */
@@ -487,7 +512,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * sets the roomsfound to the enditbooking pannel
+     * adds available rooms to combobox to the enditbooking pannel
      *
      * @param roomsFound
      */
@@ -614,7 +639,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * gets a booking
+     * retirves details of a booking 
      *
      * @return booking
      */
@@ -695,7 +720,8 @@ public class GUIManager extends JFrame {
 
     /**
      * hanedels the errors for the incorrect inputs
-     * @param text 
+     *
+     * @param text
      */
     public void userIncorrectInputWarning(String text) {
         warningMessages.setText(text);

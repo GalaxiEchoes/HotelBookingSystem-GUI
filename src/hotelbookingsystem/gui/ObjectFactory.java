@@ -113,10 +113,11 @@ public class ObjectFactory {
         }
     }
 
+    
     /**
-     * 
-     * @param date
-     * @return 
+     * Converts a date into its individual integers
+     * @param date - Date to be converted
+     * @return int array with day, month, year as int's
      */
     public static int[] convertDateToIntArray(Date date) {
         int[] timeArray = new int[3];

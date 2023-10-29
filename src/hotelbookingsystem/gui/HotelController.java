@@ -11,6 +11,9 @@ import java.util.HashSet;
  */
 public class HotelController implements ActionListener {
 
+    /**
+     * enum for the different panels 
+     */
     public enum panelState {
         LoginPanel,
         MenuPanel,
@@ -94,6 +97,9 @@ public class HotelController implements ActionListener {
 
     /**
      * handels what happens when login is pressed
+     * depending if the person is a user or admin it switches to different main menu
+     * if its a normal user it switches to main Menu
+     * if its a admin it switches to admin menu
      */
     private void login() {
         String[] loginInfo = GUIManager.getLogin();
@@ -126,6 +132,7 @@ public class HotelController implements ActionListener {
 
     /**
      * handels what happens when logout is pressed
+     * switches to the loginPanel
      */
     public void logOut() {
         GUIManager.detatchComponents(currentPanel);
@@ -134,7 +141,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when add staff is pressed
+     * switches to the addStaffPanel
      */
     private void addStaff() {
         GUIManager.detatchComponents(currentPanel);
@@ -142,6 +149,9 @@ public class HotelController implements ActionListener {
         GUIManager.switchToAddStaff();
     }
 
+    /**
+     * finds all available rooms for the specified dates
+     */
     private void findRooms() {
         Booking booking = GUIManager.getBooking();
 
@@ -154,7 +164,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when make booking is pressed
+     * handels what happens when make booking is pressed switches to
+     * makeBookingPanel
      */
     public void makeBooking() {
         GUIManager.detatchComponents(currentPanel);
@@ -163,7 +174,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when search booking is pressed
+     * handels what happens when search booking is pressed switches to
+     * searchBooking
      */
     public void searchBooking() {
         GUIManager.detatchComponents(currentPanel);
@@ -173,7 +185,9 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when menu is pressed
+     *
+     * goes to the main menu for type of user that is signed in admins go to
+     * admin menu users go to main menu
      */
     public void menu() {
         GUIManager.detatchComponents(currentPanel);
@@ -187,7 +201,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when submit user is pressed
+     * handels what happens when submit user is pressed saves the new staff as a
+     * user
      */
     private void submitUser() {
 
@@ -209,7 +224,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when submit admin is pressed
+     * handels what happens when submit admin is pressed saves the new staff as
+     * a admin
      */
     private void submitAdmin() {
         String[] loginInfo = GUIManager.getLogin();
@@ -230,7 +246,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels when submit is pressed
+     * handels when submit is pressed saves the booking as a new booking in the
+     * system
      */
     private void submit() {
         GUIManager.detatchComponents(currentPanel);
@@ -255,7 +272,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * Handels if search is pressed
+     * Handels if search is pressed searches for the specific booking
      */
     private void search() {
         Booking booking = GUIManager.getBooking();
@@ -270,7 +287,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * Handel's what happens when edit is pressed
+     * Handel's what happens when edit is pressed goes to editBookingPanel and
+     * allows user to edit the selected booking
      */
     private void edit() {
         Booking booking = GUIManager.getSelectedSearchBooking();
@@ -284,7 +302,8 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * Handels what happens when saveChanges is pressed
+     * Handels what happens when saveChanges is pressed updates the booking
+     * details for selected booking
      */
     private void saveChanges() {
         Booking booking = GUIManager.getBooking();
@@ -315,7 +334,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * Handels what happens when delete is pressed
+     * Handels what happens when delete is pressed deletes the selected booking
      */
     public void delete() {
         Booking booking = GUIManager.getBooking();
