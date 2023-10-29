@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class HotelController implements ActionListener {
 
     /**
-     * enum for the different panels 
+     * enum for the different panels
      */
     public enum panelState {
         LoginPanel,
@@ -96,10 +96,9 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when login is pressed
-     * depending if the person is a user or admin it switches to different main menu
-     * if its a normal user it switches to main Menu
-     * if its a admin it switches to admin menu
+     * handels what happens when login is pressed depending if the person is a
+     * user or admin it switches to different main menu if its a normal user it
+     * switches to main Menu if its a admin it switches to admin menu
      */
     private void login() {
         String[] loginInfo = GUIManager.getLogin();
@@ -131,8 +130,7 @@ public class HotelController implements ActionListener {
     }
 
     /**
-     * handels what happens when logout is pressed
-     * switches to the loginPanel
+     * handels what happens when logout is pressed switches to the loginPanel
      */
     public void logOut() {
         GUIManager.detatchComponents(currentPanel);

@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * sets editBookinngPanel to current displayed panel
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
+ * 21151229)
  *
- * public void editBooking() { cardLayout.show(cardPanel, "Edit a Booking"); }
  */
 public class GUIManager extends JFrame {
 
@@ -261,7 +261,8 @@ public class GUIManager extends JFrame {
 
     /**
      * makes the editBookingPanel where selected booking's details form search
-     * is displayed and user is able to edit the details and save it or delete said booking
+     * is displayed and user is able to edit the details and save it or delete
+     * said booking
      *
      * @return editBookingPanel
      */
@@ -324,8 +325,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * switches to makeBookingpanel
-     * adds components and positions them
+     * switches to makeBookingpanel adds components and positions them
      */
     public void switchToMakeBooking() {
         clearAllText();
@@ -358,8 +358,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds components and positions them
-     * switches to searchBookingPanel
+     * adds components and positions them switches to searchBookingPanel
      *
      * @param allRooms
      */
@@ -418,12 +417,12 @@ public class GUIManager extends JFrame {
         email.setText(booking.getCustomer().getEmail());//set text to email
         phoneNumber.setText(booking.getCustomer().getPhoneNumber());//sets test to phonenumber
         warningMessages.setText("");//resets the warning label to blank
-        
+
         //adds availble rooms to combobox
         for (Room r : availableRooms) {
             rooms.addItem(r);
         }
-        rooms.addItem(booking.getRoom());  
+        rooms.addItem(booking.getRoom());
         bookingID.setText(booking.getBookingID() + "");
         rooms.setSelectedItem(booking.getRoom());
         totalPrice.setText("Total: " + booking.getTotal());
@@ -473,8 +472,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds and positions componets 
-     * switches to addStaffPanel 
+     * adds and positions componets switches to addStaffPanel
      */
     public void switchToAddStaff() {
         clearAllText();
@@ -491,7 +489,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds bookings that fit the search criteria to combobox 
+     * adds bookings that fit the search criteria to combobox
      *
      * @param bookingsFound
      */
@@ -639,7 +637,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * retirves details of a booking 
+     * retirves details of a booking
      *
      * @return booking
      */
