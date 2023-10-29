@@ -247,12 +247,11 @@ public class HotelController implements ActionListener {
      * system
      */
     private void submit() {
-        GUIManager.detatchComponents(currentPanel);
         Booking booking = GUIManager.getBooking();
         if (booking == null) {
             GUIManager.userIncorrectInputWarning("Start date must be before end date, please try again.");
         } else if (booking.getCustomer().getEmail().isEmpty() || booking.getCustomer().getName().isEmpty() || booking.getCustomer().getPhoneNumber().isEmpty() || booking.getRoom() == null) {
-            GUIManager.userIncorrectInputWarning("All fields must be filled");
+            GUIManager.userIncorrectInputWarning("All fields must be filled.");
         } else {
             modelManager.saveNewBooking(booking);
             modelManager.invoiceBooking(booking);
