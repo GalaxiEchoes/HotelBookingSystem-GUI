@@ -6,8 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger:
- * 21151229)
+ * @author group 53: (Ellena Weissmeyer: 20100580) & (Hendrik Bernardus Kruger: 21151229)
  *
  */
 public class GUIManager extends JFrame {
@@ -77,7 +76,7 @@ public class GUIManager extends JFrame {
 
     /**
      * Makes the loginPanel for the cardLayout frame sets the layout of the
-     * componets
+     * components
      *
      * @return loginPanel
      */
@@ -85,16 +84,20 @@ public class GUIManager extends JFrame {
         loginPanel = new JPanel(new GridBagLayout());
 
         //Add fields
-        addComponent(loginPanel, new JLabel("Login"), 0, 0);
-        addComponent(loginPanel, name, 0, 1);
-        addComponent(loginPanel, password, 0, 2);
-        addComponent(loginPanel, warningMessages, 0, 3);
+        addComponent(loginPanel, new JLabel("Login"), 2, 0);
+        gbc.gridwidth = 2;
+        addComponent(loginPanel, new JLabel("Username:"), 0,1);
+        addComponent(loginPanel, new JLabel("Password:"), 0,2);
+        addComponent(loginPanel, warningMessages, 1,3);
+        gbc.gridwidth = 1;
+        addComponent(loginPanel, name, 2,1);
+        addComponent(loginPanel, password, 2,2);
 
         //Button to log in
         JButton loginButton = new JButton("Login");
         loginButton.setActionCommand("Login");
         loginButton.addActionListener(controllerListener);
-        addComponent(loginPanel, loginButton, 0, 3);
+        addComponent(loginPanel, loginButton, 2, 4);
 
         return loginPanel;
     }
@@ -198,7 +201,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * makes the search for booking panel where user can search for a spesific
+     * makes the search for booking panel where user can search for a specific
      * booking
      *
      * @return searchBookingPanel
@@ -472,7 +475,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds and positions componets switches to addStaffPanel
+     * adds and positions components switches to addStaffPanel
      */
     public void switchToAddStaff() {
         clearAllText();
@@ -510,7 +513,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds available rooms to combobox to the enditbooking pannel
+     * adds available rooms to combobox to the editbooking panel
      *
      * @param roomsFound
      */
@@ -531,7 +534,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * detaches the compontents so that they can be attached to next panel
+     * detaches the components so that they can be attached to next panel
      *
      * @param currentPanel
      */
@@ -598,10 +601,10 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * initialzes the diffferent components
+     * initializes the different components
      */
     private void initializeFields() {
-        Integer[] days = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 10, 31};
+        Integer[] days = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
         Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         Integer[] years = {2023, 2024, 2025};
 
@@ -637,7 +640,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * retirves details of a booking
+     * retrieves details of a booking
      *
      * @return booking
      */
@@ -694,8 +697,8 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * setsText("") for all componets aswell set the dates to position 0 in the
-     * comboboxs
+     * setsText("") for all components as well set the dates to position 0 in the
+     * comboboxes
      */
     public void clearAllText() {
         totalPrice.setText("");
@@ -717,7 +720,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * hanedels the errors for the incorrect inputs
+     * handles the errors for the incorrect inputs
      *
      * @param text
      */
@@ -738,7 +741,7 @@ public class GUIManager extends JFrame {
     }
 
     /**
-     * adds componets to the gbc
+     * adds components to the jpanel with gbc positioning
      *
      * @param panel
      * @param component
